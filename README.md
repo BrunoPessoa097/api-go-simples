@@ -1,0 +1,36 @@
+# Coffee
+
+Parte visual do projeto de uma cafeteria para afim de demostração simples e direta sobre os diversos conceitos.
+
+## Sobre
+
+<div align="center">
+    <img src="https://img.shields.io/static/v1?label=Golang&message=1.25&color=7159c1&style=for-the-badge&logo=golang"/>
+    <img src="https://img.shields.io/static/v1?label=Versao&message=0.0.0&color=7159c1&style=for-the-badge&logo=circle"/>
+    <img src="https://img.shields.io/static/v1?label=Status&message=Desenvolvimento&color=7159c1&style=for-the-badge&logo=circle"/>
+    <img src="https://img.shields.io/static/v1?label=Licenca&message=Proprietaria&color=7159c1&style=for-the-badge&logo=circle"/>
+</div>
+
+## Features
+- [ ] Cadastro de Usuário
+- [ ] Cadastro de Tarefas
+- [ ] Cadastro de Nivel
+- [ ] Cadastro de Rotas
+- [ ] Segurança
+- [ ] Autentificação JWT
+- [ ] Helmet
+- [ ] CORs
+- [ ] DotEnv
+
+## Criado Por
+
+- **Nome**: Bruno Pessoa
+- **Área**: Desenvolver NodeJs|Typescript|Javascript
+- **Formado**: UNIGRANDE - Centro Universitário da grande Fortaleza.
+- **Curso**: Sistemas para _Internet_.
+- **Git Hub**: [github.com/BrunoPessoa097](https://github.com/BrunoPessoa097/api-agenda.git)
+- **LinkedIn**: [www.linkedin.com/in/bruno-pesoa-097](https://www.linkedin.com/in/bruno-pessoa-097/)
+
+## _License_
+
+Esse projeto esta sobre a licença `Proprietária` ©Bruno Pessoa - 2026.
