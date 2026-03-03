@@ -1,6 +1,6 @@
-# Coffee
+# API Simples
 
-Parte visual do projeto de uma cafeteria para afim de demostração simples e direta sobre os diversos conceitos.
+_API_ Simples para demostrar conhecimento na construção, manutenção de uma _API REST_ na linguagem go.
 
 ## Sobre
 
