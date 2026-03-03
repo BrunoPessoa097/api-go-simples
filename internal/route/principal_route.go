@@ -7,4 +7,5 @@ import (
 
 func InicialRota(r *gin.Engine) {
 	r.GET("/", handlers.InicialHandle)
+	r.NoRoute(handlers.NaoEncontrada)
 }
