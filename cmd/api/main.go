@@ -15,7 +15,7 @@ func main() {
 	route.InicialRota(r)
 
 	// iniciando rota
-	if r.Run(":8080") != nil {
+	if err := r.Run(":8080"); err != nil {
 		panic("Erro no servidor")
 	}
 }
