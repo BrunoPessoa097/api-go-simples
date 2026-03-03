@@ -6,10 +6,16 @@ import (
 )
 
 func main() {
+	// desativando release mode
 	gin.SetMode(gin.ReleaseMode)
+	// iniciando servidor
 	r := gin.Default()
 
+	// routeamento
 	route.InicialRota(r)
 
-	r.Run(":8080")
+	// iniciando rota
+	if r.Run(":8080") != nil {
+		panic("Erro no servidor")
+	}
 }

@@ -5,7 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// rota inicial
 func InicialRota(r *gin.Engine) {
+	// rotas padrão
 	r.GET("/", handlers.InicialHandle)
 	r.NoRoute(handlers.NaoEncontrada)
 }
