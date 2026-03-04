@@ -5,9 +5,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Rotas struct{}
+
 // rota inicial
 func InicialRota(r *gin.Engine) {
 	// rotas padrão
 	r.GET("/", handlers.InicialHandle)
 	r.NoRoute(handlers.NaoEncontrada)
+
+	r.Group("/")
+	{
+		UsuarioRotas(r)
+	}
 }

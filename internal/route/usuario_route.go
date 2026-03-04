@@ -1,0 +1,13 @@
+package route
+
+import (
+	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
+	"github.com/gin-gonic/gin"
+)
+
+func UsuarioRotas(rg *gin.Engine) {
+	usuario := rg.Group("/usuario")
+	{
+		usuario.GET("/", handlers.UsuarioListHandle)
+	}
+}
