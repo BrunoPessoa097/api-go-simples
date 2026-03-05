@@ -5,16 +5,31 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Rotas struct{}
+// estrutura que recebe os handlers
+type RotasDefault struct {
+	handle *handlers.DefaultHandle
+}
+
+// construtor
+func NewRotasDefault(h *handlers.DefaultHandle) *RotasDefault {
+	return &RotasDefault{handle: h}
+}
 
 // rota inicial
-func InicialRota(r *gin.Engine) {
-	// rotas padrão
-	r.GET("/", handlers.InicialHandle)
-	r.NoRoute(handlers.NaoEncontrada)
+func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 
+	// rotas padrão
+	r.GET("/", rou.handle.InicialHandle)
+	r.NoRoute(rou.handle.NaoEncontrada)
+
+	// agrupamento base
 	r.Group("/")
 	{
-		UsuarioRotas(r)
+		// criando a base de usuarios
+		h := handlers.NewUsuarioHandle()
+		user := NewUsuarioRotas(h)
+
+		// rotas de usuários
+		user.UsuarioRotas(r)
 	}
 }
