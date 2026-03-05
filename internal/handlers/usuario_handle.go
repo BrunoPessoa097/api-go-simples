@@ -7,10 +7,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UsuarioListHandle(c *gin.Context) {
+// estrutura
+type UsuarioHandle struct{}
+
+// construtor
+func NewUsuarioHandle() *UsuarioHandle {
+	return &UsuarioHandle{}
+}
+
+// listar os usuários
+func (u *UsuarioHandle) UsuarioListHandle(c *gin.Context) {
+	// recebendo os valores via json
 	var user models.UsuarioCriate
+
+	// json
 	c.JSON(http.StatusOK, gin.H{
-		"message": "rota usuario listar",
+		"message": "rota listar todos os usuario listar",
 		"dados":   user,
 	})
 }
