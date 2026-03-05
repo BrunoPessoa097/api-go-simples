@@ -39,7 +39,7 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 	})
 }
 
-// inserir usuarios
+// byid usuarios
 func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 	// recebendo os valores via json
 	var user models.UsuarioCriate
@@ -51,7 +51,7 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 	})
 }
 
-// inserir usuarios
+// update usuarios
 func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	// recebendo os valores via json
 	var user models.UsuarioCriate
