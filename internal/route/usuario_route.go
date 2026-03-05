@@ -23,6 +23,7 @@ func (u *UsuarioRotes) UsuarioRotas(rg *gin.Engine) {
 	// grupo das rotas
 	usuario := rg.Group("/usuario")
 	{
+		// rotas de usuarios
 		usuario.GET("/", u.handle.UsuarioListHandle)
 		usuario.POST("/", u.handle.UsuarioPostHandle)
 		usuario.GET("/:id", u.handle.UsuarioByIdHandle)
