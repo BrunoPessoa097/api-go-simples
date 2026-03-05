@@ -1,5 +1,6 @@
 package models
 
+// model de usuário
 type UsuarioCriate struct {
 	Id    int32  `json:"id"`
 	Nome  string `json:"nome"`
