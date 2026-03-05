@@ -24,5 +24,6 @@ func (u *UsuarioRotes) UsuarioRotas(rg *gin.Engine) {
 	usuario := rg.Group("/usuario")
 	{
 		usuario.GET("/", u.handle.UsuarioListHandle)
+		usuario.POST("/", u.handle.UsuarioPostHandle)
 	}
 }
