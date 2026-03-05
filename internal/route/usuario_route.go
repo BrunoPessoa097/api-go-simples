@@ -5,9 +5,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UsuarioRotas(rg *gin.Engine) {
+// estrutura
+type UsuarioRotes struct {
+	handle *handlers.UsuarioHandle
+}
+
+// construtor
+func NewUsuarioRotas(h *handlers.UsuarioHandle) *UsuarioRotes {
+	return &UsuarioRotes{
+		handle: h,
+	}
+}
+
+// roteamento de usuários
+func (u *UsuarioRotes) UsuarioRotas(rg *gin.Engine) {
+
+	// grupo das rotas
 	usuario := rg.Group("/usuario")
 	{
-		usuario.GET("/", handlers.UsuarioListHandle)
+		usuario.GET("/", u.handle.UsuarioListHandle)
 	}
 }
