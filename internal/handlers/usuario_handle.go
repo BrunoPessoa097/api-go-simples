@@ -50,3 +50,15 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 		"dados":   user,
 	})
 }
+
+// inserir usuarios
+func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
+	// recebendo os valores via json
+	var user models.UsuarioCriate
+
+	// json
+	c.JSON(http.StatusOK, gin.H{
+		"message": "rota update usuario",
+		"dados":   user,
+	})
+}

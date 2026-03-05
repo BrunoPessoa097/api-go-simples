@@ -26,5 +26,6 @@ func (u *UsuarioRotes) UsuarioRotas(rg *gin.Engine) {
 		usuario.GET("/", u.handle.UsuarioListHandle)
 		usuario.POST("/", u.handle.UsuarioPostHandle)
 		usuario.GET("/:id", u.handle.UsuarioByIdHandle)
+		usuario.PUT("/:id", u.handle.UsuarioUpdateHandle)
 	}
 }
