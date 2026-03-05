@@ -2,8 +2,10 @@ package models
 
 // model de usuário
 type UsuarioCriate struct {
-	Id    int32  `json:"id"`
-	Nome  string `json:"nome"`
-	Email string `json:"email"`
-	Senha string `json:"senha"`
+	Id        int32  `json:"id"`
+	Nome      string `json:"nome"`
+	Email     string `json:"email"`
+	Senha     string `json:"senha"`
+	Role      int64  `json:"role"`
+	Bloqueado bool   `json:"bloqueado"`
 }
