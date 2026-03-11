@@ -97,3 +97,18 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Contains(t, w.Body.String(), resp.Nome)
 }
+
+func TestUsuarioDeleteHandle(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	route := gin.Default()
+	handle := NewUsuarioHandle()
+
+	req := httptest.NewRequest(http.MethodDelete, "/usuarios/:id", nil)
+	req.Header.Set("Content-Type", "application/json")
+
+	w := httptest.NewRecorder()
+	route.DELETE("/usuarios/:id", handle.UsuarioDeleteHandle)
+	route.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusNoContent, w.Code)
+}
