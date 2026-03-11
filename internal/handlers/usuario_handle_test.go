@@ -43,9 +43,7 @@ func TestUsuarioPostHandle(t *testing.T) {
 		Bloqueado: false,
 	}
 
-	var resp models.UsuarioCriate
-
-	body, _ := json.Marshal(msg)
+	body, _ := json.Marshal(&msg)
 
 	req := httptest.NewRequest(http.MethodPost, "/usuarios", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
@@ -53,6 +51,9 @@ func TestUsuarioPostHandle(t *testing.T) {
 	w := httptest.NewRecorder()
 	router.POST("/usuarios", handle.UsuarioPostHandle)
 	router.ServeHTTP(w, req)
+
+	var resp models.UsuarioCriate
+
 	json.Unmarshal(w.Body.Bytes(), &resp)
 
 	assert.Equal(t, http.StatusCreated, w.Code)
