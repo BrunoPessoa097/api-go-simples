@@ -74,5 +74,5 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
 
 	// json
-	c.BindJSON(http.StatusNoContent)
+	c.JSON(http.StatusNoContent, nil)
 }
