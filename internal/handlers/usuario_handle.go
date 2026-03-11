@@ -32,7 +32,10 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 	// recebendo os valores via json
 	var user models.UsuarioCriate
 
-	if err := c.BindJSON(&user); err != nil {
+	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"mensagem": err.Error(),
+		})
 		return
 	}
 
