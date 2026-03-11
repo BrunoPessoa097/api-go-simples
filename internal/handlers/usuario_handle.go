@@ -72,12 +72,7 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 
 // delete usuarios
 func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
-	// recebendo os valores via json
-	var user models.UsuarioCriate
 
 	// json
-	c.JSON(http.StatusOK, gin.H{
-		"message": "rota deletar usuario",
-		"dados":   user,
-	})
+	c.BindJSON(http.StatusNoContent)
 }
