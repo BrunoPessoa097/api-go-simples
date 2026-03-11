@@ -32,8 +32,12 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 	// recebendo os valores via json
 	var user models.UsuarioCriate
 
+	if err := c.BindJSON(&user); err != nil {
+		return
+	}
+
 	// json
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"message": "rota registrar usuario",
 		"dados":   user,
 	})
