@@ -78,3 +78,22 @@ func TestUsuarioByIdHandle(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Contains(t, w.Body.String(), resp.Nome)
 }
+
+func TestUsuarioUpdateHandle(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	route := gin.Default()
+	handler := NewUsuarioHandle()
+
+	req := httptest.NewRequest(http.MethodPut, "/usuarios/:id", nil)
+	req.Header.Set("Content-Type", "application/json")
+
+	w := httptest.NewRecorder()
+	route.PUT("/usuarios/:id", handler.UsuarioUpdateHandle)
+	route.ServeHTTP(w, req)
+
+	var resp models.UsuarioCriate
+	json.Unmarshal(w.Body.Bytes(), &resp)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Contains(t, w.Body.String(), resp.Nome)
+}
