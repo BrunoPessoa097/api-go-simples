@@ -23,12 +23,12 @@ func NewUsuarioHandle(s *services.UsuarioService) *UsuarioHandle {
 // listar os usuários
 func (u *UsuarioHandle) UsuarioListHandle(c *gin.Context) {
 	// recebendo os valores via json
-	var user models.UsuarioCriate
+	users := u.services.UsuarioServiceList()
 
 	// json
 	c.JSON(http.StatusOK, gin.H{
 		"message": "rota listar todos os usuario listar",
-		"dados":   user,
+		"dados":   users,
 	})
 }
 
@@ -44,11 +44,16 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 		return
 	}
 
-	// json
-	c.JSON(http.StatusCreated, gin.H{
-		"message": "rota registrar usuario",
-		"dados":   user,
-	})
+	saida := u.services.UsuarioServiceAdd()
+
+	if saida {
+		// json
+		c.JSON(http.StatusCreated, gin.H{
+			"message": "rota registrar usuario",
+			"dados":   user,
+		})
+	}
+
 }
 
 // byid usuarios
