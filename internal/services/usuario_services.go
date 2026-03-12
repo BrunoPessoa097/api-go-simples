@@ -26,3 +26,7 @@ func (s *UsuarioService) UsuarioServiceById(id int) models.UsuarioCriate {
 		Bloqueado: false,
 	}
 }
+
+func (s *UsuarioService) UsuarioServiceUpdate(id int) bool {
+	return true
+}
