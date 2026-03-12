@@ -53,9 +53,17 @@ func TestUsuarioServiceById(t *testing.T) {
 func TestUsuarioServiceUpdate(t *testing.T) {
 	// iniciando
 	s := NewUsuarioService()
+	espec := models.UsuarioCriate{
+		Id:        0,
+		Nome:      "Bruno",
+		Email:     "brunopessoa@gmail.com",
+		Senha:     "1234",
+		Role:      1,
+		Bloqueado: false,
+	}
 
 	//saida e expectativa
-	if saida := s.UsuarioServiceUpdate(1); saida {
+	if saida := s.UsuarioServiceUpdate(1, espec); saida {
 		//saida
 		assert.Equal(t, saida, true)
 	} else {
