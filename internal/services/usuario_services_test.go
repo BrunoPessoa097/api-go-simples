@@ -58,6 +58,9 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 	if saida := s.UsuarioServiceUpdate(1); saida {
 		//saida
 		assert.Equal(t, saida, true)
+	} else {
+		//saida
+		t.Error("expectativa % - saida ", !saida, saida)
 	}
 }
 
@@ -69,5 +72,8 @@ func TestUsuarioServiceDelete(t *testing.T) {
 	if saida := s.UsuarioServiceDelete(1); saida {
 		//saida
 		assert.Equal(t, saida, true)
+	} else {
+		//saida
+		t.Error("expectativa % - saida ", !saida, saida)
 	}
 }
