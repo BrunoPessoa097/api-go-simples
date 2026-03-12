@@ -4,15 +4,20 @@ import (
 	"net/http"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 )
 
 // estrutura
-type UsuarioHandle struct{}
+type UsuarioHandle struct {
+	services *services.UsuarioService
+}
 
 // construtor
-func NewUsuarioHandle() *UsuarioHandle {
-	return &UsuarioHandle{}
+func NewUsuarioHandle(s *services.UsuarioService) *UsuarioHandle {
+	return &UsuarioHandle{
+		services: s,
+	}
 }
 
 // listar os usuários

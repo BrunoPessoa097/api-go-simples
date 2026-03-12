@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
 )
@@ -17,7 +18,8 @@ func TestUsuarioListHandle(t *testing.T) {
 	// inicializando
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	handle := NewUsuarioHandle()
+	service := services.NewUsuarioService()
+	handle := NewUsuarioHandle(service)
 
 	// requisição
 	req := httptest.NewRequest(http.MethodGet, "/usuarios", nil)
@@ -38,7 +40,8 @@ func TestUsuarioPostHandle(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	handle := NewUsuarioHandle()
+	service := services.NewUsuarioService()
+	handle := NewUsuarioHandle(service)
 
 	// entrada
 	msg := models.UsuarioCriate{
@@ -76,7 +79,8 @@ func TestUsuarioByIdHandle(t *testing.T) {
 	//iniciar
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	handler := NewUsuarioHandle()
+	service := services.NewUsuarioService()
+	handler := NewUsuarioHandle(service)
 
 	//requesicao
 	req := httptest.NewRequest(http.MethodGet, "/usuarios/:id", nil)
@@ -101,7 +105,8 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	//inicializando
 	gin.SetMode(gin.TestMode)
 	route := gin.Default()
-	handler := NewUsuarioHandle()
+	service := services.NewUsuarioService()
+	handler := NewUsuarioHandle(service)
 
 	//requisicao
 	req := httptest.NewRequest(http.MethodPut, "/usuarios/:id", nil)
@@ -126,7 +131,8 @@ func TestUsuarioDeleteHandle(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	route := gin.Default()
-	handle := NewUsuarioHandle()
+	service := services.NewUsuarioService()
+	handle := NewUsuarioHandle(service)
 
 	//requisicao
 	req := httptest.NewRequest(http.MethodDelete, "/usuarios/:id", nil)
