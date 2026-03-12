@@ -108,8 +108,20 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	service := services.NewUsuarioService()
 	handler := NewUsuarioHandle(service)
 
+	// entrada
+	msg := models.UsuarioCriate{
+		Id:        0,
+		Nome:      "Bruno",
+		Email:     "brunopessoa@gmail.com",
+		Senha:     "1234",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	user, _ := json.Marshal(&msg)
+
 	//requisicao
-	req := httptest.NewRequest(http.MethodPut, "/usuarios/:id", nil)
+	req := httptest.NewRequest(http.MethodPut, "/usuarios/:id", bytes.NewBuffer(user))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
