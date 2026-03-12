@@ -96,6 +96,12 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 
 // delete usuarios
 func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	if saida := u.services.UsuarioServiceDelete(id); !saida {
+		c.JSON(http.StatusBadRequest, nil)
+		return
+	}
 
 	// json
 	c.JSON(http.StatusNoContent, nil)
