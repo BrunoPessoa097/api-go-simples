@@ -8,26 +8,34 @@ import (
 )
 
 func TestUsuarioServiceList(t *testing.T) {
+	// iniciando
 	s := NewUsuarioService()
 
+	//saida e expectativa
 	saida := s.UsuarioServiceList()
 	espec := make([]models.UsuarioCriate, 0)
 
+	//saida
 	assert.Equal(t, espec, saida)
 }
 
 func TestUsuarioServiceAdd(t *testing.T) {
+	// iniciando
 	s := NewUsuarioService()
 
+	//saida e expectativa
 	saida := s.UsuarioServiceAdd()
 	espec := true
 
+	//saida
 	assert.Equal(t, espec, saida)
 }
 
 func TestUsuarioServiceById(t *testing.T) {
+	// iniciando
 	s := NewUsuarioService()
 
+	//saida e expectativa
 	saida := s.UsuarioServiceById(1)
 	espec := models.UsuarioCriate{
 		Id:        0,
@@ -38,21 +46,28 @@ func TestUsuarioServiceById(t *testing.T) {
 		Bloqueado: false,
 	}
 
+	//saida
 	assert.Equal(t, saida, espec)
 }
 
 func TestUsuarioServiceUpdate(t *testing.T) {
+	// iniciando
 	s := NewUsuarioService()
 
+	//saida e expectativa
 	if saida := s.UsuarioServiceUpdate(1); saida {
+		//saida
 		assert.Equal(t, saida, true)
 	}
 }
 
 func TestUsuarioServiceDelete(t *testing.T) {
+	// iniciando
 	s := NewUsuarioService()
 
+	//saida e expectativa
 	if saida := s.UsuarioServiceDelete(1); saida {
+		//saida
 		assert.Equal(t, saida, true)
 	}
 }
