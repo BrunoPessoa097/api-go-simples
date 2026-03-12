@@ -45,14 +45,13 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 		return
 	}
 
-	saida := u.services.UsuarioServiceAdd()
-
-	if saida {
+	if saida := u.services.UsuarioServiceAdd(); saida {
 		// json
 		c.JSON(http.StatusCreated, gin.H{
 			"message": "rota registrar usuario",
 			"dados":   user,
 		})
+		return
 	}
 
 }
@@ -75,12 +74,24 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	// recebendo os valores via json
 	var user models.UsuarioCriate
+	id, _ := strconv.Atoi(c.Param("id"))
 
-	// json
-	c.JSON(http.StatusOK, gin.H{
-		"message": "rota update usuario",
-		"dados":   user,
-	})
+	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"mensagem": err.Error(),
+		})
+		return
+	}
+
+	if saida := u.services.UsuarioServiceUpdate(id, user); saida {
+		// json
+		c.JSON(http.StatusOK, gin.H{
+			"message": "rota update usuario",
+			"dados":   user,
+		})
+		return
+	}
+
 }
 
 // delete usuarios
