@@ -32,7 +32,7 @@ func (s *UsuarioService) UsuarioServiceById(id int) models.UsuarioCriate {
 }
 
 // update
-func (s *UsuarioService) UsuarioServiceUpdate(id int) bool {
+func (s *UsuarioService) UsuarioServiceUpdate(id int, user models.UsuarioCriate) bool {
 	return true
 }
 
