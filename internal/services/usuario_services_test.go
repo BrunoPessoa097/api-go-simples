@@ -40,3 +40,11 @@ func TestUsuarioServiceById(t *testing.T) {
 
 	assert.Equal(t, saida, espec)
 }
+
+func TestUsuarioServiceUpdate(t *testing.T) {
+	s := NewUsuarioService()
+
+	if saida := s.UsuarioServiceUpdate(1); saida {
+		assert.Equal(t, saida, true)
+	}
+}
