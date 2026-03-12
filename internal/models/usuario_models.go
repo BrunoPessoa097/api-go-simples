@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 // model de usuário
 type UsuarioCriate struct {
 	Id        int32  `json:"id"`
@@ -8,4 +10,6 @@ type UsuarioCriate struct {
 	Senha     string `json:"senha"`
 	Role      int64  `json:"role"`
 	Bloqueado bool   `json:"bloqueado"`
+	DtCreate  time.Time
+	DtUpdate  time.Time
 }
