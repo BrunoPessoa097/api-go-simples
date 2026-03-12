@@ -24,3 +24,19 @@ func TestUsuarioServiceAdd(t *testing.T) {
 
 	assert.Equal(t, espec, saida)
 }
+
+func TestUsuarioServiceById(t *testing.T) {
+	s := NewUsuarioService()
+
+	saida := s.UsuarioServiceById(1)
+	espec := models.UsuarioCriate{
+		Id:        0,
+		Nome:      "Bruno",
+		Email:     "brunopessoa@gmail.com",
+		Senha:     "1234",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	assert.Equal(t, saida, espec)
+}
