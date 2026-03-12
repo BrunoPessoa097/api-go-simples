@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
@@ -59,7 +60,9 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 // byid usuarios
 func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 	// recebendo os valores via json
-	var user models.UsuarioCriate
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	user := u.services.UsuarioServiceById(id)
 
 	// json
 	c.JSON(http.StatusOK, gin.H{
