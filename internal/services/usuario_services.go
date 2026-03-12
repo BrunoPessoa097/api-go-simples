@@ -30,3 +30,7 @@ func (s *UsuarioService) UsuarioServiceById(id int) models.UsuarioCriate {
 func (s *UsuarioService) UsuarioServiceUpdate(id int) bool {
 	return true
 }
+
+func (s *UsuarioService) UsuarioServiceDelete(id int) bool {
+	return true
+}

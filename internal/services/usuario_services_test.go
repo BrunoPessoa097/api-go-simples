@@ -48,3 +48,11 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 		assert.Equal(t, saida, true)
 	}
 }
+
+func TestUsuarioServiceDelete(t *testing.T) {
+	s := NewUsuarioService()
+
+	if saida := s.UsuarioServiceDelete(1); saida {
+		assert.Equal(t, saida, true)
+	}
+}
