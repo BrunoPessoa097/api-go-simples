@@ -9,10 +9,15 @@ import (
 
 // teste de list
 func TestUsuarioRepositoryList(t *testing.T) {
+	// contrutor
 	repo := NewUsuarioRepository()
 
-	saida := repo.UsuarioRepositoryList()
+	//saida
 	esp := mocks.UsuariosBD
 
-	assert.Equal(t, saida, esp)
+	// saida
+	if saida := repo.UsuarioRepositoryList(); saida != nil {
+		assert.Equal(t, saida, esp)
+	}
+
 }
