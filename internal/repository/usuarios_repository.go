@@ -28,17 +28,17 @@ func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.UsuarioCriate) bool
 }
 
 // pegar por id
-func (r *UsuarioRepository) UsuarioRepositoryById(id int32) (models.UsuarioCriate, bool) {
+func (r *UsuarioRepository) UsuarioRepositoryById(id int32) (*models.UsuarioCriate, bool) {
 	//mocks
 	mokerUser := mocks.UsuariosBD
 
 	//buscando
 	for _, user := range mokerUser {
 		if user.Id == id {
-			return user, true
+			return &user, true
 		}
 	}
 
 	//retorno
-	return models.UsuarioCriate{}, false
+	return nil, false
 }
