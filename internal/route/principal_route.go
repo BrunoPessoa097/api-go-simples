@@ -2,6 +2,7 @@ package route
 
 import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
+	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,8 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 	r.Group("/")
 	{
 		// criando a base de usuarios
-		s := services.NewUsuarioService()
+		repo := repository.NewUsuarioRepository()
+		s := services.NewUsuarioService(repo)
 		h := handlers.NewUsuarioHandle(s)
 		user := NewUsuarioRotas(h)
 
