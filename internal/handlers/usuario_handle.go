@@ -72,7 +72,6 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "usuario nao encontrado",
 	})
-	return
 }
 
 // update usuarios

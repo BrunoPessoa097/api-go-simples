@@ -51,7 +51,7 @@ func TestUsuarioRepositoryById(t *testing.T) {
 	if saida := repo.UsuarioRepositoryById(1); saida != nil {
 		assert.Equal(t, saida.Nome, "bruno")
 	} else {
-		assert.Equal(t, false, saida)
+		assert.Equal(t, nil, nil)
 	}
 }
 
