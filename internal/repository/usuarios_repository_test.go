@@ -48,7 +48,38 @@ func TestUsuarioRepositoryAdd(t *testing.T) {
 func TestUsuarioRepositoryById(t *testing.T) {
 	repo := NewUsuarioRepository()
 
-	if saida, err := repo.UsuarioRepositoryById(1); err {
+	if saida := repo.UsuarioRepositoryById(1); saida != nil {
 		assert.Equal(t, saida.Nome, "bruno")
+	} else {
+		assert.Equal(t, false, saida)
+	}
+}
+
+// update
+func TestUsuarioRepositoryUpdate(t *testing.T) {
+	repo := NewUsuarioRepository()
+
+	espec := models.UsuarioCriate{
+		Id:        0,
+		Nome:      "Bruno",
+		Email:     "brunopessoa@gmail.com",
+		Senha:     "1234",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	if saida := repo.UsuarioRepositoryUpdate(1, espec); saida {
+		assert.Equal(t, false, saida)
+	}
+}
+
+// delete
+func TestUsuarioRepositoryDelete(t *testing.T) {
+	repo := NewUsuarioRepository()
+
+	if saida := repo.UsuarioRepositoryDelete(1); saida {
+		assert.Equal(t, true, saida)
+	} else {
+		assert.Equal(t, false, saida)
 	}
 }
