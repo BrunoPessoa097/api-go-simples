@@ -43,3 +43,12 @@ func TestUsuarioRepositoryAdd(t *testing.T) {
 		assert.Equal(t, saida, true)
 	}
 }
+
+// buscar por id
+func TestUsuarioRepositoryById(t *testing.T) {
+	repo := NewUsuarioRepository()
+
+	if saida, err := repo.UsuarioRepositoryById(1); err {
+		assert.Equal(t, saida.Nome, "bruno")
+	}
+}
