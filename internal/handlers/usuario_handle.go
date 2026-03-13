@@ -45,11 +45,11 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 		return
 	}
 
-	if saida := u.services.UsuarioServiceAdd(); saida {
+	if saida := u.services.UsuarioServiceAdd(user); saida {
 		// json
 		c.JSON(http.StatusCreated, gin.H{
 			"message": "rota registrar usuario",
-			"dados":   user,
+			"dados":   saida,
 		})
 		return
 	}
@@ -61,13 +61,18 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 	// recebendo os valores via json
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	user := u.services.UsuarioServiceById(id)
-
-	// json
+	if user := u.services.UsuarioServiceById(int64(id)); user != nil {
+		// json
+		c.JSON(http.StatusOK, gin.H{
+			"message": "rota um usuario",
+			"dados":   user,
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "rota um usuario",
-		"dados":   user,
+		"message": "usuario nao encontrado",
 	})
+	return
 }
 
 // update usuarios
@@ -91,18 +96,22 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 		})
 		return
 	}
-
+	c.JSON(http.StatusBadRequest, gin.H{
+		"message": "Usuario nao encontrado",
+	})
 }
 
 // delete usuarios
 func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	if saida := u.services.UsuarioServiceDelete(id); !saida {
-		c.JSON(http.StatusBadRequest, nil)
+	if saida := u.services.UsuarioServiceDelete(id); saida {
+		c.JSON(http.StatusNoContent, nil)
 		return
 	}
 
 	// json
-	c.JSON(http.StatusNoContent, nil)
+	c.JSON(http.StatusBadRequest, gin.H{
+		"mensagem": "usuario nao encontrado",
+	})
 }
