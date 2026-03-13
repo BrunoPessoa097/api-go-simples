@@ -35,6 +35,8 @@ func (r *UsuarioRepository) UsuarioRepositoryById(id int32) (*models.UsuarioCria
 	//buscando
 	for _, user := range mokerUser {
 		if user.Id == id {
+
+			//return
 			return &user, true
 		}
 	}
