@@ -28,7 +28,7 @@ func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.UsuarioCriate) bool
 }
 
 // pegar por id
-func (r *UsuarioRepository) UsuarioRepositoryById(id int32) (*models.UsuarioCriate, bool) {
+func (r *UsuarioRepository) UsuarioRepositoryById(id int32) *models.UsuarioCriate {
 	//mocks
 	mokerUser := mocks.UsuariosBD
 
@@ -37,10 +37,37 @@ func (r *UsuarioRepository) UsuarioRepositoryById(id int32) (*models.UsuarioCria
 		if user.Id == id {
 
 			//return
-			return &user, true
+			return &user
 		}
 	}
 
 	//retorno
-	return nil, false
+	return nil
+}
+
+// update
+func (r *UsuarioRepository) UsuarioRepositoryUpdate(id int32, update models.UsuarioCriate) bool {
+	//mocks
+	mokerUser := mocks.UsuariosBD
+	userUp := update
+
+	// buscando
+	for i, user := range mokerUser {
+		if user.Id == id {
+			mokerUser[i] = userUp
+			return true
+		}
+	}
+
+	return false
+}
+
+func (r *UsuarioRepository) UsuarioRepositoryDelete(id int32) bool {
+	for _, user := range mocks.UsuariosBD {
+		if user.Id == id {
+			mocks.UsuariosBD = append(mocks.UsuariosBD[:id], mocks.UsuariosBD[id+1:]...)
+			return true
+		}
+	}
+	return false
 }
