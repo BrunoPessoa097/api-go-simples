@@ -5,13 +5,29 @@ _API_ Simples para demostrar conhecimento na construção, manutenção de uma _
 ## Sobre
 
 <div align="center">
-    <img src="https://img.shields.io/static/v1?label=Golang&message=1.25&color=7159c1&style=for-the-badge&logo=golang"/>
+    <img src="https://img.shields.io/static/v1?label=Golang&message=1.25.7&color=7159c1&style=for-the-badge&logo=golang"/>
     <img src="https://img.shields.io/static/v1?label=Versao&message=0.0.0&color=7159c1&style=for-the-badge&logo=circle"/>
     <img src="https://img.shields.io/static/v1?label=Status&message=Desenvolvimento&color=7159c1&style=for-the-badge&logo=circle"/>
     <img src="https://img.shields.io/static/v1?label=Licenca&message=Proprietaria&color=7159c1&style=for-the-badge&logo=circle"/>
 </div>
 
+## Iniciando
+
+1. Tenha o golang instalado, verificar com o comando abaixo(recomendado versão 1.25):
+```shell
+    go version
+```
+2. Dentro da pasta iniciar esse comando:
+```shell
+    go mod tidy
+```
+3. ir para a pasta `cmd/api`:
+```shell
+    go run
+```
+
 ## Features
+
 - [ ] Cadastro de Usuário
 - [ ] Cadastro de Tarefas
 - [ ] Cadastro de Nivel
