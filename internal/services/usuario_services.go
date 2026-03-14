@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 )
@@ -22,8 +23,11 @@ func (s *UsuarioService) UsuarioServiceList() []models.UsuarioCriate {
 }
 
 // adiciona
-func (s *UsuarioService) UsuarioServiceAdd(user models.UsuarioCriate) bool {
-	return s.repo.UsuarioRepositoryAdd(user)
+func (s *UsuarioService) UsuarioServiceAdd(user models.UsuarioCriate) (error, bool) {
+	id := len(mocks.UsuariosBD)
+	user.Id = int32(id) + 1
+	saida, err := s.repo.UsuarioRepositoryAdd(user)
+	return saida, err
 }
 
 // buscar por id
