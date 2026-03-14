@@ -48,9 +48,8 @@ func TestUsuarioPostHandle(t *testing.T) {
 
 	// entrada
 	msg := models.UsuarioCriate{
-		Id:        0,
 		Nome:      "Bruno",
-		Email:     "brunopessoa@gmail.com",
+		Email:     "brunopessoa12@gmail.com",
 		Senha:     "1234",
 		Role:      1,
 		Bloqueado: false,
@@ -115,9 +114,8 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 
 	// entrada
 	msg := models.UsuarioCriate{
-		Id:        0,
-		Nome:      "Bruno",
-		Email:     "brunopessoa@gmail.com",
+		Nome:      "Bruno vv",
+		Email:     "ba122@gmail.com",
 		Senha:     "1234",
 		Role:      1,
 		Bloqueado: false,
@@ -139,7 +137,7 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &resp)
 
 	//saida
-	assert.Equal(t, http.StatusBadRequest, w.Code)
+	assert.Equal(t, 200, w.Code)
 	// assert.Contains(t, w.Body.String(), resp.Nome)
 }
 

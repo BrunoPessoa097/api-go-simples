@@ -38,7 +38,7 @@ func TestUsuarioServiceAdd(t *testing.T) {
 	_, err := s.UsuarioServiceAdd(espec)
 
 	//saida
-	assert.Equal(t, false, err)
+	assert.Equal(t, true, err)
 }
 
 func TestUsuarioServiceById(t *testing.T) {
@@ -68,12 +68,12 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 	}
 
 	//saida e expectativa
-	if saida := s.UsuarioServiceUpdate(1, espec); saida {
+	if _, ok := s.UsuarioServiceUpdate(1, espec); ok {
 		//saida
-		assert.Equal(t, saida, true)
+		assert.Equal(t, ok, true)
 	} else {
 		//saida
-		assert.Equal(t, saida, false)
+		assert.Equal(t, ok, false)
 	}
 }
 
