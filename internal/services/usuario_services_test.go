@@ -15,10 +15,10 @@ func TestUsuarioServiceList(t *testing.T) {
 
 	//saida e expectativa
 	saida := s.UsuarioServiceList()
-	espec := make([]models.UsuarioCriate, 0)
+	espec := "Bruno F"
 
 	//saida
-	assert.Equal(t, espec, saida)
+	assert.Equal(t, saida[0].Nome, espec)
 }
 
 func TestUsuarioServiceAdd(t *testing.T) {
@@ -27,7 +27,6 @@ func TestUsuarioServiceAdd(t *testing.T) {
 	s := NewUsuarioService(repo)
 
 	espec := models.UsuarioCriate{
-		Id:        0,
 		Nome:      "Bruno",
 		Email:     "brunopessoa@gmail.com",
 		Senha:     "1234",
@@ -36,10 +35,10 @@ func TestUsuarioServiceAdd(t *testing.T) {
 	}
 
 	//saida e expectativa
-	saida := s.UsuarioServiceAdd(espec)
+	_, err := s.UsuarioServiceAdd(espec)
 
 	//saida
-	assert.Equal(t, true, saida)
+	assert.Equal(t, false, err)
 }
 
 func TestUsuarioServiceById(t *testing.T) {
