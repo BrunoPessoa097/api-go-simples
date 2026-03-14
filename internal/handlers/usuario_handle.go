@@ -91,17 +91,21 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 		return
 	}
 
-	if saida := u.services.UsuarioServiceUpdate(id, user); saida {
+	if err, ok := u.services.UsuarioServiceUpdate(id, user); ok {
 		// json
 		c.JSON(http.StatusOK, gin.H{
 			"message": "rota update usuario",
-			"dados":   user,
+			"dados":   err.Error(),
+		})
+		return
+	} else {
+		// json
+		c.JSON(http.StatusOK, gin.H{
+			"message": "rota update usuario",
+			"dados":   "atualizado",
 		})
 		return
 	}
-	c.JSON(http.StatusBadRequest, gin.H{
-		"message": "Usuario nao encontrado",
-	})
 }
 
 // delete usuarios
