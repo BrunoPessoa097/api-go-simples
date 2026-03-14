@@ -17,11 +17,15 @@ _API_ Simples para demostrar conhecimento na construção, manutenção de uma _
 ```shell
     go version
 ```
-2. Dentro da pasta iniciar esse comando:
+2. Clone o projeto.
+```shell
+    git clone https://github.com/BrunoPessoa097/api-go-simples.git
+```
+3. Dentro da pasta iniciar esse comando:
 ```shell
     go mod tidy
 ```
-3. ir para a pasta `cmd/api`:
+4. ir para a pasta `cmd/api`:
 ```shell
     go run
 ```
@@ -29,9 +33,8 @@ _API_ Simples para demostrar conhecimento na construção, manutenção de uma _
 ## Features
 
 - [ ] Cadastro de Usuário
-- [ ] Cadastro de Tarefas
+- [ ] Cadastro de Post
 - [ ] Cadastro de Nivel
-- [ ] Cadastro de Rotas
 - [ ] Segurança
 - [ ] Autentificação JWT
 - [ ] Helmet
@@ -39,7 +42,6 @@ _API_ Simples para demostrar conhecimento na construção, manutenção de uma _
 - [ ] DotEnv
 
 ## Criado Por
-
 - **Nome**: Bruno Pessoa
 - **Área**: Desenvolver NodeJs|Typescript|Javascript
 - **Formado**: UNIGRANDE - Centro Universitário da grande Fortaleza.
@@ -48,5 +50,4 @@ _API_ Simples para demostrar conhecimento na construção, manutenção de uma _
 - **LinkedIn**: [www.linkedin.com/in/bruno-pesoa-097](https://www.linkedin.com/in/bruno-pessoa-097/)
 
 ## _License_
-
 Esse projeto esta sobre a licença `Proprietária` ©Bruno Pessoa - 2026.
