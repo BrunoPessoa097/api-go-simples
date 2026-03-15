@@ -12,6 +12,7 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	// iniciando servidor
 	r := gin.Default()
+	r.Use(gin.Recovery())
 
 	// handles inicial
 	handleDefault := handlers.NewDefaultHandle()
