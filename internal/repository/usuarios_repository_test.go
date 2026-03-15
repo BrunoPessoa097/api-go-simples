@@ -83,3 +83,12 @@ func TestUsuarioRepositoryDelete(t *testing.T) {
 		assert.Equal(t, false, saida)
 	}
 }
+
+// teste de busca
+func TestUsuarioRepositorySearch(t *testing.T) {
+	repo := NewUsuarioRepository()
+
+	if ok := repo.UsuarioRepositorySearch("Bruno F", "brunopessoa097@gmail.com"); ok {
+		assert.Equal(t, true, ok)
+	}
+}
