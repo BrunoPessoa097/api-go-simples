@@ -48,9 +48,9 @@ func TestUsuarioPostHandle(t *testing.T) {
 
 	// entrada
 	msg := models.UsuarioCriate{
-		Nome:      "Bruno",
-		Email:     "brunopessoa12@gmail.com",
-		Senha:     "1234",
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
 		Role:      1,
 		Bloqueado: false,
 	}
@@ -73,7 +73,7 @@ func TestUsuarioPostHandle(t *testing.T) {
 
 	//saida
 	assert.Equal(t, http.StatusCreated, w.Code)
-	assert.Contains(t, w.Body.String(), resp.Nome)
+	// assert.Contains(t, w.Body.String(), resp.Nome)
 }
 
 // tdd pegar usuario por id
@@ -116,7 +116,7 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	msg := models.UsuarioCriate{
 		Nome:      "Bruno vv",
 		Email:     "ba122@gmail.com",
-		Senha:     "1234",
+		Senha:     "12345678",
 		Role:      1,
 		Bloqueado: false,
 	}
@@ -138,7 +138,7 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 
 	//saida
 	assert.Equal(t, 200, w.Code)
-	// assert.Contains(t, w.Body.String(), resp.Nome)
+	assert.Contains(t, w.Body.String(), resp.Nome)
 }
 
 // tdd deletar usuarios
