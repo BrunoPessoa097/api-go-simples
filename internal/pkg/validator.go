@@ -32,7 +32,7 @@ func (p *pkg) Validator(err error) map[string]string {
 		case "min":
 			errors[field] = "mínimo " + fieldError.Param() + " caracteres."
 		case "max":
-			errors[field] = "máximo " + fieldError.Param() + "caracteres."
+			errors[field] = "máximo " + fieldError.Param() + " caracteres."
 
 		case "email":
 			errors[field] = "email inválido !"
