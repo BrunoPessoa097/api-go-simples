@@ -13,6 +13,7 @@ func main() {
 	// iniciando servidor
 	r := gin.Default()
 	r.Use(gin.Recovery())
+	r.Use(gin.Logger())
 
 	// handles inicial
 	handleDefault := handlers.NewDefaultHandle()
