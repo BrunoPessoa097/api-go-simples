@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 )
@@ -37,10 +38,13 @@ func (u *UsuarioHandle) UsuarioListHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 	// recebendo os valores via json
 	var user models.UsuarioCriate
+	pkg := pkg.NewPkg()
 
-	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
+	if err := c.ShouldBindJSON(&user); err != nil {
+		errors := pkg.Validator(err)
+
 		c.JSON(http.StatusBadRequest, gin.H{
-			"mensagem": err.Error(),
+			"mensagem": errors,
 		})
 		return
 	}
