@@ -33,5 +33,11 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 
 		// rotas de usuários
 		user.UsuarioRotas(r)
+
+		//rota roles
+		rh := handlers.NewRolesHandler()
+		roles := NewRolesRoute(rh)
+		roles.RolesRoutes(r)
+
 	}
 }
