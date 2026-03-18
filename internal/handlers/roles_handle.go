@@ -17,3 +17,9 @@ func (r *RolesHandler) RolesHandlerList(c *gin.Context) {
 		"mensage": "Listar regras",
 	})
 }
+
+func (r *RolesHandler) RolesHandlerPost(c *gin.Context) {
+	c.JSON(http.StatusCreated, gin.H{
+		"mensage": "adicionar regras",
+	})
+}
