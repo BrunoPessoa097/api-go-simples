@@ -19,5 +19,6 @@ func (rr *RolesRoute) RolesRoutes(ctx *gin.Engine) {
 	roles := ctx.Group("/roles")
 	{
 		roles.GET("/", rr.handle.RolesHandlerList)
+		roles.POST("/", rr.handle.RolesHandlerPost)
 	}
 }
