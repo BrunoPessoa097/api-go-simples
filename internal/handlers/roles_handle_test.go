@@ -23,3 +23,18 @@ func TestRolesHandlerList(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, w.Code)
 }
+
+func TestRolesHandlerPost(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+	h := NewRolesHandler()
+
+	req := httptest.NewRequest(http.MethodGet, "/roles", nil)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.GET("/roles", h.RolesHandlerPost)
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusCreated, w.Code)
+}
