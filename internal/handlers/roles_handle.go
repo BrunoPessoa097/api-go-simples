@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
@@ -62,8 +63,12 @@ func (r *RolesHandler) RolesHandlerPost(c *gin.Context) {
 
 // buscar por id
 func (r *RolesHandler) RolesHandlerById(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	dado := r.service.RoleServiceById(int64(id))
 	c.JSON(http.StatusOK, gin.H{
 		"message": "buscar por id",
+		"dado":    dado,
 	})
 }
 
