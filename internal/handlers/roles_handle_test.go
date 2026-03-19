@@ -110,3 +110,18 @@ func TestRolesHandlerUpdate(t *testing.T) {
 	// comparar
 	assert.Equal(t, http.StatusOK, w.Code)
 }
+
+func TestRolesHandlerDelete(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+	h := NewRolesHandler()
+
+	req := httptest.NewRequest(http.MethodDelete, "/roles/:id", nil)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.DELETE("/roles/:id", h.RolesHandlerDelete)
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusNoContent, w.Code)
+}
