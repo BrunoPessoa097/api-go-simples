@@ -2,6 +2,7 @@ package route
 
 import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
+	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/BrunoPessoa097/api-go-simples/internal/start"
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +36,8 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 		user.UsuarioRotas(r)
 
 		//rota roles
-		rh := handlers.NewRolesHandler()
+		rs := services.NewRoleService()
+		rh := handlers.NewRolesHandler(rs)
 		roles := NewRolesRoute(rh)
 		roles.RolesRoutes(r)
 
