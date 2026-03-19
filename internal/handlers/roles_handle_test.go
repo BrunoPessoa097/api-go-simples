@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
 )
@@ -17,7 +18,8 @@ func TestRolesHandlerList(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	h := NewRolesHandler()
+	s := services.NewRoleService()
+	h := NewRolesHandler(s)
 
 	// requisicao tipo json
 	req := httptest.NewRequest(http.MethodGet, "/roles", nil)
@@ -36,7 +38,8 @@ func TestRolesHandlerPost(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	h := NewRolesHandler()
+	s := services.NewRoleService()
+	h := NewRolesHandler(s)
 
 	// modelo de negocio
 	role := models.RolesC{
@@ -66,7 +69,8 @@ func TestRolesHandlerById(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	h := NewRolesHandler()
+	s := services.NewRoleService()
+	h := NewRolesHandler(s)
 
 	// requisicao
 	req := httptest.NewRequest(http.MethodGet, "/roles/:id", nil)
@@ -86,7 +90,8 @@ func TestRolesHandlerUpdate(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	h := NewRolesHandler()
+	s := services.NewRoleService()
+	h := NewRolesHandler(s)
 
 	// modelo de negocio
 	role := models.RolesC{
@@ -116,7 +121,8 @@ func TestRolesHandlerDelete(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	h := NewRolesHandler()
+	s := services.NewRoleService()
+	h := NewRolesHandler(s)
 
 	//requisicao e escrita
 	req := httptest.NewRequest(http.MethodDelete, "/roles/:id", nil)
