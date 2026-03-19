@@ -63,11 +63,14 @@ func (rs *RoleService) RoleServiceSearch(nome string) bool {
 
 // buscar unico
 func (rs *RoleService) RoleServiceById(id int64) models.RolesC {
+	//pegar um model
 	var role models.RolesC
+	//pegando a pessoa
 	for _, roles := range mocks.ListRoles {
 		if roles.ID == id {
 			role = roles
 		}
 	}
+	//return
 	return role
 }
