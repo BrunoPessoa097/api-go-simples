@@ -80,3 +80,33 @@ func TestRolesHandlerById(t *testing.T) {
 	// comparar
 	assert.Equal(t, http.StatusOK, w.Code)
 }
+
+// updade de regras
+func TestRolesHandlerUpdate(t *testing.T) {
+	// iniciando
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+	h := NewRolesHandler()
+
+	// modelo de negocio
+	role := models.RolesC{
+		ID:    3,
+		Nivel: "vendedor",
+		Regra: "get,post,delete,put",
+	}
+
+	// convertendo struct para json
+	rolec, _ := json.Marshal(&role)
+
+	// requisicao
+	req := httptest.NewRequest(http.MethodPut, "/roles/:id", bytes.NewBuffer(rolec))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	// saida
+	r.PUT("/roles/:id", h.RolesHandlerUpdate)
+	r.ServeHTTP(w, req)
+
+	// comparar
+	assert.Equal(t, http.StatusOK, w.Code)
+}
