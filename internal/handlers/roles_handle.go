@@ -34,3 +34,10 @@ func (r *RolesHandler) RolesHandlerById(c *gin.Context) {
 		"message": "buscar por id",
 	})
 }
+
+// update
+func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"mensagem": "update role",
+	})
+}
