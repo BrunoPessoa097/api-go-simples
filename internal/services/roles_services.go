@@ -60,3 +60,14 @@ func (rs *RoleService) RoleServiceSearch(nome string) bool {
 	}
 	return false
 }
+
+// buscar unico
+func (rs *RoleService) RoleServiceById(id int64) models.RolesC {
+	var role models.RolesC
+	for _, roles := range mocks.ListRoles {
+		if roles.ID == id {
+			role = roles
+		}
+	}
+	return role
+}
