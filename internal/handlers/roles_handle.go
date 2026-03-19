@@ -41,3 +41,7 @@ func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
 		"mensagem": "update role",
 	})
 }
+
+func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
+	c.JSON(http.StatusNoContent, nil)
+}
