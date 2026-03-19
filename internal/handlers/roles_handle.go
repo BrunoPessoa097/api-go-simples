@@ -3,6 +3,8 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 )
@@ -28,8 +30,33 @@ func (r *RolesHandler) RolesHandlerList(c *gin.Context) {
 
 // post
 func (r *RolesHandler) RolesHandlerPost(c *gin.Context) {
+	var roles models.RolesC
+	pkg := pkg.NewPkg()
+
+	// validação de erros
+	if err := c.BindJSON(&roles); err != nil {
+		erros := pkg.Validator(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"erro": erros,
+		})
+		return
+	}
+
+	// enviando dados
+	_, err := r.service.RoleServicePost(roles)
+
+	// saida de erros
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"mensage": err.Error(),
+		})
+		return
+	}
+
+	//saida de sucesso
 	c.JSON(http.StatusCreated, gin.H{
-		"mensage": "adicionar regras",
+		"mensage": "regra adicionada",
+		"dados":   roles,
 	})
 }
 
