@@ -3,21 +3,26 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 )
 
 // estrutura
-type RolesHandler struct{}
+type RolesHandler struct {
+	service *services.RoleService
+}
 
 // construtor
-func NewRolesHandler() *RolesHandler {
-	return &RolesHandler{}
+func NewRolesHandler(s *services.RoleService) *RolesHandler {
+	return &RolesHandler{service: s}
 }
 
 // list
 func (r *RolesHandler) RolesHandlerList(c *gin.Context) {
+	data := r.service.RoleServiceList()
 	c.JSON(http.StatusOK, gin.H{
 		"mensage": "Listar regras",
+		"dados":   data,
 	})
 }
 
