@@ -43,16 +43,15 @@ func TestRolesHandlerPost(t *testing.T) {
 
 	// modelo de negocio
 	role := models.RolesC{
-		ID:    3,
-		Nivel: "vendedor",
-		Regra: "get,post,delete,put",
+		Nivel: "vend1",
+		Regra: "get,post",
 	}
 
 	// convertendo struct para json
-	rolec, _ := json.Marshal(&role)
+	body, _ := json.Marshal(&role)
 
 	//requisição
-	req := httptest.NewRequest(http.MethodPost, "/roles", bytes.NewBuffer(rolec))
+	req := httptest.NewRequest(http.MethodPost, "/roles", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
