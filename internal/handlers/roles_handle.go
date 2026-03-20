@@ -65,7 +65,15 @@ func (r *RolesHandler) RolesHandlerPost(c *gin.Context) {
 func (r *RolesHandler) RolesHandlerById(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	dado := r.service.RoleServiceById(int64(id))
+	dado, err := r.service.RoleServiceById(int64(id))
+
+	if dado == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "buscar por id",
 		"dado":    dado,
@@ -79,6 +87,19 @@ func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
 	})
 }
 
+// delete
 func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
+	//conversoes
+	id, _ := strconv.Atoi(c.Param("id"))
+	ok := r.service.RoleServiceDelete(int64(id))
+
+	//em caso de erro
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"mensagem": "erro ao excluir",
+		})
+		return
+	}
+	//saida um sucesso
 	c.JSON(http.StatusNoContent, nil)
 }
