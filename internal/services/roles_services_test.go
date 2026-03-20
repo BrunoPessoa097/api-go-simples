@@ -56,8 +56,21 @@ func TestRoleServiceById(t *testing.T) {
 
 	// expectativa
 	esp := "ADM"
-	saida := s.RoleServiceById(1)
+	saida, _ := s.RoleServiceById(1)
 
 	//saido
 	assert.Equal(t, esp, saida.Nivel)
+}
+
+// delete
+func TestRoleServiceDelete(t *testing.T) {
+	// inicializando
+	s := NewRoleService()
+
+	//queries
+	esp := true
+	saida := s.RoleServiceDelete(1)
+
+	//saida
+	assert.Equal(t, esp, saida)
 }
