@@ -2,6 +2,7 @@ package start
 
 import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
+	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 )
@@ -17,7 +18,8 @@ func NewStart() *Start {
 
 // inicializando o usuarios
 func (s *Start) UsuarioStart() *handlers.UsuarioHandle {
-	repo := repository.NewUsuarioRepository()
+	mock := mocks.UsuariosBD
+	repo := repository.NewUsuarioRepository(mock)
 	serv := services.NewUsuarioService(repo)
 	hand := handlers.NewUsuarioHandle(serv)
 	return hand

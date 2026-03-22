@@ -49,18 +49,20 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 		return
 	}
 
-	if saida, err := u.services.UsuarioServiceAdd(user); err {
+	err := u.services.UsuarioServiceAdd(user)
+
+	if err != nil {
 		// json
 		c.JSON(http.StatusConflict, gin.H{
 			"message": "rota registrar usuario",
-			"dados":   saida.Error(),
+			"dados":   err.Error(),
 		})
 		return
+	} else {
+		c.JSON(http.StatusCreated, gin.H{
+			"message": "usuario cadastrado",
+		})
 	}
-	c.JSON(http.StatusCreated, gin.H{
-		"message": "rota registrar usuario",
-		"dados":   "Usuario cadastrado",
-	})
 
 }
 

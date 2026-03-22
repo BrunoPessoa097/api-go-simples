@@ -7,32 +7,34 @@ import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 )
 
-type UsuarioRepository struct{}
+type UsuarioRepository struct {
+	Data []models.UsuarioCriate
+}
 
 // construtor
-func NewUsuarioRepository() *UsuarioRepository {
-	return &UsuarioRepository{}
+func NewUsuarioRepository(m []models.UsuarioCriate) *UsuarioRepository {
+	return &UsuarioRepository{
+		Data: m,
+	}
 }
 
 // listar os usuarios
 func (r *UsuarioRepository) UsuarioRepositoryList() []models.UsuarioCriate {
-	return mocks.UsuariosBD
+	return r.Data
 }
 
 // adicionar
-func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.UsuarioCriate) (error, bool) {
-	mocksUser := mocks.UsuariosBD
-
+func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.UsuarioCriate) error {
 	// verificando a existencia
 	if saida := r.UsuarioRepositorySearch(user.Nome, user.Email); saida {
-		return errors.New("Usuario e/ou E-mail já cadastrados"), true
+		return errors.New("Usuario e/ou E-mail já cadastrados")
 	}
 
 	// registrando o usuario
-	mocksUser = append(mocksUser, user)
+	r.Data = append(r.Data, user)
 
 	//retorno
-	return nil, false
+	return nil
 }
 
 // pegar por id
@@ -85,7 +87,7 @@ func (r *UsuarioRepository) UsuarioRepositoryDelete(id int32) bool {
 
 // buscando existencia
 func (r *UsuarioRepository) UsuarioRepositorySearch(nome, email string) bool {
-	for _, user := range mocks.UsuariosBD {
+	for _, user := range r.Data {
 		if user.Nome == nome || user.Email == email {
 			return true
 		}
