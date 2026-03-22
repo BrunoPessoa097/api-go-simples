@@ -95,7 +95,6 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	}
 
 	var user models.UsuarioCriate
-	user.Id = int32(id)
 	pkg := pkg.NewPkg()
 	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
 		erros := pkg.Validator(err)
