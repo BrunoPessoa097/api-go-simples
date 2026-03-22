@@ -3,6 +3,7 @@ package services
 import (
 	"testing"
 
+	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/go-openapi/testify/v2/assert"
@@ -10,7 +11,8 @@ import (
 
 func TestUsuarioServiceList(t *testing.T) {
 	// iniciando
-	repo := repository.NewUsuarioRepository()
+	m := mocks.UsuariosBD
+	repo := repository.NewUsuarioRepository(m)
 	s := NewUsuarioService(repo)
 
 	//saida e expectativa
@@ -23,27 +25,29 @@ func TestUsuarioServiceList(t *testing.T) {
 
 func TestUsuarioServiceAdd(t *testing.T) {
 	// iniciando
-	repo := repository.NewUsuarioRepository()
+	m := mocks.UsuariosBD
+	repo := repository.NewUsuarioRepository(m)
 	s := NewUsuarioService(repo)
 
 	espec := models.UsuarioCriate{
-		Nome:      "Bruno",
-		Email:     "brunopessoa@gmail.com",
-		Senha:     "1234",
+		Nome:      "Bruno Pess",
+		Email:     "ps1@mail.com",
+		Senha:     "12345678",
 		Role:      1,
 		Bloqueado: false,
 	}
 
 	//saida e expectativa
-	_, err := s.UsuarioServiceAdd(espec)
+	err := s.UsuarioServiceAdd(espec)
 
 	//saida
-	assert.Equal(t, true, err)
+	assert.Equal(t, nil, err)
 }
 
 func TestUsuarioServiceById(t *testing.T) {
 	// iniciando
-	repo := repository.NewUsuarioRepository()
+	m := mocks.UsuariosBD
+	repo := repository.NewUsuarioRepository(m)
 	s := NewUsuarioService(repo)
 
 	//saida e expectativa
@@ -55,39 +59,31 @@ func TestUsuarioServiceById(t *testing.T) {
 
 func TestUsuarioServiceUpdate(t *testing.T) {
 	// iniciando
-	repo := repository.NewUsuarioRepository()
+	m := mocks.UsuariosBD
+	repo := repository.NewUsuarioRepository(m)
 	s := NewUsuarioService(repo)
 
 	espec := models.UsuarioCriate{
-		Id:        0,
-		Nome:      "Bruno",
-		Email:     "brunopessoa@gmail.com",
-		Senha:     "1234",
+		Id:        1,
+		Nome:      "Brubru",
+		Email:     "bp@gmail.com",
+		Senha:     "12345678",
 		Role:      1,
 		Bloqueado: false,
 	}
 
 	//saida e expectativa
-	if _, ok := s.UsuarioServiceUpdate(1, espec); ok {
-		//saida
-		assert.Equal(t, ok, true)
-	} else {
-		//saida
-		assert.Equal(t, ok, false)
-	}
+	ok := s.UsuarioServiceUpdate(1, espec)
+	assert.Equal(t, nil, ok)
 }
 
 func TestUsuarioServiceDelete(t *testing.T) {
 	// iniciando
-	repo := repository.NewUsuarioRepository()
+	m := mocks.UsuariosBD
+	repo := repository.NewUsuarioRepository(m)
 	s := NewUsuarioService(repo)
 
 	//saida e expectativa
-	if saida := s.UsuarioServiceDelete(1); saida {
-		//saida
-		assert.Equal(t, saida, true)
-	} else {
-		//saida
-		assert.Equal(t, saida, false)
-	}
+	ok := s.UsuarioServiceDelete(1)
+	assert.Equal(t, nil, ok)
 }
