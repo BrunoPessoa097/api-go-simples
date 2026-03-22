@@ -141,7 +141,7 @@ func TestUsuarioDeleteHandle(t *testing.T) {
 	handle := s.UsuarioStart()
 
 	//requisicao
-	req := httptest.NewRequest(http.MethodDelete, "/usuarios/:1", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/usuarios/1", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
