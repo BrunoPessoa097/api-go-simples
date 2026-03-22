@@ -39,9 +39,9 @@ func (s *UsuarioService) UsuarioServiceById(id int64) *models.UsuarioCriate {
 }
 
 // update
-func (s *UsuarioService) UsuarioServiceUpdate(id int, user models.UsuarioCriate) (error, bool) {
-	err, ok := s.repo.UsuarioRepositoryUpdate(int32(id), user)
-	return err, ok
+func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.UsuarioCriate) error {
+	err := s.repo.UsuarioRepositoryUpdate(int32(id), user)
+	return err
 }
 
 // delete

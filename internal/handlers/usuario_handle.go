@@ -85,31 +85,36 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 // update usuarios
 func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	// recebendo os valores via json
-	var user models.UsuarioCriate
 	id, _ := strconv.Atoi(c.Param("id"))
-
-	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
+	if err := u.services.UsuarioServiceById(int64(id)); err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"mensagem": err.Error(),
+			"message": "rota update usuario",
+			"dados":   "usuario não encontrado",
 		})
 		return
 	}
 
-	if err, ok := u.services.UsuarioServiceUpdate(id, user); ok {
-		// json
-		c.JSON(http.StatusOK, gin.H{
-			"message": "rota update usuario",
-			"dados":   err.Error(),
-		})
-		return
-	} else {
-		// json
-		c.JSON(http.StatusOK, gin.H{
-			"message": "rota update usuario",
-			"dados":   "atualizado",
+	var user models.UsuarioCriate
+	pkg := pkg.NewPkg()
+	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
+		erros := pkg.Validator(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"mensagem": erros,
 		})
 		return
 	}
+
+	if err := u.services.UsuarioServiceUpdate(int32(id), user); err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{
+			"menssage": "erro update",
+			"erro":     err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"menssage": "Update usuario",
+	})
 }
 
 // delete usuarios

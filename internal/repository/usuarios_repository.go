@@ -51,22 +51,19 @@ func (r *UsuarioRepository) UsuarioRepositoryById(id int32) *models.UsuarioCriat
 }
 
 // update
-func (r *UsuarioRepository) UsuarioRepositoryUpdate(id int32, update models.UsuarioCriate) (error, bool) {
-	//mocks
-	mokerUser := mocks.UsuariosBD
-	userUp := update
-
-	if saida := r.UsuarioRepositorySearch(userUp.Nome, userUp.Email); saida {
-		return errors.New("Usuario e/ou E-mail já cadastrados"), true
+func (r *UsuarioRepository) UsuarioRepositoryUpdate(id int32, update models.UsuarioCriate) error {
+	// buscando
+	if err := r.UsuarioRepositorySearch(update.Nome, update.Email); err {
+		return errors.New("usuário e email já cadastrados")
 	}
 
-	// buscando
-	for i, user := range mokerUser {
-		if user.Id == id {
-			mokerUser[i] = userUp
+	for i := range r.Data {
+		if r.Data[i].Id == id {
+			r.Data[i] = update
+			return nil
 		}
 	}
-	return nil, false
+	return errors.New("falha ao atualizar")
 }
 
 // usuario delete
