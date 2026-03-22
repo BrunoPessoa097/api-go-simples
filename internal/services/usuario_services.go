@@ -40,6 +40,7 @@ func (s *UsuarioService) UsuarioServiceById(id int64) *models.UsuarioCriate {
 
 // update
 func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.UsuarioCriate) error {
+	user.Id = int32(id)
 	err := s.repo.UsuarioRepositoryUpdate(int32(id), user)
 	return err
 }
