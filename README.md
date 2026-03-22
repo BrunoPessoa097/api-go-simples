@@ -67,9 +67,9 @@ Segue abaixo 3 métodos para que rode a _API_, usando o `air`, `go run .` e o `d
 ```
 ## Features
 
-- [ ] Cadastro de Usuário
-- [ ] Cadastro de Post
-- [ ] Cadastro de Nivel
+- [x] CRUD de Usuário
+- [ ] CRUD de Post
+- [ ] CRUD de Nivel
 - [ ] Segurança
 - [ ] Autentificação JWT
 - [ ] Helmet
