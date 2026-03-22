@@ -9,6 +9,7 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 )
 
+// listar
 func TestUsuarioServiceList(t *testing.T) {
 	// iniciando
 	m := mocks.UsuariosBD
@@ -23,6 +24,7 @@ func TestUsuarioServiceList(t *testing.T) {
 	assert.Equal(t, saida[0].Nome, espec)
 }
 
+// adicionar
 func TestUsuarioServiceAdd(t *testing.T) {
 	// iniciando
 	m := mocks.UsuariosBD
@@ -44,6 +46,7 @@ func TestUsuarioServiceAdd(t *testing.T) {
 	assert.Equal(t, nil, err)
 }
 
+// byid
 func TestUsuarioServiceById(t *testing.T) {
 	// iniciando
 	m := mocks.UsuariosBD
@@ -57,6 +60,7 @@ func TestUsuarioServiceById(t *testing.T) {
 	assert.Equal(t, saida, saida)
 }
 
+// update
 func TestUsuarioServiceUpdate(t *testing.T) {
 	// iniciando
 	m := mocks.UsuariosBD
@@ -77,6 +81,7 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 	assert.Equal(t, nil, ok)
 }
 
+// delete
 func TestUsuarioServiceDelete(t *testing.T) {
 	// iniciando
 	m := mocks.UsuariosBD
