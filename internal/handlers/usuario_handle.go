@@ -129,13 +129,8 @@ func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
 		return
 	}
 
-	if saida := u.services.UsuarioServiceDelete(id); saida != nil {
+	if saida := u.services.UsuarioServiceDelete(id); saida == nil {
 		c.JSON(http.StatusNoContent, nil)
 		return
 	}
-
-	// // json
-	// c.JSON(http.StatusBadRequest, gin.H{
-	// 	"mensagem": "usuario nao encontrado",
-	// })
 }
