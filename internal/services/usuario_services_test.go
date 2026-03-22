@@ -31,7 +31,7 @@ func TestUsuarioServiceAdd(t *testing.T) {
 	repo := repository.NewUsuarioRepository(m)
 	s := NewUsuarioService(repo)
 
-	espec := models.UsuarioCriate{
+	espec := models.Usuario{
 		Nome:      "Bruno Pess",
 		Email:     "ps1@mail.com",
 		Senha:     "12345678",
@@ -67,7 +67,7 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 	repo := repository.NewUsuarioRepository(m)
 	s := NewUsuarioService(repo)
 
-	espec := models.UsuarioCriate{
+	espec := models.Usuario{
 		Id:        1,
 		Nome:      "Brubru",
 		Email:     "bp@gmail.com",

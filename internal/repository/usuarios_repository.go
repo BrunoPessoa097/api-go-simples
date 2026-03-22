@@ -7,23 +7,23 @@ import (
 )
 
 type UsuarioRepository struct {
-	Data []models.UsuarioCriate
+	Data []models.Usuario
 }
 
 // construtor
-func NewUsuarioRepository(m []models.UsuarioCriate) *UsuarioRepository {
+func NewUsuarioRepository(m []models.Usuario) *UsuarioRepository {
 	return &UsuarioRepository{
 		Data: m,
 	}
 }
 
 // listar os usuarios
-func (r *UsuarioRepository) UsuarioRepositoryList() []models.UsuarioCriate {
+func (r *UsuarioRepository) UsuarioRepositoryList() []models.Usuario {
 	return r.Data
 }
 
 // adicionar
-func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.UsuarioCriate) error {
+func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.Usuario) error {
 	// verificando a existencia
 	if saida := r.UsuarioRepositorySearch(user.Nome, user.Email); saida {
 		return errors.New("Usuario e/ou E-mail já cadastrados")
@@ -37,7 +37,7 @@ func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.UsuarioCriate) erro
 }
 
 // pegar por id
-func (r *UsuarioRepository) UsuarioRepositoryById(id int32) *models.UsuarioCriate {
+func (r *UsuarioRepository) UsuarioRepositoryById(id int32) *models.Usuario {
 	//buscando
 	for i := range r.Data {
 		if r.Data[i].Id == id {
@@ -50,7 +50,7 @@ func (r *UsuarioRepository) UsuarioRepositoryById(id int32) *models.UsuarioCriat
 }
 
 // update
-func (r *UsuarioRepository) UsuarioRepositoryUpdate(id int32, update models.UsuarioCriate) error {
+func (r *UsuarioRepository) UsuarioRepositoryUpdate(id int32, update models.Usuario) error {
 	// buscando
 	if err := r.UsuarioRepositorySearch(update.Nome, update.Email); err {
 		return errors.New("usuário e email já cadastrados")

@@ -44,7 +44,7 @@ func TestUsuarioPostHandle(t *testing.T) {
 	handle := s.UsuarioStart()
 
 	// entrada
-	msg := models.UsuarioCriate{
+	msg := models.Usuario{
 		Nome:      "Bruno Frefre",
 		Email:     "brunopessoa1234@gmail.com",
 		Senha:     "12345678",
@@ -65,7 +65,7 @@ func TestUsuarioPostHandle(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	//resposta para converter em bites para json
-	var resp models.UsuarioCriate
+	var resp models.Usuario
 	json.Unmarshal(w.Body.Bytes(), &resp)
 
 	//saida
@@ -91,7 +91,7 @@ func TestUsuarioByIdHandle(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	// recebendo para converter para json
-	var resp models.UsuarioCriate
+	var resp models.Usuario
 	json.Unmarshal(w.Body.Bytes(), &resp)
 
 	//saida
@@ -108,7 +108,7 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	handler := s.UsuarioStart()
 
 	// entrada
-	msg := models.UsuarioCriate{
+	msg := models.Usuario{
 		Nome:      "Bruno vv",
 		Email:     "ba122@gmail.com",
 		Senha:     "12345678",

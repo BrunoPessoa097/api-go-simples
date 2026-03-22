@@ -27,7 +27,7 @@ func TestUsuarioRepositoryList(t *testing.T) {
 // adicionar
 func TestUsuarioRepositoryAdd(t *testing.T) {
 	//base
-	espec := models.UsuarioCriate{
+	espec := models.Usuario{
 		Nome:      "Bruno Pess",
 		Email:     "ps1@mail.com",
 		Senha:     "12345678",
@@ -62,7 +62,7 @@ func TestUsuarioRepositoryUpdate(t *testing.T) {
 	repo := NewUsuarioRepository(mock)
 
 	//entradas
-	espec := models.UsuarioCriate{
+	espec := models.Usuario{
 		Id:        1,
 		Nome:      "Brubru",
 		Email:     "bp@gmail.com",

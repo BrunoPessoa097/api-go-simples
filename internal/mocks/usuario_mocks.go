@@ -3,7 +3,7 @@ package mocks
 import "github.com/BrunoPessoa097/api-go-simples/internal/models"
 
 var (
-	UsuariosBD = []models.UsuarioCriate{
+	UsuariosBD = []models.Usuario{
 		{
 			Id:        1,
 			Nome:      "Bruno F",

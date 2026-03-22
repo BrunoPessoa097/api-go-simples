@@ -17,12 +17,12 @@ func NewUsuarioService(repo *repository.UsuarioRepository) *UsuarioService {
 }
 
 // listar
-func (s *UsuarioService) UsuarioServiceList() []models.UsuarioCriate {
+func (s *UsuarioService) UsuarioServiceList() []models.Usuario {
 	return s.repo.UsuarioRepositoryList()
 }
 
 // adiciona
-func (s *UsuarioService) UsuarioServiceAdd(user models.UsuarioCriate) error {
+func (s *UsuarioService) UsuarioServiceAdd(user models.Usuario) error {
 	var lastId int32
 	if len(s.repo.Data) > 0 {
 		lastId = int32(len(s.repo.Data) + 1)
@@ -34,12 +34,12 @@ func (s *UsuarioService) UsuarioServiceAdd(user models.UsuarioCriate) error {
 }
 
 // buscar por id
-func (s *UsuarioService) UsuarioServiceById(id int64) *models.UsuarioCriate {
+func (s *UsuarioService) UsuarioServiceById(id int64) *models.Usuario {
 	return s.repo.UsuarioRepositoryById(int32(id))
 }
 
 // update
-func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.UsuarioCriate) error {
+func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.Usuario) error {
 	user.Id = int32(id)
 	err := s.repo.UsuarioRepositoryUpdate(int32(id), user)
 	return err

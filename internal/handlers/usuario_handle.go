@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/dto"
 	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
@@ -25,7 +25,9 @@ func NewUsuarioHandle(s *services.UsuarioService) *UsuarioHandle {
 // listar os usuários
 func (u *UsuarioHandle) UsuarioListHandle(c *gin.Context) {
 	// recebendo os valores via json
-	users := u.services.UsuarioServiceList()
+	user := u.services.UsuarioServiceList()
+
+	users := dto.ToResponseList(user)
 
 	// json
 	c.JSON(http.StatusOK, gin.H{
@@ -37,10 +39,10 @@ func (u *UsuarioHandle) UsuarioListHandle(c *gin.Context) {
 // inserir usuarios
 func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 	// recebendo os valores via json
-	var user models.UsuarioCriate
+	var input dto.UsuarioCriateDTO
 	pkg := pkg.NewPkg()
 
-	if err := c.ShouldBindJSON(&user); err != nil {
+	if err := c.ShouldBindJSON(&input); err != nil {
 		errors := pkg.Validator(err)
 
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -48,6 +50,8 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 		})
 		return
 	}
+
+	user := dto.ToModel(input)
 
 	if err := u.services.UsuarioServiceAdd(user); err != nil {
 		// json
@@ -70,10 +74,11 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	if user := u.services.UsuarioServiceById(int64(id)); user != nil {
+		saida := dto.ToResponse(*user)
 		// json
 		c.JSON(http.StatusOK, gin.H{
 			"message": "rota um usuario",
-			"dados":   user,
+			"dados":   saida,
 		})
 		return
 	}
@@ -94,7 +99,7 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 		return
 	}
 
-	var user models.UsuarioCriate
+	var user dto.UsuarioUpdateDTO
 	pkg := pkg.NewPkg()
 	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
 		erros := pkg.Validator(err)
@@ -104,7 +109,9 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 		return
 	}
 
-	if err := u.services.UsuarioServiceUpdate(int32(id), user); err != nil {
+	users := dto.ToUpdate(user)
+
+	if err := u.services.UsuarioServiceUpdate(int32(id), users); err != nil {
 		c.JSON(http.StatusConflict, gin.H{
 			"menssage": "erro update",
 			"erro":     err.Error(),
