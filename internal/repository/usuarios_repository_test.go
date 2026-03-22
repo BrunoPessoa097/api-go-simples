@@ -28,9 +28,9 @@ func TestUsuarioRepositoryList(t *testing.T) {
 func TestUsuarioRepositoryAdd(t *testing.T) {
 	//base
 	espec := models.UsuarioCriate{
-		Nome:      "Bruno",
-		Email:     "brunopessoa@gmail.com",
-		Senha:     "1234",
+		Nome:      "Bruno Pess",
+		Email:     "ps1@mail.com",
+		Senha:     "12345678",
 		Role:      1,
 		Bloqueado: false,
 	}
@@ -40,61 +40,60 @@ func TestUsuarioRepositoryAdd(t *testing.T) {
 	repo := NewUsuarioRepository(mock)
 
 	//saida
-	if _, err := repo.UsuarioRepositoryAdd(espec); err {
-		assert.Equal(t, err, true)
-	}
+	err := repo.UsuarioRepositoryAdd(espec)
+	assert.Equal(t, nil, err)
 }
 
 // buscar por id
 func TestUsuarioRepositoryById(t *testing.T) {
+	//iniciando
 	mock := mocks.UsuariosBD
 	repo := NewUsuarioRepository(mock)
 
-	if saida := repo.UsuarioRepositoryById(1); saida != nil {
-		assert.Equal(t, saida.Nome, "Bruno F")
-	} else {
-		assert.Equal(t, nil, nil)
-	}
+	//verificar
+	saida := repo.UsuarioRepositoryById(1)
+	assert.Equal(t, saida.Nome, "Bruno F")
 }
 
-// update
+// // update
 func TestUsuarioRepositoryUpdate(t *testing.T) {
+	//iniciando
 	mock := mocks.UsuariosBD
 	repo := NewUsuarioRepository(mock)
 
+	//entradas
 	espec := models.UsuarioCriate{
-		Nome:      "Bruno 3",
-		Email:     "bruno123@gmail.com",
-		Senha:     "1234",
+		Id:        1,
+		Nome:      "Brubru",
+		Email:     "bp@gmail.com",
+		Senha:     "12345678",
 		Role:      1,
 		Bloqueado: false,
 	}
 
-	if _, ok := repo.UsuarioRepositoryUpdate(1, espec); ok {
-		assert.Equal(t, true, ok)
-	} else {
-		assert.Equal(t, false, ok)
-	}
+	// saida
+	ok := repo.UsuarioRepositoryUpdate(1, espec)
+	assert.Equal(t, nil, ok)
 }
 
 // delete
 func TestUsuarioRepositoryDelete(t *testing.T) {
+	//iniciando
 	mock := mocks.UsuariosBD
 	repo := NewUsuarioRepository(mock)
 
-	if saida := repo.UsuarioRepositoryDelete(1); saida {
-		assert.Equal(t, true, saida)
-	} else {
-		assert.Equal(t, false, saida)
-	}
+	//saida
+	saida := repo.UsuarioRepositoryDelete(1)
+	assert.Equal(t, nil, saida)
 }
 
 // teste de busca
 func TestUsuarioRepositorySearch(t *testing.T) {
+	//iniciar
 	mock := mocks.UsuariosBD
 	repo := NewUsuarioRepository(mock)
 
-	if ok := repo.UsuarioRepositorySearch("Bruno F", "brunopessoa097@gmail.com"); ok {
-		assert.Equal(t, true, ok)
-	}
+	//saida
+	ok := repo.UsuarioRepositorySearch("Bruno F", "brunopessoa@gmail.com")
+	assert.Equal(t, true, ok)
 }
