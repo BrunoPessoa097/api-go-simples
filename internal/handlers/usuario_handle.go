@@ -95,6 +95,7 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	}
 
 	var user models.UsuarioCriate
+	user.Id = int32(id)
 	pkg := pkg.NewPkg()
 	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
 		erros := pkg.Validator(err)
@@ -105,7 +106,7 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	}
 
 	if err := u.services.UsuarioServiceUpdate(int32(id), user); err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusConflict, gin.H{
 			"menssage": "erro update",
 			"erro":     err.Error(),
 		})
@@ -121,13 +122,20 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	if saida := u.services.UsuarioServiceDelete(id); saida {
+	if err := u.services.UsuarioServiceById(int64(id)); err == nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"Mensasse": "usuario não encontrado",
+		})
+		return
+	}
+
+	if saida := u.services.UsuarioServiceDelete(id); saida != nil {
 		c.JSON(http.StatusNoContent, nil)
 		return
 	}
 
-	// json
-	c.JSON(http.StatusBadRequest, gin.H{
-		"mensagem": "usuario nao encontrado",
-	})
+	// // json
+	// c.JSON(http.StatusBadRequest, gin.H{
+	// 	"mensagem": "usuario nao encontrado",
+	// })
 }

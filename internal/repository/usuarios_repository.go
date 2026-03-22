@@ -3,7 +3,6 @@ package repository
 import (
 	"errors"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 )
 
@@ -67,14 +66,14 @@ func (r *UsuarioRepository) UsuarioRepositoryUpdate(id int32, update models.Usua
 }
 
 // usuario delete
-func (r *UsuarioRepository) UsuarioRepositoryDelete(id int32) bool {
-	for _, user := range mocks.UsuariosBD {
-		if user.Id == id {
-			mocks.UsuariosBD = append(mocks.UsuariosBD[:id], mocks.UsuariosBD[id+1:]...)
-			return true
+func (r *UsuarioRepository) UsuarioRepositoryDelete(id int32) error {
+	for i := range r.Data {
+		if r.Data[i].Id == id {
+			r.Data = append(r.Data[:i], r.Data[i+1:]...)
+			return nil
 		}
 	}
-	return false
+	return errors.New("Usuario impossivel de excluir")
 }
 
 // buscando existencia

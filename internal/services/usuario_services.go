@@ -45,6 +45,6 @@ func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.UsuarioCriat
 }
 
 // delete
-func (s *UsuarioService) UsuarioServiceDelete(id int) bool {
+func (s *UsuarioService) UsuarioServiceDelete(id int) error {
 	return s.repo.UsuarioRepositoryDelete(int32(id))
 }
