@@ -11,7 +11,8 @@ import (
 // teste de list
 func TestUsuarioRepositoryList(t *testing.T) {
 	// contrutor
-	repo := NewUsuarioRepository()
+	mock := mocks.UsuariosBD
+	repo := NewUsuarioRepository(mock)
 
 	//saida
 	esp := mocks.UsuariosBD
@@ -35,7 +36,8 @@ func TestUsuarioRepositoryAdd(t *testing.T) {
 	}
 
 	// iniciando
-	repo := NewUsuarioRepository()
+	mock := mocks.UsuariosBD
+	repo := NewUsuarioRepository(mock)
 
 	//saida
 	if _, err := repo.UsuarioRepositoryAdd(espec); err {
@@ -45,7 +47,8 @@ func TestUsuarioRepositoryAdd(t *testing.T) {
 
 // buscar por id
 func TestUsuarioRepositoryById(t *testing.T) {
-	repo := NewUsuarioRepository()
+	mock := mocks.UsuariosBD
+	repo := NewUsuarioRepository(mock)
 
 	if saida := repo.UsuarioRepositoryById(1); saida != nil {
 		assert.Equal(t, saida.Nome, "Bruno F")
@@ -56,7 +59,8 @@ func TestUsuarioRepositoryById(t *testing.T) {
 
 // update
 func TestUsuarioRepositoryUpdate(t *testing.T) {
-	repo := NewUsuarioRepository()
+	mock := mocks.UsuariosBD
+	repo := NewUsuarioRepository(mock)
 
 	espec := models.UsuarioCriate{
 		Nome:      "Bruno 3",
@@ -75,7 +79,8 @@ func TestUsuarioRepositoryUpdate(t *testing.T) {
 
 // delete
 func TestUsuarioRepositoryDelete(t *testing.T) {
-	repo := NewUsuarioRepository()
+	mock := mocks.UsuariosBD
+	repo := NewUsuarioRepository(mock)
 
 	if saida := repo.UsuarioRepositoryDelete(1); saida {
 		assert.Equal(t, true, saida)
@@ -86,7 +91,8 @@ func TestUsuarioRepositoryDelete(t *testing.T) {
 
 // teste de busca
 func TestUsuarioRepositorySearch(t *testing.T) {
-	repo := NewUsuarioRepository()
+	mock := mocks.UsuariosBD
+	repo := NewUsuarioRepository(mock)
 
 	if ok := repo.UsuarioRepositorySearch("Bruno F", "brunopessoa097@gmail.com"); ok {
 		assert.Equal(t, true, ok)

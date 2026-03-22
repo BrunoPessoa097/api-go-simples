@@ -39,18 +39,13 @@ func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.UsuarioCriate) erro
 
 // pegar por id
 func (r *UsuarioRepository) UsuarioRepositoryById(id int32) *models.UsuarioCriate {
-	//mocks
-	mokerUser := mocks.UsuariosBD
-
 	//buscando
-	for _, user := range mokerUser {
-		if user.Id == id {
-
+	for i := range r.Data {
+		if r.Data[i].Id == id {
 			//return
-			return &user
+			return &r.Data[i]
 		}
 	}
-
 	//retorno
 	return nil
 }
