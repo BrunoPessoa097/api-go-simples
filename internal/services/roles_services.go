@@ -45,6 +45,14 @@ func (rs *RoleService) RoleServiceById(id int64) *models.RolesC {
 	return nil
 }
 
+func (rs *RoleService) RoleServiceUpdate(id int64, role models.RolesC) error {
+	role.ID = id
+	if err := rs.repo.RolesRepositoryUpdate(role.ID, role); err {
+		return nil
+	}
+	return errors.New("Erro ao atualizar a regra")
+}
+
 // // deletar
 // func (rs *RoleService) RoleServiceDelete(id int64) bool {
 // 	for _, roles := range mocks.ListRoles {

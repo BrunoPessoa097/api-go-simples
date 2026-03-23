@@ -35,7 +35,7 @@ func (r *RolesRepository) RolesRepositoryAdd(roles *models.RolesC) bool {
 	return true
 }
 
-// buscar if
+// buscar id
 func (r *RolesRepository) RolesRepositoryById(id int64) *models.RolesC {
 	for i := range r.Data {
 		if r.Data[i].ID == id {
@@ -43,4 +43,15 @@ func (r *RolesRepository) RolesRepositoryById(id int64) *models.RolesC {
 		}
 	}
 	return nil
+}
+
+// update
+func (r *RolesRepository) RolesRepositoryUpdate(id int64, role models.RolesC) bool {
+	for i := range r.Data {
+		if r.Data[i].ID == id {
+			r.Data[i] = role
+			return true
+		}
+	}
+	return false
 }
