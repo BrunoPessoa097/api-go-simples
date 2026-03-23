@@ -2,6 +2,8 @@ package route
 
 import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
+	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
+	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/BrunoPessoa097/api-go-simples/internal/start"
 	"github.com/gin-gonic/gin"
@@ -36,7 +38,9 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 		user.UsuarioRotas(r)
 
 		//rota roles
-		rs := services.NewRoleService()
+		mocks := mocks.ListRoles
+		rr := repository.NewRolesRepository(mocks)
+		rs := services.NewRoleService(rr)
 		rh := handlers.NewRolesHandler(rs)
 		roles := NewRolesRoute(rh)
 		roles.RolesRoutes(r)

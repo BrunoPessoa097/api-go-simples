@@ -5,25 +5,22 @@ import (
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 )
 
 // estrutura
-type RoleService struct{}
+type RoleService struct {
+	repo *repository.RolesRepository
+}
 
 // construtor
-func NewRoleService() *RoleService {
-	return &RoleService{}
+func NewRoleService(r *repository.RolesRepository) *RoleService {
+	return &RoleService{repo: r}
 }
 
 // listar regras
 func (rs *RoleService) RoleServiceList() []models.RolesC {
-	role := make([]models.RolesC, len(mocks.UsuariosBD)-2)
-
-	for _, rol := range mocks.ListRoles {
-		role = append(role, rol)
-	}
-
-	return role
+	return rs.repo.RolesRepositoryList()
 }
 
 // adicionando post
