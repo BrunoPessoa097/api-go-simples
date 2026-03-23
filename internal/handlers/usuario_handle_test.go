@@ -82,7 +82,7 @@ func TestUsuarioByIdHandle(t *testing.T) {
 	handler := s.UsuarioStart()
 
 	//requesicao
-	req := httptest.NewRequest(http.MethodGet, "/usuarios/:id", nil)
+	req := httptest.NewRequest(http.MethodGet, "/usuarios/1", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
