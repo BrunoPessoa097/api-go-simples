@@ -55,3 +55,15 @@ func (r *RolesRepository) RolesRepositoryUpdate(id int64, role models.RolesC) bo
 	}
 	return false
 }
+
+// delete
+func (r *RolesRepository) RolesRepositoryDelete(id int64) bool {
+	for i := range r.Data {
+		//caso exista
+		if r.Data[i].ID == id {
+			r.Data = append(r.Data[:i], r.Data[i+1:]...)
+			return true
+		}
+	}
+	return false
+}

@@ -54,13 +54,9 @@ func (rs *RoleService) RoleServiceUpdate(id int64, role models.RolesC) error {
 }
 
 // // deletar
-// func (rs *RoleService) RoleServiceDelete(id int64) bool {
-// 	for _, roles := range mocks.ListRoles {
-// 		//caso exista
-// 		if roles.ID == id {
-// 			mocks.ListRoles = append(mocks.ListRoles[id:], mocks.ListRoles[id+1:]...)
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
+func (rs *RoleService) RoleServiceDelete(id int64) error {
+	if ok := rs.repo.RolesRepositoryDelete(id); ok {
+		return nil
+	}
+	return errors.New("regra não encontrada")
+}

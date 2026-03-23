@@ -22,6 +22,6 @@ func (rr *RolesRoute) RolesRoutes(ctx *gin.Engine) {
 		roles.POST("/", rr.handle.RolesHandlerPost)
 		roles.GET("/:id", rr.handle.RolesHandlerById)
 		roles.PUT("/:id", rr.handle.RolesHandlerUpdate)
-		// roles.DELETE("/:id", rr.handle.RolesHandlerDelete)
+		roles.DELETE("/:id", rr.handle.RolesHandlerDelete)
 	}
 }

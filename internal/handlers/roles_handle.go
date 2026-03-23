@@ -127,18 +127,27 @@ func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
 }
 
 // // delete
-// func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
-// 	//conversoes
-// 	id, _ := strconv.Atoi(c.Param("id"))
-// 	ok := r.service.RoleServiceDelete(int64(id))
+func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
+	//conversoes
+	id, _ := strconv.Atoi(c.Param("id"))
+	idC := int64(id)
 
-// 	//em caso de erro
-// 	if !ok {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"mensagem": "erro ao excluir",
-// 		})
-// 		return
-// 	}
-// 	//saida um sucesso
-// 	c.JSON(http.StatusNoContent, nil)
-// }
+	//buscando id
+	if saida := r.service.RoleServiceById(idC); saida == nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Regras nao encontrado",
+		})
+		return
+	}
+
+	//saida
+	if err := r.service.RoleServiceDelete(idC); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Regras nao",
+		})
+		return
+	}
+
+	//saida sem sucesso
+	c.JSON(http.StatusNoContent, nil)
+}
