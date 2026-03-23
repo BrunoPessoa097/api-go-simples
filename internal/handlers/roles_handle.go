@@ -43,63 +43,67 @@ func (r *RolesHandler) RolesHandlerPost(c *gin.Context) {
 		return
 	}
 
-	// enviando dados
-	_, err := r.service.RoleServicePost(roles)
-
-	// saida de erros
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"mensage": err.Error(),
+	//verificando a existencia
+	if err := r.service.RoleServiceSearch(roles.Nivel); err != nil {
+		c.JSON(http.StatusConflict, gin.H{
+			"erro": err.Error(),
 		})
 		return
 	}
 
-	//saida de sucesso
+	//cadastrando
+	if err := r.service.RoleServicePost(roles); !err {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"menssagem": "erro ao cadastrar",
+		})
+		return
+	}
+
 	c.JSON(http.StatusCreated, gin.H{
-		"mensage": "regra adicionada",
-		"dados":   roles,
+		"menssagem": "Regra cadastrado",
 	})
 }
 
 // buscar por id
 func (r *RolesHandler) RolesHandlerById(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
+	idC := int64(id)
 
-	dado, err := r.service.RoleServiceById(int64(id))
-
-	if dado == nil {
+	// saida
+	if saida := r.service.RoleServiceById(idC); saida != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"message": err.Error(),
+			"message": "usuario encontrado",
+			"dado":    saida,
 		})
 		return
 	}
 
+	// caso não achado
 	c.JSON(http.StatusOK, gin.H{
-		"message": "buscar por id",
-		"dado":    dado,
+		"message": "regra não encontrado",
 	})
 }
 
-// update
-func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"mensagem": "update role",
-	})
-}
+// // update
+// func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"mensagem": "update role",
+// 	})
+// }
 
-// delete
-func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
-	//conversoes
-	id, _ := strconv.Atoi(c.Param("id"))
-	ok := r.service.RoleServiceDelete(int64(id))
+// // delete
+// func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
+// 	//conversoes
+// 	id, _ := strconv.Atoi(c.Param("id"))
+// 	ok := r.service.RoleServiceDelete(int64(id))
 
-	//em caso de erro
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"mensagem": "erro ao excluir",
-		})
-		return
-	}
-	//saida um sucesso
-	c.JSON(http.StatusNoContent, nil)
-}
+// 	//em caso de erro
+// 	if !ok {
+// 		c.JSON(http.StatusBadRequest, gin.H{
+// 			"mensagem": "erro ao excluir",
+// 		})
+// 		return
+// 	}
+// 	//saida um sucesso
+// 	c.JSON(http.StatusNoContent, nil)
+// }

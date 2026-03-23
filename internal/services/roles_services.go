@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 )
@@ -23,65 +22,37 @@ func (rs *RoleService) RoleServiceList() []models.RolesC {
 	return rs.repo.RolesRepositoryList()
 }
 
-// adicionando post
-func (rs *RoleService) RoleServicePost(roles models.RolesC) (bool, error) {
-	//recebendo os valores
-	role := roles
-
-	// verificando a existencia
-	ok := rs.RoleServiceSearch(role.Nivel)
-
-	//saida de erros
-	if ok {
-		return false, errors.New("Regra já cadastrada")
+// buscando regra se existe
+func (rs *RoleService) RoleServiceSearch(nivel string) error {
+	if saida := rs.repo.RolesRepositoryBusca(nivel); saida {
+		return errors.New("Nivel já cadastrado")
 	}
-
-	//adicionando id
-	id := len(mocks.ListRoles) + 1
-	role.ID = int64(id)
-
-	//adicionando
-	mocks.ListRoles = append(mocks.ListRoles, role)
-
-	// retorno
-	return true, nil
+	return nil
 }
 
-// buscando regra se existe
-func (rs *RoleService) RoleServiceSearch(nome string) bool {
-	for _, role := range mocks.ListRoles {
-		//retorno caso exista
-		if role.Nivel == nome {
-			return true
-		}
-	}
-	return false
+// adicionando post
+func (rs *RoleService) RoleServicePost(roles models.RolesC) bool {
+	//adicionando
+	roles.ID = int64(len(rs.repo.Data) + 1)
+	return rs.repo.RolesRepositoryAdd(&roles)
 }
 
 // buscar unico
-func (rs *RoleService) RoleServiceById(id int64) (*models.RolesC, error) {
-	//pegar um model
-	var role models.RolesC
-	//pegando a pessoa
-	for _, roles := range mocks.ListRoles {
-		if roles.ID == id {
-			role = roles
-			return &role, nil
-		}
-
+func (rs *RoleService) RoleServiceById(id int64) *models.RolesC {
+	if saida := rs.repo.RolesRepositoryById(id); saida != nil {
+		return saida
 	}
-	//return
-	return nil, errors.New("regra não encontrado")
+	return nil
 }
 
-// deletar
-func (rs *RoleService) RoleServiceDelete(id int64) bool {
-	for _, roles := range mocks.ListRoles {
-		//caso exista
-		if roles.ID == id {
-			mocks.ListRoles = append(mocks.ListRoles[id:], mocks.ListRoles[id+1:]...)
-			return true
-		}
-	}
-	return false
-}
+// // deletar
+// func (rs *RoleService) RoleServiceDelete(id int64) bool {
+// 	for _, roles := range mocks.ListRoles {
+// 		//caso exista
+// 		if roles.ID == id {
+// 			mocks.ListRoles = append(mocks.ListRoles[id:], mocks.ListRoles[id+1:]...)
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
