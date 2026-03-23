@@ -1,11 +1,14 @@
 package handlers
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
+	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
@@ -35,104 +38,112 @@ func TestRolesHandlerList(t *testing.T) {
 }
 
 // adicionar regras
-// func TestRolesHandlerPost(t *testing.T) {
-// 	// iniciando
-// 	gin.SetMode(gin.TestMode)
-// 	r := gin.Default()
-// 	s := services.NewRoleService()
-// 	h := NewRolesHandler(s)
+func TestRolesHandlerPost(t *testing.T) {
+	// iniciando
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+	m := mocks.ListRoles
+	repo := repository.NewRolesRepository(m)
+	s := services.NewRoleService(repo)
+	h := NewRolesHandler(s)
 
-// 	// modelo de negocio
-// 	role := models.RolesC{
-// 		Nivel: "vend1",
-// 		Regra: "get,post",
-// 	}
+	// modelo de negocio
+	role := models.RolesC{
+		Nivel: "vend1",
+		Regra: "get,post",
+	}
 
-// 	// convertendo struct para json
-// 	body, _ := json.Marshal(&role)
+	// convertendo struct para json
+	body, _ := json.Marshal(&role)
 
-// 	//requisição
-// 	req := httptest.NewRequest(http.MethodPost, "/roles", bytes.NewBuffer(body))
-// 	req.Header.Set("Content-Type", "application/json")
-// 	w := httptest.NewRecorder()
+	//requisição
+	req := httptest.NewRequest(http.MethodPost, "/roles", bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
 
-// 	// rota
-// 	r.POST("/roles", h.RolesHandlerPost)
-// 	r.ServeHTTP(w, req)
+	// rota
+	r.POST("/roles", h.RolesHandlerPost)
+	r.ServeHTTP(w, req)
 
-// 	// saida
-// 	assert.Equal(t, http.StatusCreated, w.Code)
-// }
+	// saida
+	assert.Equal(t, http.StatusCreated, w.Code)
+}
 
-// // buscar por id
-// func TestRolesHandlerById(t *testing.T) {
-// 	// iniciando
-// 	gin.SetMode(gin.TestMode)
-// 	r := gin.Default()
-// 	s := services.NewRoleService()
-// 	h := NewRolesHandler(s)
+// buscar por id
+func TestRolesHandlerById(t *testing.T) {
+	// iniciando
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+	m := mocks.ListRoles
+	repo := repository.NewRolesRepository(m)
+	s := services.NewRoleService(repo)
+	h := NewRolesHandler(s)
 
-// 	// requisicao
-// 	req := httptest.NewRequest(http.MethodGet, "/roles/:id", nil)
-// 	req.Header.Set("Content-Type", "application/json")
-// 	w := httptest.NewRecorder()
+	// requisicao
+	req := httptest.NewRequest(http.MethodGet, "/roles/1", nil)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
 
-// 	// saida
-// 	r.GET("/roles/:id", h.RolesHandlerById)
-// 	r.ServeHTTP(w, req)
+	// saida
+	r.GET("/roles/:id", h.RolesHandlerById)
+	r.ServeHTTP(w, req)
 
-// 	// comparar
-// 	assert.Equal(t, http.StatusOK, w.Code)
-// }
+	// comparar
+	assert.Equal(t, http.StatusOK, w.Code)
+}
 
-// // updade de regras
-// func TestRolesHandlerUpdate(t *testing.T) {
-// 	// iniciando
-// 	gin.SetMode(gin.TestMode)
-// 	r := gin.Default()
-// 	s := services.NewRoleService()
-// 	h := NewRolesHandler(s)
+// updade de regras
+func TestRolesHandlerUpdate(t *testing.T) {
+	// iniciando
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+	m := mocks.ListRoles
+	repo := repository.NewRolesRepository(m)
+	s := services.NewRoleService(repo)
+	h := NewRolesHandler(s)
 
-// 	// modelo de negocio
-// 	role := models.RolesC{
-// 		ID:    3,
-// 		Nivel: "vendedor",
-// 		Regra: "get,post,delete,put",
-// 	}
+	// modelo de negocio
+	role := models.RolesC{
+		ID:    1,
+		Nivel: "vendedor",
+		Regra: "get,post,delete,put",
+	}
 
-// 	// convertendo struct para json
-// 	rolec, _ := json.Marshal(&role)
+	// convertendo struct para json
+	rolec, _ := json.Marshal(&role)
 
-// 	// requisicao
-// 	req := httptest.NewRequest(http.MethodPut, "/roles/:id", bytes.NewBuffer(rolec))
-// 	req.Header.Set("Content-Type", "application/json")
-// 	w := httptest.NewRecorder()
+	// requisicao
+	req := httptest.NewRequest(http.MethodPut, "/roles/1", bytes.NewBuffer(rolec))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
 
-// 	// saida
-// 	r.PUT("/roles/:id", h.RolesHandlerUpdate)
-// 	r.ServeHTTP(w, req)
+	// saida
+	r.PUT("/roles/:id", h.RolesHandlerUpdate)
+	r.ServeHTTP(w, req)
 
-// 	// comparar
-// 	assert.Equal(t, http.StatusOK, w.Code)
-// }
+	// comparar
+	assert.Equal(t, http.StatusOK, w.Code)
+}
 
-// // delete
-// func TestRolesHandlerDelete(t *testing.T) {
-// 	// iniciando
-// 	gin.SetMode(gin.TestMode)
-// 	r := gin.Default()
-// 	s := services.NewRoleService()
-// 	h := NewRolesHandler(s)
+// delete
+func TestRolesHandlerDelete(t *testing.T) {
+	// iniciando
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+	m := mocks.ListRoles
+	repo := repository.NewRolesRepository(m)
+	s := services.NewRoleService(repo)
+	h := NewRolesHandler(s)
 
-// 	//requisicao e escrita
-// 	req := httptest.NewRequest(http.MethodDelete, "/roles/:id", nil)
-// 	req.Header.Set("Content-Type", "application/json")
-// 	w := httptest.NewRecorder()
+	//requisicao e escrita
+	req := httptest.NewRequest(http.MethodDelete, "/roles/1", nil)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
 
-// 	// acessando a rota
-// 	r.DELETE("/roles/:id", h.RolesHandlerDelete)
-// 	r.ServeHTTP(w, req)
+	// acessando a rota
+	r.DELETE("/roles/:id", h.RolesHandlerDelete)
+	r.ServeHTTP(w, req)
 
-// 	// saida
-// 	assert.Equal(t, http.StatusNoContent, w.Code)
-// }
+	// saida
+	assert.Equal(t, http.StatusNoContent, w.Code)
+}
