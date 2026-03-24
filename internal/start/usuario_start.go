@@ -24,3 +24,12 @@ func (s *Start) UsuarioStart() *handlers.UsuarioHandle {
 	hand := handlers.NewUsuarioHandle(serv)
 	return hand
 }
+
+func (s *Start) RoleStart() *handlers.RolesHandler {
+	mocks := mocks.ListRoles
+	rr := repository.NewRolesRepository(mocks)
+	rs := services.NewRoleService(rr)
+	rh := handlers.NewRolesHandler(rs)
+
+	return rh
+}
