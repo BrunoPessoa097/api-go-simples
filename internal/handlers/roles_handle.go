@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/dto"
 	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
@@ -23,25 +23,29 @@ func NewRolesHandler(s *services.RoleService) *RolesHandler {
 // list
 func (r *RolesHandler) RolesHandlerList(c *gin.Context) {
 	data := r.service.RoleServiceList()
+	datas := dto.ToResponseRolesList(data)
+
 	c.JSON(http.StatusOK, gin.H{
 		"mensage": "Listar regras",
-		"dados":   data,
+		"dados":   datas,
 	})
 }
 
 // post
 func (r *RolesHandler) RolesHandlerPost(c *gin.Context) {
-	var roles models.RolesC
+	var input dto.RolesCreateDTO
 	pkg := pkg.NewPkg()
 
 	// validação de erros
-	if err := c.BindJSON(&roles); err != nil {
+	if err := c.BindJSON(&input); err != nil {
 		erros := pkg.Validator(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"erro": erros,
 		})
 		return
 	}
+
+	roles := dto.ToModelRoles(input)
 
 	//verificando a existencia
 	if err := r.service.RoleServiceSearch(roles.Nivel); err != nil {
@@ -73,7 +77,7 @@ func (r *RolesHandler) RolesHandlerById(c *gin.Context) {
 	if saida := r.service.RoleServiceById(idC); saida != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Regras encontrado",
-			"dado":    saida,
+			"dado":    dto.ToResponseRoles(*saida),
 		})
 		return
 	}
@@ -90,16 +94,17 @@ func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
 	idC := int64(id)
 	pkg := pkg.NewPkg()
 
-	if saida := r.service.RoleServiceById(idC); saida == nil {
+	exist := r.service.RoleServiceById(idC)
+	if exist == nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Regras nao encontrado",
 		})
 		return
 	}
 
-	var roles models.RolesC
+	var input dto.RolesUpdateDTO
 	// validação de erros
-	if err := c.BindJSON(&roles); err != nil {
+	if err := c.BindJSON(&input); err != nil {
 		erros := pkg.Validator(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"erro": erros,
@@ -108,17 +113,22 @@ func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
 	}
 
 	//verificando a existencia
-	if err := r.service.RoleServiceSearch(roles.Nivel); err != nil {
-		c.JSON(http.StatusConflict, gin.H{
-			"erro": err.Error(),
-		})
-		return
+	if input.Nivel != nil {
+		if err := r.service.RoleServiceSearch(*input.Nivel); err != nil {
+			c.JSON(http.StatusConflict, gin.H{
+				"erro": err.Error(),
+			})
+			return
+		}
 	}
 
-	if saida := r.service.RoleServiceUpdate(idC, roles); saida != nil {
+	update := dto.ToUpdateRoles(input, *exist)
+
+	if saida := r.service.RoleServiceUpdate(idC, update); saida != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"mensagem": saida.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
