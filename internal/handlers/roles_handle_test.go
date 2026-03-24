@@ -48,7 +48,7 @@ func TestRolesHandlerPost(t *testing.T) {
 	h := NewRolesHandler(s)
 
 	// modelo de negocio
-	role := models.RolesC{
+	role := models.Roles{
 		Nivel: "vend1",
 		Regra: "get,post",
 	}
@@ -103,7 +103,7 @@ func TestRolesHandlerUpdate(t *testing.T) {
 	h := NewRolesHandler(s)
 
 	// modelo de negocio
-	role := models.RolesC{
+	role := models.Roles{
 		ID:    1,
 		Nivel: "vendedor",
 		Regra: "get,post,delete,put",

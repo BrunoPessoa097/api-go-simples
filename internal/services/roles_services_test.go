@@ -45,7 +45,7 @@ func TestRoleServicePost(t *testing.T) {
 	s := NewRoleService(repo)
 
 	//modelo
-	role := models.RolesC{
+	role := models.Roles{
 		Nivel: "Governador",
 		Regra: "ler",
 	}
@@ -80,7 +80,7 @@ func TestRoleServiceUpdate(t *testing.T) {
 	s := NewRoleService(repo)
 
 	//modelo
-	role := models.RolesC{
+	role := models.Roles{
 		ID:    1,
 		Nivel: "Gov",
 		Regra: "ler",

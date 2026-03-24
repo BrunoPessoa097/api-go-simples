@@ -18,7 +18,7 @@ func NewRoleService(r *repository.RolesRepository) *RoleService {
 }
 
 // listar regras
-func (rs *RoleService) RoleServiceList() []models.RolesC {
+func (rs *RoleService) RoleServiceList() []models.Roles {
 	return rs.repo.RolesRepositoryList()
 }
 
@@ -31,21 +31,21 @@ func (rs *RoleService) RoleServiceSearch(nivel string) error {
 }
 
 // adicionando post
-func (rs *RoleService) RoleServicePost(roles models.RolesC) bool {
+func (rs *RoleService) RoleServicePost(roles models.Roles) bool {
 	//adicionando
 	roles.ID = int64(len(rs.repo.Data) + 1)
 	return rs.repo.RolesRepositoryAdd(&roles)
 }
 
 // buscar unico
-func (rs *RoleService) RoleServiceById(id int64) *models.RolesC {
+func (rs *RoleService) RoleServiceById(id int64) *models.Roles {
 	if saida := rs.repo.RolesRepositoryById(id); saida != nil {
 		return saida
 	}
 	return nil
 }
 
-func (rs *RoleService) RoleServiceUpdate(id int64, role models.RolesC) error {
+func (rs *RoleService) RoleServiceUpdate(id int64, role models.Roles) error {
 	role.ID = id
 	if err := rs.repo.RolesRepositoryUpdate(role.ID, role); err {
 		return nil

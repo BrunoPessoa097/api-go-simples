@@ -2,7 +2,7 @@ package mocks
 
 import "github.com/BrunoPessoa097/api-go-simples/internal/models"
 
-var ListRoles = []models.RolesC{
+var ListRoles = []models.Roles{
 	{
 		ID:    1,
 		Nivel: "ADM",

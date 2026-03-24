@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type RolesC struct {
+type Roles struct {
 	ID       int64
 	Nivel    string
 	Regra    string

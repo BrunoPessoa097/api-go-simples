@@ -38,7 +38,7 @@ func TestAdd(t *testing.T) {
 	mc := mocks.ListRoles
 	rp := NewRolesRepository(mc)
 
-	espc := models.RolesC{
+	espc := models.Roles{
 		Nivel: "Adm2",
 		Regra: "ler",
 	}
@@ -62,7 +62,7 @@ func TestUpdate(t *testing.T) {
 	mc := mocks.ListRoles
 	rp := NewRolesRepository(mc)
 
-	espc := models.RolesC{
+	espc := models.Roles{
 		ID:    1,
 		Nivel: "Adm 6",
 		Regra: "ler",

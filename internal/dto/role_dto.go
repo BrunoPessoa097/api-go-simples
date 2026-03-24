@@ -24,8 +24,8 @@ type RolesResponseDTO struct {
 	Regra string `json:"regra"`
 }
 
-func ToModelRoles(dto RolesCreateDTO) models.RolesC {
-	return models.RolesC{
+func ToModelRoles(dto RolesCreateDTO) models.Roles {
+	return models.Roles{
 		Nivel:    dto.Nivel,
 		Regra:    dto.Regra,
 		DtCreate: time.Now(),
@@ -33,7 +33,7 @@ func ToModelRoles(dto RolesCreateDTO) models.RolesC {
 	}
 }
 
-func ToUpdateRoles(dto RolesUpdateDTO, model models.RolesC) models.RolesC {
+func ToUpdateRoles(dto RolesUpdateDTO, model models.Roles) models.Roles {
 	if dto.Nivel != nil {
 		model.Nivel = *dto.Nivel
 	}
@@ -47,7 +47,7 @@ func ToUpdateRoles(dto RolesUpdateDTO, model models.RolesC) models.RolesC {
 	return model
 }
 
-func ToResponseRoles(u models.RolesC) RolesResponseDTO {
+func ToResponseRoles(u models.Roles) RolesResponseDTO {
 	return RolesResponseDTO{
 		ID:    u.ID,
 		Nivel: u.Nivel,
@@ -55,7 +55,7 @@ func ToResponseRoles(u models.RolesC) RolesResponseDTO {
 	}
 }
 
-func ToResponseRolesList(u []models.RolesC) []RolesResponseDTO {
+func ToResponseRolesList(u []models.Roles) []RolesResponseDTO {
 	var roles []RolesResponseDTO
 
 	for i := range u {

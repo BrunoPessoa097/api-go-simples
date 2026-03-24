@@ -5,17 +5,17 @@ import (
 )
 
 type RolesRepository struct {
-	Data []models.RolesC
+	Data []models.Roles
 }
 
-func NewRolesRepository(mr []models.RolesC) *RolesRepository {
+func NewRolesRepository(mr []models.Roles) *RolesRepository {
 	return &RolesRepository{
 		Data: mr,
 	}
 }
 
 // listagem
-func (r *RolesRepository) RolesRepositoryList() []models.RolesC {
+func (r *RolesRepository) RolesRepositoryList() []models.Roles {
 	return r.Data
 }
 
@@ -30,13 +30,13 @@ func (r *RolesRepository) RolesRepositoryBusca(role string) bool {
 }
 
 // adicionar
-func (r *RolesRepository) RolesRepositoryAdd(roles *models.RolesC) bool {
+func (r *RolesRepository) RolesRepositoryAdd(roles *models.Roles) bool {
 	r.Data = append(r.Data, *roles)
 	return true
 }
 
 // buscar id
-func (r *RolesRepository) RolesRepositoryById(id int64) *models.RolesC {
+func (r *RolesRepository) RolesRepositoryById(id int64) *models.Roles {
 	for i := range r.Data {
 		if r.Data[i].ID == id {
 			return &r.Data[i]
@@ -46,7 +46,7 @@ func (r *RolesRepository) RolesRepositoryById(id int64) *models.RolesC {
 }
 
 // update
-func (r *RolesRepository) RolesRepositoryUpdate(id int64, role models.RolesC) bool {
+func (r *RolesRepository) RolesRepositoryUpdate(id int64, role models.Roles) bool {
 	for i := range r.Data {
 		if r.Data[i].ID == id {
 			r.Data[i] = role
