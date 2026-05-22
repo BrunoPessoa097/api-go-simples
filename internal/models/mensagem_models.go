@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type Mensagem struct {
+type Post struct {
 	ID       int64
 	IDUser   string
 	Texto    string
