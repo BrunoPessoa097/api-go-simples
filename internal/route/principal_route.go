@@ -39,5 +39,9 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 		roles := NewRolesRoute(rh)
 		roles.RolesRoutes(r)
 
+		//post
+		ps := st.PostStart()
+		pp := NewPostRoutas(ps)
+		pp.PostRotas(r)
 	}
 }
