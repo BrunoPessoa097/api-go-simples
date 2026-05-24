@@ -4,7 +4,7 @@ import "time"
 
 type Post struct {
 	ID       int64
-	IDUser   string
+	IDUser   int64
 	Texto    string
 	DtCreate time.Time
 	DtUpdate time.Time
