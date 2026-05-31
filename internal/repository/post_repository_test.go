@@ -7,10 +7,13 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 )
 
-func TestListPost(t *testing.T) {
+func Init() *PostRepository {
 	mock := mocks.ListPost
-	post := NewPostRepository(mock)
+	return NewPostRepository(mock)
+}
 
+func TestListPost(t *testing.T) {
+	post := Init()
 	saida := post.PostRepositoryList()
 
 	assert.Equal(t, saida[0].Texto, "Como é viver no Brasil?")
