@@ -25,6 +25,7 @@ func (s *Start) UsuarioStart() *handlers.UsuarioHandle {
 	return hand
 }
 
+// iniciando regras
 func (s *Start) RoleStart() *handlers.RolesHandler {
 	mocks := mocks.ListRoles
 	rr := repository.NewRolesRepository(mocks)
@@ -32,4 +33,13 @@ func (s *Start) RoleStart() *handlers.RolesHandler {
 	rh := handlers.NewRolesHandler(rs)
 
 	return rh
+}
+
+// iniciando postagem
+func (s *Start) PostStart() *handlers.PostHandlers {
+	mocks := mocks.ListPost
+	pr := repository.NewPostRepository(mocks)
+	ps := services.NewPostService(pr)
+	ph := handlers.NewPostHandlers(ps)
+	return ph
 }
