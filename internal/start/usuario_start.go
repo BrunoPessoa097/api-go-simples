@@ -37,6 +37,9 @@ func (s *Start) RoleStart() *handlers.RolesHandler {
 
 // iniciando postagem
 func (s *Start) PostStart() *handlers.PostHandlers {
-	ph := handlers.NewPostHandlers()
+	mocks := mocks.ListPost
+	pr := repository.NewPostRepository(mocks)
+	ps := services.NewPostService(pr)
+	ph := handlers.NewPostHandlers(ps)
 	return ph
 }
