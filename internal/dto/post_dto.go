@@ -33,7 +33,7 @@ func ToModelPostCreate(dto CreatePostDTO) *models.Post {
 	}
 }
 
-func toModelPostUpdade(dto UpdatePostDTO, models models.Post) models.Post {
+func ToModelPostUpdade(dto UpdatePostDTO, models models.Post) models.Post {
 	if dto.Texto != nil {
 		models.Texto = *dto.Texto
 	}
@@ -42,4 +42,20 @@ func toModelPostUpdade(dto UpdatePostDTO, models models.Post) models.Post {
 	}
 	models.DtUpdate = time.Now()
 	return models
+}
+
+func ToModelPostListOne(p models.Post) ResponsesPostDTO {
+	return ResponsesPostDTO{
+		IDUser: p.ID,
+		Texto:  p.Texto,
+	}
+}
+
+func ToModelPostList(p []models.Post) []ResponsesPostDTO {
+	var post []ResponsesPostDTO
+
+	for i := range p {
+		post = append(post, ToModelPostListOne(p[i]))
+	}
+	return post
 }
