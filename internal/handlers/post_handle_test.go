@@ -5,6 +5,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
+	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
+	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
 )
@@ -13,7 +16,10 @@ import (
 func TestPostHandlerList(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	p := NewPostHandlers()
+	mocks := mocks.ListPost
+	rp := repository.NewPostRepository(mocks)
+	sp := services.NewPostService(rp)
+	p := NewPostHandlers(sp)
 
 	req := httptest.NewRequest(http.MethodGet, "/posts", nil)
 	req.Header.Set("Content-Type", "application/json")
@@ -29,7 +35,10 @@ func TestPostHandlerList(t *testing.T) {
 func TestPostHandlerPost(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	p := NewPostHandlers()
+	mocks := mocks.ListPost
+	rp := repository.NewPostRepository(mocks)
+	sp := services.NewPostService(rp)
+	p := NewPostHandlers(sp)
 
 	req := httptest.NewRequest(http.MethodPost, "/posts", nil)
 	req.Header.Set("Content-Type", "application/json")
@@ -45,7 +54,10 @@ func TestPostHandlerPost(t *testing.T) {
 func TestPostHandlerById(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	p := NewPostHandlers()
+	mocks := mocks.ListPost
+	rp := repository.NewPostRepository(mocks)
+	sp := services.NewPostService(rp)
+	p := NewPostHandlers(sp)
 
 	req := httptest.NewRequest(http.MethodGet, "/posts/1", nil)
 	req.Header.Set("Content-Type", "application/json")
@@ -61,7 +73,10 @@ func TestPostHandlerById(t *testing.T) {
 func TestPostHandlerUpdate(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	p := NewPostHandlers()
+	mocks := mocks.ListPost
+	rp := repository.NewPostRepository(mocks)
+	sp := services.NewPostService(rp)
+	p := NewPostHandlers(sp)
 
 	req := httptest.NewRequest(http.MethodPatch, "/posts/1", nil)
 	req.Header.Set("Content-Type", "application/json")
@@ -77,7 +92,10 @@ func TestPostHandlerUpdate(t *testing.T) {
 func TestPostHandlerDelete(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	p := NewPostHandlers()
+	mocks := mocks.ListPost
+	rp := repository.NewPostRepository(mocks)
+	sp := services.NewPostService(rp)
+	p := NewPostHandlers(sp)
 
 	req := httptest.NewRequest(http.MethodDelete, "/posts/1", nil)
 	req.Header.Set("Content-Type", "application/json")
