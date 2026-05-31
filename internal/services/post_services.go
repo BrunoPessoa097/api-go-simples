@@ -15,6 +15,7 @@ func NewPostService(r *repository.PostRepository) *PostService {
 	}
 }
 
+// listagem
 func (p *PostService) PostServiceList() []models.Post {
 	return p.Repo.Data
 }
