@@ -3,23 +3,25 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/BrunoPessoa097/api-go-simples/internal/dto"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 )
 
 type PostHandlers struct {
-	service *services.PostService
+	Service *services.PostService
 }
 
 func NewPostHandlers(s *services.PostService) *PostHandlers {
 	return &PostHandlers{
-		service: s,
+		Service: s,
 	}
 }
 
 // listagem de postagem
 func (p *PostHandlers) PostHandlersList(c *gin.Context) {
-	data := p.service
+	datas := p.Service.PostServiceList()
+	data := dto.ToModelPostList(datas)
 	c.JSON(http.StatusOK, gin.H{
 		"mensagem": "listagem de postagem",
 		"data":     data,
