@@ -40,5 +40,8 @@ func TestIdPost(t *testing.T) {
 func TestUpdatePost(t *testing.T) {
 	r := Init()
 	id := int64(1)
+	text := models.Post{Texto: "vamos falar da Itália"}
 
+	saida := r.PostRepositoryUpdate(id, text)
+	assert.Equal(t, true, saida)
 }
