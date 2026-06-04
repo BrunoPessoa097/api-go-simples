@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/dto"
+	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 )
@@ -30,8 +31,28 @@ func (p *PostHandlers) PostHandlersList(c *gin.Context) {
 
 // criar postagem
 func (p *PostHandlers) PostHandlersPost(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"mensagem": "Inserir de postagem",
+	var input dto.CreatePostDTO
+	pkg := pkg.NewPkg()
+
+	if err := c.BindJSON(&input); err != nil {
+		erros := pkg.Validator(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"erro": erros,
+		})
+		return
+	}
+
+	post := dto.ToModelPostCreate(input)
+
+	if ok := p.Service.PostServiceAdd(*post); ok {
+		c.JSON(http.StatusOK, gin.H{
+			"mensagem": "Inserir de postagem",
+		})
+		return
+	}
+
+	c.JSON(http.StatusBadRequest, gin.H{
+		"mensagem": "Post nao inserido",
 	})
 }
 
