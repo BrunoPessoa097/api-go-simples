@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/dto"
 	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
@@ -58,8 +59,21 @@ func (p *PostHandlers) PostHandlersPost(c *gin.Context) {
 
 // selecionar postagem
 func (p *PostHandlers) PostHandlersById(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"mensagem": "Buscar por postagem",
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	post, err := p.Service.PostRepositoryId(int64(id))
+
+	if post != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"mensagem": "Buscar por postagem",
+			"dado":     post,
+		})
+		return
+	}
+
+	c.JSON(http.StatusNotFound, gin.H{
+		"mensagem": "Buscar por postagem err",
+		"erro":     err.Error(),
 	})
 }
 
