@@ -36,3 +36,9 @@ func TestIdPost(t *testing.T) {
 	saida, _ := r.PostRepositoryById(id)
 	assert.Equal(t, "Como é viver no Brasil?", saida.Texto)
 }
+
+func TestUpdatePost(t *testing.T) {
+	r := Init()
+	id := int64(1)
+
+}

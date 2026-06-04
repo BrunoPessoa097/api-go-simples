@@ -35,5 +35,13 @@ func (p *PostRepository) PostRepositoryById(id int64) (*models.Post, error) {
 	return nil, fmt.Errorf("post não encontrado")
 }
 
-// updade
-func (p *PostRepository) PostRepositoryUpdate(id int64, up)
+// update
+func (p *PostRepository) PostRepositoryUpdate(id int64, update models.Post) bool {
+	for i := range p.Data {
+		if p.Data[i].ID == id {
+			p.Data[i] = update
+			return true
+		}
+	}
+	return false
+}
