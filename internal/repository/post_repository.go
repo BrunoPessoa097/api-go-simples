@@ -16,3 +16,8 @@ func NewPostRepository(mp []models.Post) *PostRepository {
 func (p *PostRepository) PostRepositoryList() []models.Post {
 	return p.Data
 }
+
+func (p *PostRepository) PostRepositoryAdd(post models.Post) bool {
+	p.Data = append(p.Data, post)
+	return true
+}
