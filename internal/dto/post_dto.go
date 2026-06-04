@@ -8,7 +8,7 @@ import (
 
 // criando post
 type CreatePostDTO struct {
-	IDUser int64  `json:"idUser" binding:"required,min=2,max=10"`
+	IDUser int64  `json:"idUser" binding:"required,min=2"`
 	Texto  string `json:"texto" binding:"required,min=2,max=50"`
 }
 
