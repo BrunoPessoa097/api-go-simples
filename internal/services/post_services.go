@@ -23,6 +23,7 @@ func (p *PostService) PostServiceList() []models.Post {
 	return p.Repo.Data
 }
 
+// adicionar
 func (p *PostService) PostServiceAdd(post models.Post) bool {
 	tam := len(mocks.ListPost) - 1
 	id := mocks.ListPost[tam].ID + 1
@@ -35,4 +36,8 @@ func (p *PostService) PostServiceAdd(post models.Post) bool {
 		DtUpdate: time.Now(),
 	}
 	return p.Repo.PostRepositoryAdd(posts)
+}
+
+func (p *PostService) PostRepositoryId(id int64) (*models.Post, error) {
+	return p.Repo.PostRepositoryById(id)
 }
