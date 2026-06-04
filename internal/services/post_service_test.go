@@ -14,6 +14,8 @@ func iniciarPs() *PostService {
 	rpost := repository.NewPostRepository(mocks)
 	return NewPostService(rpost)
 }
+
+// listar
 func TestPostList(t *testing.T) {
 	spost := iniciarPs()
 
@@ -21,6 +23,7 @@ func TestPostList(t *testing.T) {
 	assert.Equal(t, saida[0].Texto, "Como é viver no Brasil?")
 }
 
+// adicionar
 func TestPostAdd(t *testing.T) {
 	spost := iniciarPs()
 	post := models.Post{
@@ -30,4 +33,13 @@ func TestPostAdd(t *testing.T) {
 
 	saida := spost.PostServiceAdd(post)
 	assert.Equal(t, true, saida)
+}
+
+// buscar por id
+func TestPostId(t *testing.T) {
+	spost := iniciarPs()
+	id := int64(1)
+
+	saida, _ := spost.PostRepositoryId(id)
+	assert.Equal(t, "Como é viver no Brasil?", saida.Texto)
 }
