@@ -66,7 +66,7 @@ func (p *PostHandlers) PostHandlersById(c *gin.Context) {
 	if post != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"mensagem": "Buscar por postagem",
-			"dado":     post,
+			"dado":     dto.ToModelPostListOne(*post),
 		})
 		return
 	}

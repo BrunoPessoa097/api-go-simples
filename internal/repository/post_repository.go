@@ -34,3 +34,6 @@ func (p *PostRepository) PostRepositoryById(id int64) (*models.Post, error) {
 	}
 	return nil, fmt.Errorf("post não encontrado")
 }
+
+// updade
+func (p *PostRepository) PostRepositoryUpdate(id int64, up)
