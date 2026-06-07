@@ -45,3 +45,14 @@ func (p *PostRepository) PostRepositoryUpdate(id int64, update models.Post) bool
 	}
 	return false
 }
+
+// delete
+func (p *PostRepository) PostRepositoryDelete(id int64) bool {
+	for i := range p.Data {
+		if p.Data[i].ID == id {
+			p.Data = append(p.Data[:i], p.Data[i+1:]...)
+			return true
+		}
+	}
+	return false
+}
