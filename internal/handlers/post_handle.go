@@ -109,7 +109,15 @@ func (p *PostHandlers) PostHandlersUpdate(c *gin.Context) {
 
 // deletar postagem
 func (p *PostHandlers) PostHandlersDelete(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	idCvt := int64(id)
+	if saida := p.Service.PostServiceDelete(idCvt); saida != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"mensagem": "delete de post com problemas",
+			"erro":     saida.Error(),
+		})
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"mensagem": "delete de post",
+		"mensagem": "delete de post com sucesso",
 	})
 }
