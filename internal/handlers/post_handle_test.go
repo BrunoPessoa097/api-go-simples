@@ -3,7 +3,6 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -55,8 +54,6 @@ func TestPostHandlerPost(t *testing.T) {
 	r.POST("/posts", p.PostHandlersPost)
 	r.ServeHTTP(w, req)
 
-	fmt.Print(w)
-
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
@@ -77,12 +74,19 @@ func TestPostHandlerById(t *testing.T) {
 // atualizar postagem
 func TestPostHandlerUpdate(t *testing.T) {
 	r, p := inicial()
+	post := models.Post{
+		ID:     1,
+		IDUser: 12,
+		Texto:  "Bem Vindo ao Marrocos",
+	}
 
-	req := httptest.NewRequest(http.MethodPatch, "/posts/1", nil)
+	rpost, _ := json.Marshal(&post)
+
+	req := httptest.NewRequest(http.MethodPatch, "/posts/1", bytes.NewBuffer(rpost))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
-	r.PATCH("/posts/:id", p.PostHandlersById)
+	r.PATCH("/posts/:id", p.PostHandlersUpdate)
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusOK, w.Code)
