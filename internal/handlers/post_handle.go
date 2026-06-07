@@ -79,8 +79,31 @@ func (p *PostHandlers) PostHandlersById(c *gin.Context) {
 
 // atualizar postagem
 func (p *PostHandlers) PostHandlersUpdate(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	idCvt := int64(id)
+	pkg := pkg.NewPkg()
+
+	var input dto.UpdatePostDTO
+
+	if err := c.BindJSON(&input); err != nil {
+		erros := pkg.Validator(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"erro": erros,
+		})
+		return
+	}
+
+	update := dto.ToModelPostUpdade(input)
+
+	if saida := p.Service.PostServiceUpdate(idCvt, update); saida != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"mensagem": "update de post",
+			"erros":    saida.Error(),
+		})
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"mensagem": "update de post",
+		"mensagem": "update na postagem",
 	})
 }
 
