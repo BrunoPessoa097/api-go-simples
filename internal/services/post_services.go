@@ -39,13 +39,23 @@ func (p *PostService) PostServiceAdd(post models.Post) bool {
 	return p.Repo.PostRepositoryAdd(posts)
 }
 
+// buscar por id
 func (p *PostService) PostRepositoryId(id int64) (*models.Post, error) {
 	return p.Repo.PostRepositoryById(id)
 }
 
+// atualizar post
 func (p *PostService) PostServiceUpdate(id int64, post models.Post) error {
 	if ok := p.Repo.PostRepositoryUpdate(id, post); ok {
 		return nil
 	}
 	return errors.New("Problemas ao atualizar")
+}
+
+// delete
+func (p *PostService) PostServiceDelete(id int64) error {
+	if ok := p.Repo.PostRepositoryDelete(id); ok {
+		return nil
+	}
+	return errors.New("Erros ao deletar")
 }
