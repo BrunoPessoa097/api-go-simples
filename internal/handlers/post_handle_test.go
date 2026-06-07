@@ -95,12 +95,11 @@ func TestPostHandlerUpdate(t *testing.T) {
 // delete de postagem
 func TestPostHandlerDelete(t *testing.T) {
 	r, p := inicial()
-
 	req := httptest.NewRequest(http.MethodDelete, "/posts/1", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
-	r.DELETE("/posts/:id", p.PostHandlersById)
+	r.DELETE("/posts/:id", p.PostHandlersDelete)
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusOK, w.Code)
