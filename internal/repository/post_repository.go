@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"fmt"
+
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 )
 
@@ -15,4 +17,42 @@ func NewPostRepository(mp []models.Post) *PostRepository {
 // listagem de post
 func (p *PostRepository) PostRepositoryList() []models.Post {
 	return p.Data
+}
+
+// adicionar
+func (p *PostRepository) PostRepositoryAdd(post models.Post) bool {
+	p.Data = append(p.Data, post)
+	return true
+}
+
+// selecionar
+func (p *PostRepository) PostRepositoryById(id int64) (*models.Post, error) {
+	for i := range p.Data {
+		if p.Data[i].ID == id {
+			return &p.Data[i], nil
+		}
+	}
+	return nil, fmt.Errorf("post não encontrado")
+}
+
+// update
+func (p *PostRepository) PostRepositoryUpdate(id int64, update models.Post) bool {
+	for i := range p.Data {
+		if p.Data[i].ID == id {
+			p.Data[i] = update
+			return true
+		}
+	}
+	return false
+}
+
+// delete
+func (p *PostRepository) PostRepositoryDelete(id int64) bool {
+	for i := range p.Data {
+		if p.Data[i].ID == id {
+			p.Data = append(p.Data[:i], p.Data[i+1:]...)
+			return true
+		}
+	}
+	return false
 }
