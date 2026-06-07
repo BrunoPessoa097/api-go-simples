@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"time"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
@@ -40,4 +41,11 @@ func (p *PostService) PostServiceAdd(post models.Post) bool {
 
 func (p *PostService) PostRepositoryId(id int64) (*models.Post, error) {
 	return p.Repo.PostRepositoryById(id)
+}
+
+func (p *PostService) PostServiceUpdate(id int64, post models.Post) error {
+	if ok := p.Repo.PostRepositoryUpdate(id, post); ok {
+		return nil
+	}
+	return errors.New("Problemas ao atualizar")
 }
