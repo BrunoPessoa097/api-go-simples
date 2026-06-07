@@ -14,7 +14,7 @@ type CreatePostDTO struct {
 
 // atualizando post
 type UpdatePostDTO struct {
-	IDUser *int64  `json:"idUser" binding:"required,min=2,max=10"`
+	IDUser *int64  `json:"idUser" binding:"required,min=2"`
 	Texto  *string `json:"texto" binding:"required,min=2,max=50"`
 }
 
@@ -33,15 +33,11 @@ func ToModelPostCreate(dto CreatePostDTO) *models.Post {
 	}
 }
 
-func ToModelPostUpdade(dto UpdatePostDTO, models models.Post) models.Post {
-	if dto.Texto != nil {
-		models.Texto = *dto.Texto
+func ToModelPostUpdade(dto UpdatePostDTO) models.Post {
+	return models.Post{
+		IDUser: *dto.IDUser,
+		Texto:  *dto.Texto,
 	}
-	if dto.IDUser != nil {
-		models.IDUser = *dto.IDUser
-	}
-	models.DtUpdate = time.Now()
-	return models
 }
 
 func ToModelPostListOne(p models.Post) ResponsesPostDTO {
