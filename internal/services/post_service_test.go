@@ -43,3 +43,16 @@ func TestPostId(t *testing.T) {
 	saida, _ := spost.PostRepositoryId(id)
 	assert.Equal(t, "Como é viver no Brasil?", saida.Texto)
 }
+
+func TestPostUpdate(t *testing.T) {
+	spost := iniciarPs()
+	id := int64(1)
+	post := models.Post{
+		ID:     1,
+		IDUser: 1,
+		Texto:  "Como é viver no Jamaica?",
+	}
+
+	saida := spost.PostServiceUpdate(id, post)
+	assert.Equal(t, nil, saida)
+}
