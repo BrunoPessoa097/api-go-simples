@@ -44,6 +44,7 @@ func TestPostId(t *testing.T) {
 	assert.Equal(t, "Como é viver no Brasil?", saida.Texto)
 }
 
+// update
 func TestPostUpdate(t *testing.T) {
 	spost := iniciarPs()
 	id := int64(1)
@@ -54,5 +55,14 @@ func TestPostUpdate(t *testing.T) {
 	}
 
 	saida := spost.PostServiceUpdate(id, post)
+	assert.Equal(t, nil, saida)
+}
+
+// delete
+func TestPostDelete(t *testing.T) {
+	spost := iniciarPs()
+	id := int64(1)
+
+	saida := spost.PostServiceDelete(id)
 	assert.Equal(t, nil, saida)
 }
