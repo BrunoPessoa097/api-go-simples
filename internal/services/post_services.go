@@ -46,6 +46,7 @@ func (p *PostService) PostRepositoryId(id int64) (*models.Post, error) {
 
 // atualizar post
 func (p *PostService) PostServiceUpdate(id int64, post models.Post) error {
+	post.ID = id
 	if ok := p.Repo.PostRepositoryUpdate(id, post); ok {
 		return nil
 	}

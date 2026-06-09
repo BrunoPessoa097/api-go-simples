@@ -113,9 +113,10 @@ func (p *PostHandlers) PostHandlersDelete(c *gin.Context) {
 	idCvt := int64(id)
 	if saida := p.Service.PostServiceDelete(idCvt); saida != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"mensagem": "delete de post com problemas",
+			"mensagem": "Postagem não encontrada",
 			"erro":     saida.Error(),
 		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"mensagem": "delete de post com sucesso",
