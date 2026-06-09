@@ -13,7 +13,8 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	// iniciando servidor
 	r := gin.Default()
-	db.MongoDB()
+	// db.MongoDB()go get -u gorm.io/driver/sqlite
+	db.Sqlite()
 	// handles inicial
 	handleDefault := handlers.NewDefaultHandle()
 	// rotas padrão
