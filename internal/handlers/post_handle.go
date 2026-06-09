@@ -100,6 +100,7 @@ func (p *PostHandlers) PostHandlersUpdate(c *gin.Context) {
 			"mensagem": "update de post",
 			"erros":    saida.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
