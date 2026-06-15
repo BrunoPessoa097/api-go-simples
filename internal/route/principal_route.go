@@ -4,16 +4,21 @@ import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
 	"github.com/BrunoPessoa097/api-go-simples/internal/start"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 // estrutura que recebe os handlers
 type RotasDefault struct {
 	handle *handlers.DefaultHandle
+	db     *gorm.DB
 }
 
 // construtor
-func NewRotasDefault(h *handlers.DefaultHandle) *RotasDefault {
-	return &RotasDefault{handle: h}
+func NewRotasDefault(h *handlers.DefaultHandle, db *gorm.DB) *RotasDefault {
+	return &RotasDefault{
+		handle: h,
+		db:     db,
+	}
 }
 
 // rota inicial
@@ -27,7 +32,7 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 	r.Group("/")
 	{
 		// criando a base de usuarios
-		st := start.NewStart()
+		st := start.NewStart(rou.db)
 		uh := st.UsuarioStart()
 		user := NewUsuarioRotas(uh)
 

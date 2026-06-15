@@ -5,15 +5,19 @@ import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
+	"gorm.io/gorm"
 )
 
 // estrutura
 type Start struct {
+	db *gorm.DB
 }
 
 // construtor
-func NewStart() *Start {
-	return &Start{}
+func NewStart(db *gorm.DB) *Start {
+	return &Start{
+		db: db,
+	}
 }
 
 // inicializando o usuarios
@@ -27,8 +31,7 @@ func (s *Start) UsuarioStart() *handlers.UsuarioHandle {
 
 // iniciando regras
 func (s *Start) RoleStart() *handlers.RolesHandler {
-	mocks := mocks.ListRoles
-	rr := repository.NewRolesRepository(mocks)
+	rr := repository.NewRolesRepository(s.db)
 	rs := services.NewRoleService(rr)
 	rh := handlers.NewRolesHandler(rs)
 
