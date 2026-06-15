@@ -5,12 +5,15 @@ import (
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func Sqlite() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("social.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("social.db"), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
-		panic("Falha ao conectar ao banco")
+		panic(err)
 	}
 	log.Println("conectado com sucesso")
 	return db
