@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/db"
 	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
+	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/route"
 	"github.com/gin-gonic/gin"
 )
@@ -14,11 +15,13 @@ func main() {
 	// iniciando servidor
 	r := gin.Default()
 	// db.MongoDB()go get -u gorm.io/driver/sqlite
-	db.Sqlite()
+	db := db.Sqlite()
+	db.AutoMigrate(&models.Roles{})
+
 	// handles inicial
 	handleDefault := handlers.NewDefaultHandle()
 	// rotas padrão
-	route := route.NewRotasDefault(handleDefault)
+	route := route.NewRotasDefault(handleDefault, db)
 
 	// routeamento
 	route.InicialRota(r)
