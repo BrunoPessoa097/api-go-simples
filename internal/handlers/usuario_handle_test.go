@@ -11,14 +11,32 @@ import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/start"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
+
+func setupDB(t *testing.T) *gorm.DB {
+	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if err := db.AutoMigrate(&models.Roles{}); err != nil {
+		t.Fatal(err)
+	}
+
+	return db
+}
 
 // tdd lista de usuarios
 func TestUsuarioListHandle(t *testing.T) {
 	// inicializando
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart()
+	s := start.NewStart(setupDB(t))
 	handle := s.UsuarioStart()
 
 	// requisição
@@ -40,7 +58,7 @@ func TestUsuarioPostHandle(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart()
+	s := start.NewStart(setupDB(t))
 	handle := s.UsuarioStart()
 
 	// entrada
@@ -78,7 +96,7 @@ func TestUsuarioByIdHandle(t *testing.T) {
 	//iniciar
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart()
+	s := start.NewStart(setupDB(t))
 	handler := s.UsuarioStart()
 
 	//requesicao
@@ -104,7 +122,7 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	//inicializando
 	gin.SetMode(gin.TestMode)
 	route := gin.Default()
-	s := start.NewStart()
+	s := start.NewStart(setupDB(t))
 	handler := s.UsuarioStart()
 
 	// entrada
@@ -137,7 +155,7 @@ func TestUsuarioDeleteHandle(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	route := gin.Default()
-	s := start.NewStart()
+	s := start.NewStart(setupDB(t))
 	handle := s.UsuarioStart()
 
 	//requisicao
