@@ -7,21 +7,38 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
+
+func setupDB(t *testing.T) *gorm.DB {
+	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if err := db.AutoMigrate(&models.Roles{}); err != nil {
+		t.Fatal(err)
+	}
+
+	return db
+}
 
 // listagem
 func TestRolesHandlerList(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := setupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
@@ -42,8 +59,8 @@ func TestRolesHandlerPost(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := setupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
@@ -74,8 +91,8 @@ func TestRolesHandlerById(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := setupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
@@ -97,8 +114,8 @@ func TestRolesHandlerUpdate(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := setupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
@@ -130,8 +147,8 @@ func TestRolesHandlerDelete(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := setupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
