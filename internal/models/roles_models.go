@@ -3,9 +3,9 @@ package models
 import "time"
 
 type Roles struct {
-	ID       int64
+	ID       int64 `gorm:"primaryKey;autoIncrement"`
 	Nivel    string
 	Regra    string
-	DtCreate time.Time
-	DtUpdate time.Time
+	DtCreate time.Time `gorm:"autoCreateTime"`
+	DtUpdate time.Time `gorm:"autoUpdateTime"`
 }
