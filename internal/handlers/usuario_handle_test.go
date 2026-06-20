@@ -8,36 +8,35 @@ import (
 	"testing"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/start"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
-func setupDB(t *testing.T) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
+// func setupDB(t *testing.T) *gorm.DB {
+// 	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
+// 		Logger: logger.Default.LogMode(logger.Silent),
+// 	})
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	if err := db.AutoMigrate(&models.Roles{}); err != nil {
-		t.Fatal(err)
-	}
+// 	if err := db.AutoMigrate(&models.Usuario{}); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	return db
-}
+// 	return db
+// }
 
 // tdd lista de usuarios
 func TestUsuarioListHandle(t *testing.T) {
 	// inicializando
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart(setupDB(t))
-	handle := s.UsuarioStart()
+	s := start.NewStart(utils.SetupDB(t))
+	handle, _ := s.UsuarioStart()
 
 	// requisição
 	req := httptest.NewRequest(http.MethodGet, "/usuarios", nil)
@@ -58,8 +57,9 @@ func TestUsuarioPostHandle(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart(setupDB(t))
-	handle := s.UsuarioStart()
+
+	s := start.NewStart(utils.SetupDB(t))
+	handle, roles := s.UsuarioStart()
 
 	// entrada
 	msg := models.Usuario{
@@ -69,6 +69,11 @@ func TestUsuarioPostHandle(t *testing.T) {
 		Role:      1,
 		Bloqueado: false,
 	}
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	roles.RolesRepositoryAdd(&role1)
 
 	// convertendo de json para bytes
 	body, _ := json.Marshal(&msg)
@@ -88,7 +93,7 @@ func TestUsuarioPostHandle(t *testing.T) {
 
 	//saida
 	assert.Equal(t, http.StatusCreated, w.Code)
-	// assert.Contains(t, w.Body.String(), resp.Nome)
+	assert.Contains(t, w.Body.String(), resp.Nome)
 }
 
 // tdd pegar usuario por id
@@ -96,8 +101,14 @@ func TestUsuarioByIdHandle(t *testing.T) {
 	//iniciar
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart(setupDB(t))
-	handler := s.UsuarioStart()
+	s := start.NewStart(utils.SetupDB(t))
+	handler, roles := s.UsuarioStart()
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	roles.RolesRepositoryAdd(&role1)
 
 	//requesicao
 	req := httptest.NewRequest(http.MethodGet, "/usuarios/1", nil)
@@ -122,8 +133,9 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	//inicializando
 	gin.SetMode(gin.TestMode)
 	route := gin.Default()
-	s := start.NewStart(setupDB(t))
-	handler := s.UsuarioStart()
+	db := utils.SetupDB(t)
+	s := start.NewStart(db)
+	handler, roles := s.UsuarioStart()
 
 	// entrada
 	msg := models.Usuario{
@@ -133,6 +145,24 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 		Role:      1,
 		Bloqueado: false,
 	}
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	roles.RolesRepositoryAdd(&role1)
+
+	msg2 := models.Usuario{
+		ID:        1,
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	repo := repository.NewUsuarioRepository(db)
+	repo.UsuarioRepositoryAdd(msg2)
 
 	//convertendo para json
 	user, _ := json.Marshal(&msg)
@@ -155,9 +185,26 @@ func TestUsuarioDeleteHandle(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	route := gin.Default()
-	s := start.NewStart(setupDB(t))
-	handle := s.UsuarioStart()
+	db := utils.SetupDB(t)
+	s := start.NewStart(db)
+	handle, roles := s.UsuarioStart()
 
+	repo := repository.NewUsuarioRepository(db)
+
+	msg := models.Usuario{
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+
+	roles.RolesRepositoryAdd(&role1)
+	repo.UsuarioRepositoryAdd(msg)
 	//requisicao
 	req := httptest.NewRequest(http.MethodDelete, "/usuarios/1", nil)
 	req.Header.Set("Content-Type", "application/json")
