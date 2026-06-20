@@ -43,10 +43,10 @@ func (rs *RoleService) RoleServiceById(id int64) (*models.Roles, error) {
 
 func (rs *RoleService) RoleServiceUpdate(id int64, role models.Roles) error {
 	role.ID = id
-	if err := rs.repo.RolesRepositoryUpdate(&role); err == nil {
-		return nil
+	if err := rs.repo.RolesRepositoryUpdate(&role); err != nil {
+		return err
 	}
-	return errors.New("Erro ao atualizar a regra")
+	return nil
 }
 
 // // deletar
