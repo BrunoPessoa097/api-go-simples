@@ -4,31 +4,14 @@ import (
 	"testing"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/go-openapi/testify/v2/assert"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
-
-func setupDB(t *testing.T) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if err := db.AutoMigrate(&models.Roles{}); err != nil {
-		t.Fatal(err)
-	}
-
-	return db
-}
 
 // listagem
 func TestList(t *testing.T) {
 	//iniciando
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	rp := NewRolesRepository(db)
 
 	//recebendo
@@ -39,7 +22,7 @@ func TestList(t *testing.T) {
 
 // busca
 func TestSearch(t *testing.T) {
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	rp := NewRolesRepository(db)
 
 	espc := "saida"
@@ -50,7 +33,7 @@ func TestSearch(t *testing.T) {
 
 // adicionar
 func TestAdd(t *testing.T) {
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	rp := NewRolesRepository(db)
 
 	espc := models.Roles{
@@ -64,7 +47,7 @@ func TestAdd(t *testing.T) {
 
 // byid
 func TestID(t *testing.T) {
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	rp := NewRolesRepository(db)
 
 	role := models.Roles{
@@ -88,7 +71,7 @@ func TestID(t *testing.T) {
 
 // update
 func TestUpdate(t *testing.T) {
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	rp := NewRolesRepository(db)
 
 	role := models.Roles{
@@ -113,7 +96,7 @@ func TestUpdate(t *testing.T) {
 
 // delete
 func TestDelete(t *testing.T) {
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	rp := NewRolesRepository(db)
 
 	role := models.Roles{
