@@ -27,7 +27,6 @@ func TestSearch(t *testing.T) {
 
 	espc := "saida"
 	saida := rp.RolesRepositoryBusca(espc)
-
 	assert.Equal(t, false, saida)
 }
 
@@ -41,7 +40,6 @@ func TestAdd(t *testing.T) {
 		Regra: "ler",
 	}
 	saida := rp.RolesRepositoryAdd(&espc)
-
 	assert.Equal(t, nil, saida)
 }
 
@@ -64,7 +62,6 @@ func TestID(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	assert.Equal(t, "ADM", saida.Nivel)
 	assert.Equal(t, "ler", saida.Regra)
 }
@@ -90,7 +87,6 @@ func TestUpdate(t *testing.T) {
 		Regra: "ler",
 	}
 	saida := rp.RolesRepositoryUpdate(&espc)
-
 	assert.Equal(t, nil, saida)
 }
 
@@ -110,6 +106,5 @@ func TestDelete(t *testing.T) {
 	}
 
 	saida := rp.RolesRepositoryDelete(int64(1))
-
 	assert.Equal(t, nil, saida)
 }
