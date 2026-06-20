@@ -17,35 +17,27 @@ func NewUsuarioService(repo *repository.UsuarioRepository) *UsuarioService {
 }
 
 // listar
-func (s *UsuarioService) UsuarioServiceList() []models.Usuario {
+func (s *UsuarioService) UsuarioServiceList() ([]models.Usuario, error) {
 	return s.repo.UsuarioRepositoryList()
 }
 
 // adiciona
 func (s *UsuarioService) UsuarioServiceAdd(user models.Usuario) error {
-	var lastId int32
-	if len(s.repo.Data) > 0 {
-		lastId = int32(len(s.repo.Data) + 1)
-	}
-
-	user.Id = lastId
-	saida := s.repo.UsuarioRepositoryAdd(user)
-	return saida
+	return s.repo.UsuarioRepositoryAdd(user)
 }
 
 // buscar por id
-func (s *UsuarioService) UsuarioServiceById(id int64) *models.Usuario {
-	return s.repo.UsuarioRepositoryById(int32(id))
+func (s *UsuarioService) UsuarioServiceById(id int32) (*models.Usuario, error) {
+	return s.repo.UsuarioRepositoryById(id)
 }
 
 // update
 func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.Usuario) error {
-	user.Id = int32(id)
-	err := s.repo.UsuarioRepositoryUpdate(int32(id), user)
-	return err
+	user.ID = int32(id)
+	return s.repo.UsuarioRepositoryUpdate(user)
 }
 
 // delete
-func (s *UsuarioService) UsuarioServiceDelete(id int) error {
-	return s.repo.UsuarioRepositoryDelete(int32(id))
+func (s *UsuarioService) UsuarioServiceDelete(id int32) error {
+	return s.repo.UsuarioRepositoryDelete(id)
 }
