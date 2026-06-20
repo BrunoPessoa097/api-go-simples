@@ -66,7 +66,7 @@ func TestRolesHandlerPost(t *testing.T) {
 
 	// modelo de negocio
 	role := models.Roles{
-		Nivel: "vend1",
+		Nivel: "venda",
 		Regra: "get,post",
 	}
 
@@ -96,6 +96,13 @@ func TestRolesHandlerById(t *testing.T) {
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
+	role := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+
+	repo.RolesRepositoryAdd(&role)
+
 	// requisicao
 	req := httptest.NewRequest(http.MethodGet, "/roles/1", nil)
 	req.Header.Set("Content-Type", "application/json")
@@ -104,7 +111,6 @@ func TestRolesHandlerById(t *testing.T) {
 	// saida
 	r.GET("/roles/:id", h.RolesHandlerById)
 	r.ServeHTTP(w, req)
-
 	// comparar
 	assert.Equal(t, http.StatusOK, w.Code)
 }
@@ -125,6 +131,13 @@ func TestRolesHandlerUpdate(t *testing.T) {
 		Nivel: "vendedor",
 		Regra: "get,post,delete,put",
 	}
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+
+	repo.RolesRepositoryAdd(&role1)
 
 	// convertendo struct para json
 	rolec, _ := json.Marshal(&role)
