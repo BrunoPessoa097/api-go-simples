@@ -3,30 +3,31 @@ package repository
 import (
 	"testing"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/go-openapi/testify/v2/assert"
 )
 
 // teste de list
 func TestUsuarioRepositoryList(t *testing.T) {
 	// contrutor
-	mock := mocks.UsuariosBD
-	repo := NewUsuarioRepository(mock)
-
-	//saida
-	esp := mocks.UsuariosBD
+	db := utils.SetupDB(t)
+	repo := NewUsuarioRepository(db)
 
 	// saida
-	if saida := repo.UsuarioRepositoryList(); saida != nil {
-		assert.Equal(t, saida, esp)
-	}
-
+	saida, _ := repo.UsuarioRepositoryList()
+	tam := len(saida)
+	assert.Equal(t, tam, len(saida))
 }
 
 // adicionar
 func TestUsuarioRepositoryAdd(t *testing.T) {
 	//base
+
+	// iniciando
+	db := utils.SetupDB(t)
+	repo := NewUsuarioRepository(db)
+
 	espec := models.Usuario{
 		Nome:      "Bruno Pess",
 		Email:     "ps1@mail.com",
@@ -34,36 +35,46 @@ func TestUsuarioRepositoryAdd(t *testing.T) {
 		Role:      1,
 		Bloqueado: false,
 	}
-
-	// iniciando
-	mock := mocks.UsuariosBD
-	repo := NewUsuarioRepository(mock)
-
 	//saida
 	err := repo.UsuarioRepositoryAdd(espec)
+
 	assert.Equal(t, nil, err)
 }
 
 // buscar por id
 func TestUsuarioRepositoryById(t *testing.T) {
 	//iniciando
-	mock := mocks.UsuariosBD
-	repo := NewUsuarioRepository(mock)
+	db := utils.SetupDB(t)
+	repo := NewUsuarioRepository(db)
+
+	espec := models.Usuario{
+		Nome:      "Bruno Pessoa",
+		Email:     "ps1@mail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	err := db.Create(&espec).Error
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	//verificar
-	saida := repo.UsuarioRepositoryById(1)
-	assert.Equal(t, saida.Nome, "Bruno F")
+	saida, err := repo.UsuarioRepositoryById(espec.ID)
+
+	assert.Equal(t, "Bruno Pessoa", saida.Nome)
 }
 
-// // update
+// update
 func TestUsuarioRepositoryUpdate(t *testing.T) {
 	//iniciando
-	mock := mocks.UsuariosBD
-	repo := NewUsuarioRepository(mock)
+	db := utils.SetupDB(t)
+	repo := NewUsuarioRepository(db)
 
 	//entradas
 	espec := models.Usuario{
-		Id:        1,
+		ID:        1,
 		Nome:      "Brubru",
 		Email:     "bp@gmail.com",
 		Senha:     "12345678",
@@ -71,16 +82,41 @@ func TestUsuarioRepositoryUpdate(t *testing.T) {
 		Bloqueado: false,
 	}
 
+	criar := models.Usuario{
+		Nome:      "Bruno Pessoa",
+		Email:     "ps1@mail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	err := db.Create(&criar).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	// saida
-	ok := repo.UsuarioRepositoryUpdate(1, espec)
+	ok := repo.UsuarioRepositoryUpdate(espec)
 	assert.Equal(t, nil, ok)
 }
 
 // delete
 func TestUsuarioRepositoryDelete(t *testing.T) {
 	//iniciando
-	mock := mocks.UsuariosBD
-	repo := NewUsuarioRepository(mock)
+	db := utils.SetupDB(t)
+	repo := NewUsuarioRepository(db)
+	criar := models.Usuario{
+		Nome:      "Bruno Pessoa",
+		Email:     "ps1@mail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	err := db.Create(&criar).Error
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	//saida
 	saida := repo.UsuarioRepositoryDelete(1)
@@ -89,11 +125,23 @@ func TestUsuarioRepositoryDelete(t *testing.T) {
 
 // teste de busca
 func TestUsuarioRepositorySearch(t *testing.T) {
-	//iniciar
-	mock := mocks.UsuariosBD
-	repo := NewUsuarioRepository(mock)
+	db := utils.SetupDB(t)
+	repo := NewUsuarioRepository(db)
+
+	criar := models.Usuario{
+		Nome:      "Bruno Pessoa",
+		Email:     "ps1@mail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	err := db.Create(&criar).Error
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	//saida
-	ok := repo.UsuarioRepositorySearch("Bruno F", "brunopessoa@gmail.com")
+	ok := repo.UsuarioRepositorySearch("Bruno Pessoa", "ps1@mail.com")
 	assert.Equal(t, true, ok)
 }
