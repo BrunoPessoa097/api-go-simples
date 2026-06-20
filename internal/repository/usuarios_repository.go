@@ -4,84 +4,78 @@ import (
 	"errors"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"gorm.io/gorm"
 )
 
 type UsuarioRepository struct {
-	Data []models.Usuario
+	Data *gorm.DB
 }
 
 // construtor
-func NewUsuarioRepository(m []models.Usuario) *UsuarioRepository {
+func NewUsuarioRepository(m *gorm.DB) *UsuarioRepository {
 	return &UsuarioRepository{
 		Data: m,
 	}
 }
 
 // listar os usuarios
-func (r *UsuarioRepository) UsuarioRepositoryList() []models.Usuario {
-	return r.Data
+func (r *UsuarioRepository) UsuarioRepositoryList() ([]models.Usuario, error) {
+	var user []models.Usuario
+	err := r.Data.Find(&user).Error
+	return user, err
 }
 
 // adicionar
 func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.Usuario) error {
 	// verificando a existencia
-	if saida := r.UsuarioRepositorySearch(user.Nome, user.Email); saida {
-		return errors.New("Usuario e/ou E-mail já cadastrados")
-	}
+	// if saida := r.UsuarioRepositorySearch(user.Nome, user.Email); saida {
+	// 	return errors.New("Usuario e/ou E-mail já cadastrados")
+	// }
 
-	// registrando o usuario
-	r.Data = append(r.Data, user)
-
-	//retorno
-	return nil
+	return r.Data.Create(&user).Error
 }
 
 // pegar por id
-func (r *UsuarioRepository) UsuarioRepositoryById(id int32) *models.Usuario {
+func (r *UsuarioRepository) UsuarioRepositoryById(id int32) (*models.Usuario, error) {
 	//buscando
-	for i := range r.Data {
-		if r.Data[i].Id == id {
-			//return
-			return &r.Data[i]
-		}
+	var user models.Usuario
+
+	err := r.Data.First(&user, id).Error
+
+	if err != nil {
+		return nil, err
 	}
 	//retorno
-	return nil
+	return &user, nil
 }
 
 // update
-func (r *UsuarioRepository) UsuarioRepositoryUpdate(id int32, update models.Usuario) error {
+func (r *UsuarioRepository) UsuarioRepositoryUpdate(update models.Usuario) error {
 	// buscando
-	if err := r.UsuarioRepositorySearch(update.Nome, update.Email); err {
-		return errors.New("usuário e email já cadastrados")
-	}
+	// if err := r.UsuarioRepositorySearch(update.Nome, update.Email); err {
+	// 	return errors.New("usuário e email já cadastrados")
+	// }
 
-	for i := range r.Data {
-		if r.Data[i].Id == id {
-			r.Data[i] = update
-			return nil
-		}
-	}
-	return errors.New("falha ao atualizar")
+	return r.Data.Save(update).Error
 }
 
 // usuario delete
 func (r *UsuarioRepository) UsuarioRepositoryDelete(id int32) error {
-	for i := range r.Data {
-		if r.Data[i].Id == id {
-			r.Data = append(r.Data[:i], r.Data[i+1:]...)
-			return nil
-		}
-	}
-	return errors.New("Usuario impossivel de excluir")
+	return r.Data.Delete(&models.Usuario{}, id).Error
 }
 
 // buscando existencia
 func (r *UsuarioRepository) UsuarioRepositorySearch(nome, email string) bool {
-	for _, user := range r.Data {
-		if user.Nome == nome || user.Email == email {
-			return true
-		}
+	var user models.Usuario
+
+	err := r.Data.Where(&models.Usuario{
+		Nome:  nome,
+		Email: email,
+	}).First(&user).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return false
 	}
-	return false
+
+	return err == nil
 }
