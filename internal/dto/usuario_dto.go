@@ -55,7 +55,7 @@ func ToUpdate(dto UsuarioUpdateDTO) models.Usuario {
 
 func ToResponse(u models.Usuario) UsuarioResponseDTO {
 	return UsuarioResponseDTO{
-		ID:        u.Id,
+		ID:        u.ID,
 		Nome:      u.Nome,
 		Email:     u.Email,
 		Role:      u.Role,
