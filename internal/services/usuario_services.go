@@ -1,18 +1,22 @@
 package services
 
 import (
+	"errors"
+
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 )
 
 type UsuarioService struct {
-	repo *repository.UsuarioRepository
+	repo  *repository.UsuarioRepository
+	roles *repository.RolesRepository
 }
 
 // construtor
-func NewUsuarioService(repo *repository.UsuarioRepository) *UsuarioService {
+func NewUsuarioService(repo *repository.UsuarioRepository, roles *repository.RolesRepository) *UsuarioService {
 	return &UsuarioService{
-		repo: repo,
+		repo:  repo,
+		roles: roles,
 	}
 }
 
@@ -23,6 +27,10 @@ func (s *UsuarioService) UsuarioServiceList() ([]models.Usuario, error) {
 
 // adiciona
 func (s *UsuarioService) UsuarioServiceAdd(user models.Usuario) error {
+	_, err := s.roles.RolesRepositoryById(user.Role)
+	if err != nil {
+		return errors.New("role não encontrada")
+	}
 	return s.repo.UsuarioRepositoryAdd(user)
 }
 
@@ -34,6 +42,10 @@ func (s *UsuarioService) UsuarioServiceById(id int32) (*models.Usuario, error) {
 // update
 func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.Usuario) error {
 	user.ID = int32(id)
+	_, err := s.roles.RolesRepositoryById(user.Role)
+	if err != nil {
+		return errors.New("role não encontrada")
+	}
 	return s.repo.UsuarioRepositoryUpdate(user)
 }
 
