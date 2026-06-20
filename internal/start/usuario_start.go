@@ -21,11 +21,12 @@ func NewStart(db *gorm.DB) *Start {
 }
 
 // inicializando o usuarios
-func (s *Start) UsuarioStart() *handlers.UsuarioHandle {
+func (s *Start) UsuarioStart() (*handlers.UsuarioHandle, *repository.RolesRepository) {
 	repo := repository.NewUsuarioRepository(s.db)
-	serv := services.NewUsuarioService(repo)
+	rr := repository.NewRolesRepository(s.db)
+	serv := services.NewUsuarioService(repo, rr)
 	hand := handlers.NewUsuarioHandle(serv)
-	return hand
+	return hand, rr
 }
 
 // iniciando regras
