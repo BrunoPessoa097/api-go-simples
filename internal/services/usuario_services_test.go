@@ -14,7 +14,8 @@ func TestUsuarioServiceList(t *testing.T) {
 	// iniciando
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
-	s := NewUsuarioService(repo)
+	rr := repository.NewRolesRepository(db)
+	s := NewUsuarioService(repo, rr)
 
 	//saida e expectativa
 	saida, _ := s.UsuarioServiceList()
@@ -29,7 +30,8 @@ func TestUsuarioServiceAdd(t *testing.T) {
 	// iniciando
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
-	s := NewUsuarioService(repo)
+	rr := repository.NewRolesRepository(db)
+	s := NewUsuarioService(repo, rr)
 
 	espec := models.Usuario{
 		Nome:      "Bruno Pess",
@@ -38,6 +40,13 @@ func TestUsuarioServiceAdd(t *testing.T) {
 		Role:      1,
 		Bloqueado: false,
 	}
+
+	role := models.Roles{
+		Nivel: "Governador",
+		Regra: "ler",
+	}
+
+	s.roles.RolesRepositoryAdd(&role)
 
 	//saida e expectativa
 	err := s.UsuarioServiceAdd(espec)
@@ -51,7 +60,8 @@ func TestUsuarioServiceById(t *testing.T) {
 	// iniciando
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
-	s := NewUsuarioService(repo)
+	rr := repository.NewRolesRepository(db)
+	s := NewUsuarioService(repo, rr)
 
 	espec := models.Usuario{
 		Nome:      "Bruno Pess",
@@ -75,7 +85,8 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 	// iniciando
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
-	s := NewUsuarioService(repo)
+	rr := repository.NewRolesRepository(db)
+	s := NewUsuarioService(repo, rr)
 
 	espec := models.Usuario{
 		ID:        1,
@@ -85,6 +96,13 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 		Role:      1,
 		Bloqueado: false,
 	}
+
+	role := models.Roles{
+		Nivel: "Governador",
+		Regra: "ler",
+	}
+
+	s.roles.RolesRepositoryAdd(&role)
 
 	s.repo.UsuarioRepositoryAdd(espec)
 
@@ -99,7 +117,8 @@ func TestUsuarioServiceDelete(t *testing.T) {
 	// iniciando
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
-	s := NewUsuarioService(repo)
+	rr := repository.NewRolesRepository(db)
+	s := NewUsuarioService(repo, rr)
 
 	espec := models.Usuario{
 		ID:        1,
