@@ -22,8 +22,7 @@ func NewStart(db *gorm.DB) *Start {
 
 // inicializando o usuarios
 func (s *Start) UsuarioStart() *handlers.UsuarioHandle {
-	mock := mocks.UsuariosBD
-	repo := repository.NewUsuarioRepository(mock)
+	repo := repository.NewUsuarioRepository(s.db)
 	serv := services.NewUsuarioService(repo)
 	hand := handlers.NewUsuarioHandle(serv)
 	return hand
