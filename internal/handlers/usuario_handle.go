@@ -25,7 +25,7 @@ func NewUsuarioHandle(s *services.UsuarioService) *UsuarioHandle {
 // listar os usuários
 func (u *UsuarioHandle) UsuarioListHandle(c *gin.Context) {
 	// recebendo os valores via json
-	user := u.services.UsuarioServiceList()
+	user, _ := u.services.UsuarioServiceList()
 
 	users := dto.ToResponseList(user)
 
@@ -56,7 +56,7 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 	if err := u.services.UsuarioServiceAdd(user); err != nil {
 		// json
 		c.JSON(http.StatusConflict, gin.H{
-			"message": "rota registrar usuario",
+			"message": "erro ao cadastrar usuário",
 			"dados":   err.Error(),
 		})
 		return
@@ -73,7 +73,7 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 	// recebendo os valores via json
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	if user := u.services.UsuarioServiceById(int64(id)); user != nil {
+	if user, _ := u.services.UsuarioServiceById(int32(id)); user != nil {
 		saida := dto.ToResponse(*user)
 		// json
 		c.JSON(http.StatusOK, gin.H{
@@ -91,7 +91,7 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	// recebendo os valores via json
 	id, _ := strconv.Atoi(c.Param("id"))
-	if err := u.services.UsuarioServiceById(int64(id)); err == nil {
+	if err, _ := u.services.UsuarioServiceById(int32(id)); err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "rota update usuario",
 			"dados":   "usuario não encontrado",
@@ -128,14 +128,14 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	if err := u.services.UsuarioServiceById(int64(id)); err == nil {
+	if err, _ := u.services.UsuarioServiceById(int32(id)); err == nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"Mensasse": "usuario não encontrado",
 		})
 		return
 	}
 
-	if saida := u.services.UsuarioServiceDelete(id); saida == nil {
+	if saida := u.services.UsuarioServiceDelete(int32(id)); saida == nil {
 		c.JSON(http.StatusNoContent, nil)
 		return
 	}
