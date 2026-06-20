@@ -31,6 +31,7 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 	// agrupamento base
 	r.Group("/")
 	{
+		//...
 		// criando a base de usuarios
 		st := start.NewStart(rou.db)
 		uh := st.UsuarioStart()

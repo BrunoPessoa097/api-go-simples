@@ -14,7 +14,7 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	// iniciando servidor
 	r := gin.Default()
-	// db.MongoDB()go get -u gorm.io/driver/sqlite
+
 	db := db.Sqlite()
 	db.AutoMigrate(&models.Roles{})
 
