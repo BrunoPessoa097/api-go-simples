@@ -20,7 +20,6 @@ func TestRoleServiceList(t *testing.T) {
 	saida := s.RoleServiceList()
 
 	espec := make([]models.Roles, len(saida))
-
 	//verificação
 	assert.Equal(t, espec, saida)
 }
@@ -34,7 +33,6 @@ func TestRoleServiceSearch(t *testing.T) {
 
 	// buscando algo
 	saida := s.RoleServiceSearch("ADM")
-
 	//saida
 	assert.Equal(t, nil, saida)
 }
@@ -54,7 +52,6 @@ func TestRoleServicePost(t *testing.T) {
 
 	//saida
 	saida := s.RoleServicePost(role)
-
 	// saida
 	assert.Equal(t, nil, saida)
 }
@@ -75,7 +72,6 @@ func TestRoleServiceById(t *testing.T) {
 
 	// expectativa
 	saida, _ := s.RoleServiceById(1)
-
 	//saido
 	assert.Equal(t, role.Nivel, saida.Nivel)
 }
@@ -102,10 +98,9 @@ func TestRoleServiceUpdate(t *testing.T) {
 	}
 
 	//saida
-	saida := s.RoleServiceUpdate(1, role)
-
+	saida := s.RoleServiceUpdate(role1.ID, role)
 	// saida
-	assert.Equal(t, nil, saida)
+	assert.NoError(t, saida)
 }
 
 // delete
