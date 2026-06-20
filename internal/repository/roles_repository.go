@@ -30,7 +30,10 @@ func (r *RolesRepository) RolesRepositoryBusca(role string) bool {
 	var roles models.Roles
 
 	err := r.Data.
-		Where("nivel = ?", role).
+		Where(&models.Roles{
+			ID:    roles.ID,
+			Nivel: roles.Nivel,
+		}).
 		First(&roles).
 		Error
 
