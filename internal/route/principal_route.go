@@ -34,7 +34,7 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 		//...
 		// criando a base de usuarios
 		st := start.NewStart(rou.db)
-		uh := st.UsuarioStart()
+		uh, _ := st.UsuarioStart()
 		user := NewUsuarioRotas(uh)
 
 		// rotas de usuários
