@@ -71,7 +71,7 @@ func TestUsuarioServiceById(t *testing.T) {
 		Bloqueado: false,
 	}
 
-	s.repo.UsuarioRepositoryAdd(espec)
+	s.repo.UsuarioRepositoryAdd(&espec)
 
 	//saida e expectativa
 	saida, _ := s.UsuarioServiceById(1)
@@ -104,7 +104,7 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 
 	s.roles.RolesRepositoryAdd(&role)
 
-	s.repo.UsuarioRepositoryAdd(espec)
+	s.repo.UsuarioRepositoryAdd(&espec)
 
 	//saida e expectativa
 	ok := s.UsuarioServiceUpdate(1, espec)
@@ -129,7 +129,7 @@ func TestUsuarioServiceDelete(t *testing.T) {
 		Bloqueado: false,
 	}
 
-	s.repo.UsuarioRepositoryAdd(espec)
+	s.repo.UsuarioRepositoryAdd(&espec)
 
 	//saida e expectativa
 	ok := s.UsuarioServiceDelete(1)
