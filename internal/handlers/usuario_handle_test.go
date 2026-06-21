@@ -147,7 +147,7 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	}
 
 	repo := repository.NewUsuarioRepository(db)
-	repo.UsuarioRepositoryAdd(msg2)
+	repo.UsuarioRepositoryAdd(&msg2)
 
 	//convertendo para json
 	user, _ := json.Marshal(&msg)
@@ -189,7 +189,7 @@ func TestUsuarioDeleteHandle(t *testing.T) {
 	}
 
 	roles.RolesRepositoryAdd(&role1)
-	repo.UsuarioRepositoryAdd(msg)
+	repo.UsuarioRepositoryAdd(&msg)
 	//requisicao
 	req := httptest.NewRequest(http.MethodDelete, "/usuarios/1", nil)
 	req.Header.Set("Content-Type", "application/json")
