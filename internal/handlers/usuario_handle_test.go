@@ -15,21 +15,6 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 )
 
-// func setupDB(t *testing.T) *gorm.DB {
-// 	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
-// 		Logger: logger.Default.LogMode(logger.Silent),
-// 	})
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-
-// 	if err := db.AutoMigrate(&models.Usuario{}); err != nil {
-// 		t.Fatal(err)
-// 	}
-
-// 	return db
-// }
-
 // tdd lista de usuarios
 func TestUsuarioListHandle(t *testing.T) {
 	// inicializando
