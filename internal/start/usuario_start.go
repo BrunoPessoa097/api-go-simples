@@ -2,7 +2,6 @@ package start
 
 import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
 	"gorm.io/gorm"
@@ -40,8 +39,7 @@ func (s *Start) RoleStart() *handlers.RolesHandler {
 
 // iniciando postagem
 func (s *Start) PostStart() *handlers.PostHandlers {
-	mocks := mocks.ListPost
-	pr := repository.NewPostRepository(mocks)
+	pr := repository.NewPostRepository(s.db)
 	ps := services.NewPostService(pr)
 	ph := handlers.NewPostHandlers(ps)
 	return ph
