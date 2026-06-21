@@ -27,11 +27,6 @@ func (r *UsuarioRepository) UsuarioRepositoryList() ([]models.Usuario, error) {
 
 // adicionar
 func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.Usuario) error {
-	// verificando a existencia
-	// if saida := r.UsuarioRepositorySearch(user.Nome, user.Email); saida {
-	// 	return errors.New("Usuario e/ou E-mail já cadastrados")
-	// }
-
 	return r.Data.Create(&user).Error
 }
 
@@ -51,11 +46,6 @@ func (r *UsuarioRepository) UsuarioRepositoryById(id int32) (*models.Usuario, er
 
 // update
 func (r *UsuarioRepository) UsuarioRepositoryUpdate(update models.Usuario) error {
-	// buscando
-	// if err := r.UsuarioRepositorySearch(update.Nome, update.Email); err {
-	// 	return errors.New("usuário e email já cadastrados")
-	// }
-
 	return r.Data.Save(update).Error
 }
 
