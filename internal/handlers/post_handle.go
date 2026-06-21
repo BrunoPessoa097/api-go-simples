@@ -22,7 +22,7 @@ func NewPostHandlers(s *services.PostService) *PostHandlers {
 
 // listagem de postagem
 func (p *PostHandlers) PostHandlersList(c *gin.Context) {
-	datas := p.Service.PostServiceList()
+	datas, _ := p.Service.PostServiceList()
 	data := dto.ToModelPostList(datas)
 	c.JSON(http.StatusOK, gin.H{
 		"mensagem": "listagem de postagem",
@@ -45,7 +45,7 @@ func (p *PostHandlers) PostHandlersPost(c *gin.Context) {
 
 	post := dto.ToModelPostCreate(input)
 
-	if ok := p.Service.PostServiceAdd(*post); ok {
+	if ok := p.Service.PostServiceAdd(post); ok != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"mensagem": "Inserir de postagem",
 		})
