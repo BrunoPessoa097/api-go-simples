@@ -40,7 +40,8 @@ func (s *Start) RoleStart() *handlers.RolesHandler {
 // iniciando postagem
 func (s *Start) PostStart() *handlers.PostHandlers {
 	pr := repository.NewPostRepository(s.db)
-	ps := services.NewPostService(pr)
+	ru := repository.NewUsuarioRepository(s.db)
+	ps := services.NewPostService(pr, ru)
 	ph := handlers.NewPostHandlers(ps)
 	return ph
 }
