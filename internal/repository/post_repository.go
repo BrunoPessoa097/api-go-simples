@@ -21,8 +21,8 @@ func (p *PostRepository) PostRepositoryList() ([]models.Post, error) {
 }
 
 // adicionar
-func (p *PostRepository) PostRepositoryAdd(post models.Post) error {
-	return p.Data.Create(&post).Error
+func (p *PostRepository) PostRepositoryAdd(post *models.Post) error {
+	return p.Data.Create(post).Error
 }
 
 // selecionar
@@ -39,7 +39,7 @@ func (p *PostRepository) PostRepositoryById(id int64) (*models.Post, error) {
 }
 
 // update
-func (p *PostRepository) PostRepositoryUpdate(update models.Post) error {
+func (p *PostRepository) PostRepositoryUpdate(update *models.Post) error {
 	return p.Data.Save(update).Error
 }
 
