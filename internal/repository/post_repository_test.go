@@ -29,7 +29,7 @@ func TestAddPost(t *testing.T) {
 		Texto:  "Vamos nessa Brasil",
 	}
 
-	saida := post.PostRepositoryAdd(postagem)
+	saida := post.PostRepositoryAdd(&postagem)
 
 	assert.Equal(t, nil, saida)
 }
@@ -73,7 +73,7 @@ func TestUpdatePost(t *testing.T) {
 
 	text := models.Post{ID: postagem.ID, IDUser: 1, Texto: "vamos falar da Itália"}
 
-	saida := post.PostRepositoryUpdate(text)
+	saida := post.PostRepositoryUpdate(&text)
 
 	assert.Equal(t, nil, saida)
 }
