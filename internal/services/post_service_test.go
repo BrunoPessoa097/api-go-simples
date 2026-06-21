@@ -1,68 +1,133 @@
 package services
 
 import (
+	"fmt"
 	"testing"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/go-openapi/testify/v2/assert"
 )
 
-func iniciarPs() *PostService {
-	mocks := mocks.ListPost
-	rpost := repository.NewPostRepository(mocks)
-	return NewPostService(rpost)
-}
-
 // listar
 func TestPostList(t *testing.T) {
-	spost := iniciarPs()
+	db := utils.SetupDB(t)
+	ruser := repository.NewUsuarioRepository(db)
+	rpost := repository.NewPostRepository(db)
+	spost := NewPostService(rpost, ruser)
 
-	saida := spost.PostServiceList()
-	assert.Equal(t, saida[0].Texto, "Como é viver no Brasil?")
+	saida, _ := spost.PostServiceList()
+	tam := make([]models.Post, len(saida))
+
+	assert.Equal(t, tam, saida)
 }
 
 // adicionar
 func TestPostAdd(t *testing.T) {
-	spost := iniciarPs()
+	db := utils.SetupDB(t)
+
+	ruser := repository.NewUsuarioRepository(db)
+	rpost := repository.NewPostRepository(db)
+	spost := NewPostService(rpost, ruser)
+
+	user := models.Usuario{
+		Nome:  "Bruno",
+		Email: "bruno@test.com",
+	}
+
+	ruser.UsuarioRepositoryAdd(&user)
+
 	post := models.Post{
-		IDUser: 1,
+		IDUser: int64(user.ID),
 		Texto:  "Vamos nessa Brasil",
 	}
 
-	saida := spost.PostServiceAdd(post)
-	assert.Equal(t, true, saida)
+	saida := spost.PostServiceAdd(&post)
+
+	assert.Equal(t, nil, saida)
 }
 
 // buscar por id
 func TestPostId(t *testing.T) {
-	spost := iniciarPs()
-	id := int64(1)
+	db := utils.SetupDB(t)
+	ruser := repository.NewUsuarioRepository(db)
+	rpost := repository.NewPostRepository(db)
+	spost := NewPostService(rpost, ruser)
 
-	saida, _ := spost.PostRepositoryId(id)
-	assert.Equal(t, "Como é viver no Brasil?", saida.Texto)
+	user := models.Usuario{
+		Nome:  "Bruno",
+		Email: "bruno@test.com",
+	}
+
+	ruser.UsuarioRepositoryAdd(&user)
+
+	post := models.Post{
+		IDUser: int64(user.ID),
+		Texto:  "Vamos nessa Brasil",
+	}
+	spost.PostServiceAdd(&post)
+
+	saida, _ := spost.PostRepositoryId(post.ID)
+
+	assert.Equal(t, post.Texto, saida.Texto)
 }
 
 // update
 func TestPostUpdate(t *testing.T) {
-	spost := iniciarPs()
-	id := int64(1)
+	db := utils.SetupDB(t)
+	ruser := repository.NewUsuarioRepository(db)
+	rpost := repository.NewPostRepository(db)
+	spost := NewPostService(rpost, ruser)
+
+	user := models.Usuario{
+		Nome:  "Bruno",
+		Email: "bruno@test.com",
+	}
+
+	ruser.UsuarioRepositoryAdd(&user)
+
 	post := models.Post{
-		ID:     1,
-		IDUser: 1,
+		IDUser: int64(user.ID),
+		Texto:  "Vamos nessa Brasil",
+	}
+
+	spost.PostServiceAdd(&post)
+
+	postUpdate := models.Post{
+		ID:     post.ID,
+		IDUser: int64(user.ID),
 		Texto:  "Como é viver no Jamaica?",
 	}
 
-	saida := spost.PostServiceUpdate(id, post)
+	saida := spost.PostServiceUpdate(post.ID, postUpdate)
+
 	assert.Equal(t, nil, saida)
 }
 
 // delete
 func TestPostDelete(t *testing.T) {
-	spost := iniciarPs()
-	id := int64(1)
+	db := utils.SetupDB(t)
+	ruser := repository.NewUsuarioRepository(db)
+	rpost := repository.NewPostRepository(db)
+	spost := NewPostService(rpost, ruser)
 
-	saida := spost.PostServiceDelete(id)
+	user := models.Usuario{
+		Nome:  "Bruno",
+		Email: "bruno@test.com",
+	}
+
+	ruser.UsuarioRepositoryAdd(&user)
+
+	post := models.Post{
+		IDUser: int64(user.ID),
+		Texto:  "Vamos nessa Brasil",
+	}
+
+	spost.PostServiceAdd(&post)
+	fmt.Println(post.ID)
+
+	saida := spost.PostServiceDelete(post.ID)
+
 	assert.Equal(t, nil, saida)
 }
