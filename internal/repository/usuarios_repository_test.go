@@ -36,7 +36,7 @@ func TestUsuarioRepositoryAdd(t *testing.T) {
 		Bloqueado: false,
 	}
 	//saida
-	err := repo.UsuarioRepositoryAdd(espec)
+	err := repo.UsuarioRepositoryAdd(&espec)
 
 	assert.Equal(t, nil, err)
 }
