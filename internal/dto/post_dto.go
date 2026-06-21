@@ -14,7 +14,7 @@ type CreatePostDTO struct {
 
 // atualizando post
 type UpdatePostDTO struct {
-	IDUser *int64  `json:"idUser" binding:"required,min=2"`
+	IDUser *int64  `json:"idUser" binding:"min=2"`
 	Texto  *string `json:"texto" binding:"required,min=2,max=50"`
 }
 
