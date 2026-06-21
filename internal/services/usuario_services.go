@@ -31,7 +31,7 @@ func (s *UsuarioService) UsuarioServiceAdd(user models.Usuario) error {
 	if err != nil {
 		return errors.New("role não encontrada")
 	}
-	return s.repo.UsuarioRepositoryAdd(user)
+	return s.repo.UsuarioRepositoryAdd(&user)
 }
 
 // buscar por id
