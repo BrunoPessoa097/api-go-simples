@@ -16,7 +16,7 @@ func main() {
 	r := gin.Default()
 
 	db := db.Sqlite()
-	db.AutoMigrate(&models.Roles{}, &models.Usuario{})
+	db.AutoMigrate(&models.Roles{}, &models.Usuario{}, &models.Post{})
 
 	// handles inicial
 	handleDefault := handlers.NewDefaultHandle()

@@ -35,7 +35,7 @@ func SetupDB(t *testing.T) *gorm.DB {
 		t.Fatal(err)
 	}
 
-	if err := db.AutoMigrate(&models.Roles{}, &models.Usuario{}); err != nil {
+	if err := db.AutoMigrate(&models.Roles{}, &models.Usuario{}, &models.Post{}); err != nil {
 		t.Fatal(err)
 	}
 
