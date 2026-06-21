@@ -26,7 +26,7 @@ func (r *UsuarioRepository) UsuarioRepositoryList() ([]models.Usuario, error) {
 }
 
 // adicionar
-func (r *UsuarioRepository) UsuarioRepositoryAdd(user models.Usuario) error {
+func (r *UsuarioRepository) UsuarioRepositoryAdd(user *models.Usuario) error {
 	return r.Data.Create(&user).Error
 }
 
