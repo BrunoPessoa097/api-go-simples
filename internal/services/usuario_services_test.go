@@ -106,9 +106,16 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 
 	s.repo.UsuarioRepositoryAdd(&espec)
 
-	//saida e expectativa
-	ok := s.UsuarioServiceUpdate(1, espec)
+	espec1 := models.Usuario{
+		Nome:      "Bruno Pess",
+		Email:     "ps1@mail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
 
+	//saida e expectativa
+	ok := s.UsuarioServiceUpdate(2, espec1)
 	assert.Equal(t, nil, ok)
 }
 
