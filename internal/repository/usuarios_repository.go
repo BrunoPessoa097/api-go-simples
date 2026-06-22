@@ -46,7 +46,7 @@ func (r *UsuarioRepository) UsuarioRepositoryById(id int32) (*models.Usuario, er
 
 // update
 func (r *UsuarioRepository) UsuarioRepositoryUpdate(update models.Usuario) error {
-	return r.Data.Save(update).Error
+	return r.Data.Model(&models.Usuario{}).Where("id=?", update.ID).Updates(update).Error
 }
 
 // usuario delete
