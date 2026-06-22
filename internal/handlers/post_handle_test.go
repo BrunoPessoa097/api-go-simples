@@ -15,15 +15,6 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 )
 
-// func inicial() (*gin.Engine, *PostHandlers) {
-// 	gin.SetMode(gin.TestMode)
-// 	r := gin.Default()
-// 	mocks := mocks.ListPost
-// 	rp := repository.NewPostRepository(mocks)
-// 	sp := services.NewPostService(rp)
-// 	return r, NewPostHandlers(sp)
-// }
-
 // teste listagem
 func TestPostHandlerList(t *testing.T) {
 	gin.SetMode(gin.TestMode)
@@ -51,13 +42,29 @@ func TestPostHandlerPost(t *testing.T) {
 	r := gin.Default()
 
 	db := utils.SetupDB(t)
+	rr := repository.NewRolesRepository(db)
 	pr := repository.NewPostRepository(db)
 	ru := repository.NewUsuarioRepository(db)
 	ps := services.NewPostService(pr, ru)
 	p := NewPostHandlers(ps)
 
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	rr.RolesRepositoryAdd(&role1)
+
+	msg := models.Usuario{
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+	ru.UsuarioRepositoryAdd(&msg)
+
 	post := models.Post{
-		IDUser: 11,
+		IDUser: 1,
 		Texto:  "Vamos nessa Brasil",
 	}
 
