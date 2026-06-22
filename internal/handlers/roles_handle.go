@@ -23,6 +23,14 @@ func NewRolesHandler(s *services.RoleService) *RolesHandler {
 // list
 func (r *RolesHandler) RolesHandlerList(c *gin.Context) {
 	data := r.service.RoleServiceList()
+	// validação
+	if len(data) == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"mensage": "Listar regras",
+			"dados":   "sem regras registradas",
+		})
+	}
+
 	datas := dto.ToResponseRolesList(data)
 
 	c.JSON(http.StatusOK, gin.H{
