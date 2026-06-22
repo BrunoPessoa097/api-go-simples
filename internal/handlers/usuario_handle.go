@@ -99,9 +99,10 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	// recebendo os valores via json
 	id, _ := strconv.Atoi(c.Param("id"))
+
 	if err, _ := u.services.UsuarioServiceById(int32(id)); err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "rota update usuario",
+			"message": "Usuario update",
 			"dados":   "usuario não encontrado",
 		})
 		return
