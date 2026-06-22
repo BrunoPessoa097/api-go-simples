@@ -153,7 +153,7 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	user, _ := json.Marshal(&msg)
 
 	//requisicao
-	req := httptest.NewRequest(http.MethodPut, "/usuarios/1", bytes.NewBuffer(user))
+	req := httptest.NewRequest(http.MethodPut, "/usuarios/2", bytes.NewBuffer(user))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -162,7 +162,8 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	route.ServeHTTP(w, req)
 
 	//saida
-	assert.Equal(t, 200, w.Code)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 // tdd deletar usuarios
