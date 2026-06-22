@@ -84,7 +84,7 @@ func TestRoleServiceUpdate(t *testing.T) {
 	s := NewRoleService(repo)
 
 	role1 := models.Roles{
-		Nivel: "Governador",
+		Nivel: "Governador1",
 		Regra: "ler",
 	}
 
@@ -120,5 +120,5 @@ func TestRoleServiceDelete(t *testing.T) {
 	//queries
 	saida := s.RoleServiceDelete(1)
 	//saida
-	assert.Equal(t, nil, saida)
+	assert.Equal(t, "regra não encontrada", saida.Error())
 }
