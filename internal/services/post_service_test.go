@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
@@ -125,7 +124,6 @@ func TestPostDelete(t *testing.T) {
 	}
 
 	spost.PostServiceAdd(&post)
-	fmt.Println(post.ID)
 
 	saida := spost.PostServiceDelete(post.ID)
 
