@@ -61,7 +61,7 @@ func (r *RolesRepository) RolesRepositoryById(id int64) (*models.Roles, error) {
 
 // update
 func (r *RolesRepository) RolesRepositoryUpdate(role *models.Roles) error {
-	return r.Data.Save(role).Error
+	return r.Data.Model(&models.Post{}).Where("id", role.ID).Updates(role).Error
 }
 
 // delete
