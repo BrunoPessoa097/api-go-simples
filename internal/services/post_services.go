@@ -26,11 +26,11 @@ func (p *PostService) PostServiceList() ([]models.Post, error) {
 
 // adicionar
 func (p *PostService) PostServiceAdd(post *models.Post) error {
-	if _, err := p.RepoUser.UsuarioRepositoryById(int32(post.IDUser)); err != nil {
-		return err
+	if saida, _ := p.RepoUser.UsuarioRepositoryById(int32(post.IDUser)); saida != nil {
+		return p.Repo.PostRepositoryAdd(post)
 	}
 
-	return p.Repo.PostRepositoryAdd(post)
+	return errors.New("usuario não encontrado")
 }
 
 // buscar por id
@@ -49,8 +49,11 @@ func (p *PostService) PostServiceUpdate(id int64, post models.Post) error {
 
 // delete
 func (p *PostService) PostServiceDelete(id int64) error {
+	if _, err := p.Repo.PostRepositoryById(id); err != nil {
+		return errors.New("Post não encontrado")
+	}
 	if err := p.Repo.PostRepositoryDelete(id); err != nil {
-		return errors.New("Erros ao deletar")
+		return errors.New("Erro ao deletar")
 	}
 	return nil
 }
