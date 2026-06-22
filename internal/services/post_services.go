@@ -2,41 +2,35 @@ package services
 
 import (
 	"errors"
-	"time"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 )
 
 type PostService struct {
-	Repo *repository.PostRepository
+	Repo     *repository.PostRepository
+	RepoUser *repository.UsuarioRepository
 }
 
-func NewPostService(r *repository.PostRepository) *PostService {
+func NewPostService(r *repository.PostRepository, u *repository.UsuarioRepository) *PostService {
 	return &PostService{
-		Repo: r,
+		Repo:     r,
+		RepoUser: u,
 	}
 }
 
 // listagem
-func (p *PostService) PostServiceList() []models.Post {
-	return p.Repo.Data
+func (p *PostService) PostServiceList() ([]models.Post, error) {
+	return p.Repo.PostRepositoryList()
 }
 
 // adicionar
-func (p *PostService) PostServiceAdd(post models.Post) bool {
-	tam := len(mocks.ListPost) - 1
-	id := mocks.ListPost[tam].ID + 1
-
-	posts := models.Post{
-		ID:       id,
-		IDUser:   post.IDUser,
-		Texto:    post.Texto,
-		DtCreate: time.Now(),
-		DtUpdate: time.Now(),
+func (p *PostService) PostServiceAdd(post *models.Post) error {
+	if saida, _ := p.RepoUser.UsuarioRepositoryById(int32(post.IDUser)); saida != nil {
+		return p.Repo.PostRepositoryAdd(post)
 	}
-	return p.Repo.PostRepositoryAdd(posts)
+
+	return errors.New("usuario não encontrado")
 }
 
 // buscar por id
@@ -46,16 +40,20 @@ func (p *PostService) PostRepositoryId(id int64) (*models.Post, error) {
 
 // atualizar post
 func (p *PostService) PostServiceUpdate(id int64, post models.Post) error {
-	if ok := p.Repo.PostRepositoryUpdate(id, post); ok {
-		return nil
+	post.ID = id
+	if err := p.Repo.PostRepositoryUpdate(&post); err != nil {
+		return errors.New("Problemas ao atualizar")
 	}
-	return errors.New("Problemas ao atualizar")
+	return nil
 }
 
 // delete
 func (p *PostService) PostServiceDelete(id int64) error {
-	if ok := p.Repo.PostRepositoryDelete(id); ok {
-		return nil
+	if _, err := p.Repo.PostRepositoryById(id); err != nil {
+		return errors.New("Post não encontrado")
 	}
-	return errors.New("Erros ao deletar")
+	if err := p.Repo.PostRepositoryDelete(id); err != nil {
+		return errors.New("Erro ao deletar")
+	}
+	return nil
 }

@@ -7,26 +7,25 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
 )
 
-func inicial() (*gin.Engine, *PostHandlers) {
-	gin.SetMode(gin.TestMode)
-	r := gin.Default()
-	mocks := mocks.ListPost
-	rp := repository.NewPostRepository(mocks)
-	sp := services.NewPostService(rp)
-	return r, NewPostHandlers(sp)
-}
-
 // teste listagem
 func TestPostHandlerList(t *testing.T) {
-	r, p := inicial()
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+
+	db := utils.SetupDB(t)
+	pr := repository.NewPostRepository(db)
+	ru := repository.NewUsuarioRepository(db)
+	ps := services.NewPostService(pr, ru)
+	p := NewPostHandlers(ps)
+
 	req := httptest.NewRequest(http.MethodGet, "/posts", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
@@ -39,9 +38,33 @@ func TestPostHandlerList(t *testing.T) {
 
 // inserir postagem
 func TestPostHandlerPost(t *testing.T) {
-	r, p := inicial()
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+
+	db := utils.SetupDB(t)
+	rr := repository.NewRolesRepository(db)
+	pr := repository.NewPostRepository(db)
+	ru := repository.NewUsuarioRepository(db)
+	ps := services.NewPostService(pr, ru)
+	p := NewPostHandlers(ps)
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	rr.RolesRepositoryAdd(&role1)
+
+	msg := models.Usuario{
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+	ru.UsuarioRepositoryAdd(&msg)
+
 	post := models.Post{
-		IDUser: 11,
+		IDUser: 1,
 		Texto:  "Vamos nessa Brasil",
 	}
 
@@ -59,7 +82,37 @@ func TestPostHandlerPost(t *testing.T) {
 
 // selecionar postagem
 func TestPostHandlerById(t *testing.T) {
-	r, p := inicial()
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+
+	db := utils.SetupDB(t)
+	pr := repository.NewPostRepository(db)
+	ru := repository.NewUsuarioRepository(db)
+	ps := services.NewPostService(pr, ru)
+	rr := repository.NewRolesRepository(db)
+	p := NewPostHandlers(ps)
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	rr.RolesRepositoryAdd(&role1)
+
+	user := models.Usuario{
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      role1.ID,
+		Bloqueado: false,
+	}
+	ru.UsuarioRepositoryAdd(&user)
+
+	post := models.Post{
+		IDUser: int64(user.ID),
+		Texto:  "Vamos nessa Brasil",
+	}
+
+	p.Service.PostServiceAdd(&post)
 
 	req := httptest.NewRequest(http.MethodGet, "/posts/1", nil)
 	req.Header.Set("Content-Type", "application/json")
@@ -73,16 +126,47 @@ func TestPostHandlerById(t *testing.T) {
 
 // atualizar postagem
 func TestPostHandlerUpdate(t *testing.T) {
-	r, p := inicial()
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+
+	db := utils.SetupDB(t)
+	pr := repository.NewPostRepository(db)
+	ru := repository.NewUsuarioRepository(db)
+	ps := services.NewPostService(pr, ru)
+	rr := repository.NewRolesRepository(db)
+	p := NewPostHandlers(ps)
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	rr.RolesRepositoryAdd(&role1)
+
+	user := models.Usuario{
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      role1.ID,
+		Bloqueado: false,
+	}
+	ru.UsuarioRepositoryAdd(&user)
+
 	post := models.Post{
+		IDUser: int64(user.ID),
+		Texto:  "Vamos nessa Brasil",
+	}
+
+	p.Service.PostServiceAdd(&post)
+
+	postUpdate := models.Post{
 		ID:     1,
 		IDUser: 12,
 		Texto:  "Bem Vindo ao Marrocos",
 	}
 
-	rpost, _ := json.Marshal(&post)
+	update, _ := json.Marshal(&postUpdate)
 
-	req := httptest.NewRequest(http.MethodPatch, "/posts/1", bytes.NewBuffer(rpost))
+	req := httptest.NewRequest(http.MethodPatch, "/posts/1", bytes.NewBuffer(update))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -94,7 +178,38 @@ func TestPostHandlerUpdate(t *testing.T) {
 
 // delete de postagem
 func TestPostHandlerDelete(t *testing.T) {
-	r, p := inicial()
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+
+	db := utils.SetupDB(t)
+	pr := repository.NewPostRepository(db)
+	ru := repository.NewUsuarioRepository(db)
+	ps := services.NewPostService(pr, ru)
+	rr := repository.NewRolesRepository(db)
+	p := NewPostHandlers(ps)
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	rr.RolesRepositoryAdd(&role1)
+
+	user := models.Usuario{
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      role1.ID,
+		Bloqueado: false,
+	}
+	ru.UsuarioRepositoryAdd(&user)
+
+	post := models.Post{
+		IDUser: int64(user.ID),
+		Texto:  "Vamos nessa Brasil",
+	}
+
+	p.Service.PostServiceAdd(&post)
+
 	req := httptest.NewRequest(http.MethodDelete, "/posts/1", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()

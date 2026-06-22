@@ -10,15 +10,16 @@ import (
 type UsuarioCriateDTO struct {
 	Nome  string `json:"nome" binding:"required,min=3,max=20"`
 	Email string `json:"email" binding:"required,email"`
+	Role  int64  `json:"role" binding:"required"`
 	Senha string `json:"senha" binding:"required,min=8,max=15"`
 }
 
 // usuario update
 type UsuarioUpdateDTO struct {
-	Nome      *string `json:"nome" binding:"min=3,max=20"`
-	Email     *string `json:"email" binding:"email"`
-	Senha     *string `json:"senha" binding:"min=8,max=15"`
-	Role      *int64  `json:"role"`
+	Nome      *string `json:"nome" validate:"omitempty,min=3,max=20"`
+	Email     *string `json:"email" validate:"omitempty,email"`
+	Senha     *string `json:"senha" validate:"omitempty,min=8,max=15"`
+	Role      *int64  `json:"role" validate:"omitempty,min=8,max=15"`
 	Bloqueado *bool   `json:"bloqueado"`
 }
 
@@ -36,7 +37,7 @@ func ToModel(dto UsuarioCriateDTO) models.Usuario {
 		Nome:      dto.Nome,
 		Email:     dto.Email,
 		Senha:     dto.Senha,
-		Role:      1,
+		Role:      dto.Role,
 		Bloqueado: false,
 		DtCreate:  time.Now(),
 		DtUpdate:  time.Now(),
@@ -44,18 +45,32 @@ func ToModel(dto UsuarioCriateDTO) models.Usuario {
 }
 
 func ToUpdate(dto UsuarioUpdateDTO) models.Usuario {
-	return models.Usuario{
-		Nome:      *dto.Nome,
-		Email:     *dto.Email,
-		Senha:     *dto.Senha,
-		Role:      *dto.Role,
-		Bloqueado: *dto.Bloqueado,
+	var user models.Usuario
+
+	if dto.Nome != nil {
+		user.Nome = *dto.Nome
 	}
+	if dto.Email != nil {
+		user.Email = *dto.Email
+	}
+	if dto.Senha != nil {
+		user.Senha = *dto.Senha
+	}
+	if dto.Role != nil {
+		user.Role = *dto.Role
+	}
+	if dto.Bloqueado != nil {
+		user.Bloqueado = *dto.Bloqueado
+	}
+
+	user.DtUpdate = time.Now()
+
+	return user
 }
 
 func ToResponse(u models.Usuario) UsuarioResponseDTO {
 	return UsuarioResponseDTO{
-		ID:        u.Id,
+		ID:        u.ID,
 		Nome:      u.Nome,
 		Email:     u.Email,
 		Role:      u.Role,

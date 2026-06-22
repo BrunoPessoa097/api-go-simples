@@ -7,6 +7,7 @@ import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/dto"
 	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,7 +26,15 @@ func NewUsuarioHandle(s *services.UsuarioService) *UsuarioHandle {
 // listar os usuários
 func (u *UsuarioHandle) UsuarioListHandle(c *gin.Context) {
 	// recebendo os valores via json
-	user := u.services.UsuarioServiceList()
+	user, _ := u.services.UsuarioServiceList()
+
+	if len(user) == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "rota listar todos os usuario listar",
+			"dados":   "Sem usuários inseridos",
+		})
+		return
+	}
 
 	users := dto.ToResponseList(user)
 
@@ -53,10 +62,12 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 
 	user := dto.ToModel(input)
 
+	user.Senha = utils.Hash(user.Senha)
+
 	if err := u.services.UsuarioServiceAdd(user); err != nil {
 		// json
 		c.JSON(http.StatusConflict, gin.H{
-			"message": "rota registrar usuario",
+			"message": "erro ao cadastrar usuário",
 			"dados":   err.Error(),
 		})
 		return
@@ -73,7 +84,7 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 	// recebendo os valores via json
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	if user := u.services.UsuarioServiceById(int64(id)); user != nil {
+	if user, _ := u.services.UsuarioServiceById(int32(id)); user != nil {
 		saida := dto.ToResponse(*user)
 		// json
 		c.JSON(http.StatusOK, gin.H{
@@ -91,9 +102,10 @@ func (u *UsuarioHandle) UsuarioByIdHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 	// recebendo os valores via json
 	id, _ := strconv.Atoi(c.Param("id"))
-	if err := u.services.UsuarioServiceById(int64(id)); err == nil {
+
+	if err, _ := u.services.UsuarioServiceById(int32(id)); err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "rota update usuario",
+			"message": "Usuario update",
 			"dados":   "usuario não encontrado",
 		})
 		return
@@ -101,6 +113,7 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 
 	var user dto.UsuarioUpdateDTO
 	pkg := pkg.NewPkg()
+
 	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
 		erros := pkg.Validator(err)
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -128,14 +141,14 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	if err := u.services.UsuarioServiceById(int64(id)); err == nil {
+	if err, _ := u.services.UsuarioServiceById(int32(id)); err == nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"Mensasse": "usuario não encontrado",
 		})
 		return
 	}
 
-	if saida := u.services.UsuarioServiceDelete(id); saida == nil {
+	if saida := u.services.UsuarioServiceDelete(int32(id)); saida == nil {
 		c.JSON(http.StatusNoContent, nil)
 		return
 	}

@@ -8,7 +8,9 @@ import (
 	"testing"
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/start"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
 )
@@ -18,8 +20,8 @@ func TestUsuarioListHandle(t *testing.T) {
 	// inicializando
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart()
-	handle := s.UsuarioStart()
+	s := start.NewStart(utils.SetupDB(t))
+	handle, _ := s.UsuarioStart()
 
 	// requisição
 	req := httptest.NewRequest(http.MethodGet, "/usuarios", nil)
@@ -40,8 +42,9 @@ func TestUsuarioPostHandle(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart()
-	handle := s.UsuarioStart()
+
+	s := start.NewStart(utils.SetupDB(t))
+	handle, roles := s.UsuarioStart()
 
 	// entrada
 	msg := models.Usuario{
@@ -51,6 +54,11 @@ func TestUsuarioPostHandle(t *testing.T) {
 		Role:      1,
 		Bloqueado: false,
 	}
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	roles.RolesRepositoryAdd(&role1)
 
 	// convertendo de json para bytes
 	body, _ := json.Marshal(&msg)
@@ -70,7 +78,7 @@ func TestUsuarioPostHandle(t *testing.T) {
 
 	//saida
 	assert.Equal(t, http.StatusCreated, w.Code)
-	// assert.Contains(t, w.Body.String(), resp.Nome)
+	assert.Contains(t, w.Body.String(), resp.Nome)
 }
 
 // tdd pegar usuario por id
@@ -78,8 +86,14 @@ func TestUsuarioByIdHandle(t *testing.T) {
 	//iniciar
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	s := start.NewStart()
-	handler := s.UsuarioStart()
+	s := start.NewStart(utils.SetupDB(t))
+	handler, roles := s.UsuarioStart()
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	roles.RolesRepositoryAdd(&role1)
 
 	//requesicao
 	req := httptest.NewRequest(http.MethodGet, "/usuarios/1", nil)
@@ -104,8 +118,9 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	//inicializando
 	gin.SetMode(gin.TestMode)
 	route := gin.Default()
-	s := start.NewStart()
-	handler := s.UsuarioStart()
+	db := utils.SetupDB(t)
+	s := start.NewStart(db)
+	handler, roles := s.UsuarioStart()
 
 	// entrada
 	msg := models.Usuario{
@@ -116,11 +131,29 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 		Bloqueado: false,
 	}
 
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+	roles.RolesRepositoryAdd(&role1)
+
+	msg2 := models.Usuario{
+		ID:        1,
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+
+	repo := repository.NewUsuarioRepository(db)
+	repo.UsuarioRepositoryAdd(&msg2)
+
 	//convertendo para json
 	user, _ := json.Marshal(&msg)
 
 	//requisicao
-	req := httptest.NewRequest(http.MethodPut, "/usuarios/1", bytes.NewBuffer(user))
+	req := httptest.NewRequest(http.MethodPut, "/usuarios/2", bytes.NewBuffer(user))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -129,7 +162,8 @@ func TestUsuarioUpdateHandle(t *testing.T) {
 	route.ServeHTTP(w, req)
 
 	//saida
-	assert.Equal(t, 200, w.Code)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 // tdd deletar usuarios
@@ -137,9 +171,26 @@ func TestUsuarioDeleteHandle(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	route := gin.Default()
-	s := start.NewStart()
-	handle := s.UsuarioStart()
+	db := utils.SetupDB(t)
+	s := start.NewStart(db)
+	handle, roles := s.UsuarioStart()
 
+	repo := repository.NewUsuarioRepository(db)
+
+	msg := models.Usuario{
+		Nome:      "Bruno Frefre",
+		Email:     "brunopessoa1234@gmail.com",
+		Senha:     "12345678",
+		Role:      1,
+		Bloqueado: false,
+	}
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+
+	roles.RolesRepositoryAdd(&role1)
+	repo.UsuarioRepositoryAdd(&msg)
 	//requisicao
 	req := httptest.NewRequest(http.MethodDelete, "/usuarios/1", nil)
 	req.Header.Set("Content-Type", "application/json")

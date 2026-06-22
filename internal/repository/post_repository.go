@@ -1,58 +1,49 @@
 package repository
 
 import (
-	"fmt"
-
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
+	"gorm.io/gorm"
 )
 
 type PostRepository struct {
-	Data []models.Post
+	Data *gorm.DB
 }
 
-func NewPostRepository(mp []models.Post) *PostRepository {
+func NewPostRepository(mp *gorm.DB) *PostRepository {
 	return &PostRepository{Data: mp}
 }
 
 // listagem de post
-func (p *PostRepository) PostRepositoryList() []models.Post {
-	return p.Data
+func (p *PostRepository) PostRepositoryList() ([]models.Post, error) {
+	var posts []models.Post
+	err := p.Data.Find(&posts).Error
+	return posts, err
 }
 
 // adicionar
-func (p *PostRepository) PostRepositoryAdd(post models.Post) bool {
-	p.Data = append(p.Data, post)
-	return true
+func (p *PostRepository) PostRepositoryAdd(post *models.Post) error {
+	return p.Data.Create(post).Error
 }
 
 // selecionar
 func (p *PostRepository) PostRepositoryById(id int64) (*models.Post, error) {
-	for i := range p.Data {
-		if p.Data[i].ID == id {
-			return &p.Data[i], nil
-		}
+	var post models.Post
+
+	err := p.Data.First(&post, id).Error
+
+	if err != nil {
+		return nil, err
 	}
-	return nil, fmt.Errorf("post não encontrado")
+
+	return &post, nil
 }
 
 // update
-func (p *PostRepository) PostRepositoryUpdate(id int64, update models.Post) bool {
-	for i := range p.Data {
-		if p.Data[i].ID == id {
-			p.Data[i] = update
-			return true
-		}
-	}
-	return false
+func (p *PostRepository) PostRepositoryUpdate(update *models.Post) error {
+	return p.Data.Save(update).Error
 }
 
 // delete
-func (p *PostRepository) PostRepositoryDelete(id int64) bool {
-	for i := range p.Data {
-		if p.Data[i].ID == id {
-			p.Data = append(p.Data[:i], p.Data[i+1:]...)
-			return true
-		}
-	}
-	return false
+func (p *PostRepository) PostRepositoryDelete(id int64) error {
+	return p.Data.Delete(&models.Post{}, id).Error
 }

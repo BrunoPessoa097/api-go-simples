@@ -5,7 +5,7 @@ import "github.com/BrunoPessoa097/api-go-simples/internal/models"
 var (
 	UsuariosBD = []models.Usuario{
 		{
-			Id:        1,
+			ID:        1,
 			Nome:      "Bruno F",
 			Email:     "brunopessoa@gmail.com",
 			Senha:     "1234",
@@ -13,7 +13,7 @@ var (
 			Bloqueado: false,
 		},
 		{
-			Id:        2,
+			ID:        2,
 			Nome:      "Bruno P",
 			Email:     "brunopessoa@gmail.com",
 			Senha:     "1234",

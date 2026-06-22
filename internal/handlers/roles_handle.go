@@ -23,6 +23,15 @@ func NewRolesHandler(s *services.RoleService) *RolesHandler {
 // list
 func (r *RolesHandler) RolesHandlerList(c *gin.Context) {
 	data := r.service.RoleServiceList()
+	// validação
+	if len(data) == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"mensage": "Listar regras",
+			"dados":   "sem regras registradas",
+		})
+		return
+	}
+
 	datas := dto.ToResponseRolesList(data)
 
 	c.JSON(http.StatusOK, gin.H{
@@ -56,7 +65,7 @@ func (r *RolesHandler) RolesHandlerPost(c *gin.Context) {
 	}
 
 	//cadastrando
-	if err := r.service.RoleServicePost(roles); !err {
+	if err := r.service.RoleServicePost(roles); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"menssagem": "erro ao cadastrar",
 		})
@@ -74,7 +83,7 @@ func (r *RolesHandler) RolesHandlerById(c *gin.Context) {
 	idC := int64(id)
 
 	// saida
-	if saida := r.service.RoleServiceById(idC); saida != nil {
+	if saida, _ := r.service.RoleServiceById(idC); saida != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Regras encontrado",
 			"dado":    dto.ToResponseRoles(*saida),
@@ -94,7 +103,7 @@ func (r *RolesHandler) RolesHandlerUpdate(c *gin.Context) {
 	idC := int64(id)
 	pkg := pkg.NewPkg()
 
-	exist := r.service.RoleServiceById(idC)
+	exist, _ := r.service.RoleServiceById(idC)
 	if exist == nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Regras nao encontrado",
@@ -143,7 +152,7 @@ func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
 	idC := int64(id)
 
 	//buscando id
-	if saida := r.service.RoleServiceById(idC); saida == nil {
+	if _, erro := r.service.RoleServiceById(idC); erro != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Regras nao encontrado",
 		})
@@ -152,12 +161,12 @@ func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
 
 	//saida
 	if err := r.service.RoleServiceDelete(idC); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Regras nao",
-		})
+		c.JSON(http.StatusNoContent, nil)
 		return
 	}
 
 	//saida sem sucesso
-	c.JSON(http.StatusNoContent, nil)
+	c.JSON(http.StatusBadRequest, gin.H{
+		"message": "Regras não encontrado",
+	})
 }

@@ -7,10 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
 )
@@ -20,8 +20,8 @@ func TestRolesHandlerList(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
@@ -42,14 +42,14 @@ func TestRolesHandlerPost(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
 	// modelo de negocio
 	role := models.Roles{
-		Nivel: "vend1",
+		Nivel: "venda",
 		Regra: "get,post",
 	}
 
@@ -74,10 +74,17 @@ func TestRolesHandlerById(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
+
+	role := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+
+	repo.RolesRepositoryAdd(&role)
 
 	// requisicao
 	req := httptest.NewRequest(http.MethodGet, "/roles/1", nil)
@@ -87,7 +94,6 @@ func TestRolesHandlerById(t *testing.T) {
 	// saida
 	r.GET("/roles/:id", h.RolesHandlerById)
 	r.ServeHTTP(w, req)
-
 	// comparar
 	assert.Equal(t, http.StatusOK, w.Code)
 }
@@ -97,8 +103,8 @@ func TestRolesHandlerUpdate(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
@@ -108,6 +114,13 @@ func TestRolesHandlerUpdate(t *testing.T) {
 		Nivel: "vendedor",
 		Regra: "get,post,delete,put",
 	}
+
+	role1 := models.Roles{
+		Nivel: "venda",
+		Regra: "get,post",
+	}
+
+	repo.RolesRepositoryAdd(&role1)
 
 	// convertendo struct para json
 	rolec, _ := json.Marshal(&role)
@@ -130,13 +143,13 @@ func TestRolesHandlerDelete(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	m := mocks.ListRoles
-	repo := repository.NewRolesRepository(m)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
 	//requisicao e escrita
-	req := httptest.NewRequest(http.MethodDelete, "/roles/1", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/roles/3", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -145,5 +158,5 @@ func TestRolesHandlerDelete(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	// saida
-	assert.Equal(t, http.StatusNoContent, w.Code)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }

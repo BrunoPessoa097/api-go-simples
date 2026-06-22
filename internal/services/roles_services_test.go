@@ -3,45 +3,45 @@ package services
 import (
 	"testing"
 
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/go-openapi/testify/v2/assert"
 )
 
 // listagem
 func TestRoleServiceList(t *testing.T) {
 	//iniciando
-	mc := mocks.ListRoles
-	repo := repository.NewRolesRepository(mc)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := NewRoleService(repo)
 
 	//listagem
 	saida := s.RoleServiceList()
 
+	espec := make([]models.Roles, len(saida))
 	//verificação
-	assert.Equal(t, "ADM", saida[0].Nivel)
+	assert.Equal(t, espec, saida)
 }
 
 // busca
 func TestRoleServiceSearch(t *testing.T) {
 	//iniciando
-	mo := mocks.ListRoles
-	rp := repository.NewRolesRepository(mo)
-	s := NewRoleService(rp)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
+	s := NewRoleService(repo)
 
 	// buscando algo
 	saida := s.RoleServiceSearch("ADM")
-
 	//saida
-	assert.Equal(t, "Nivel já cadastrado", saida.Error())
+	assert.Equal(t, nil, saida)
 }
 
 // adicao
 func TestRoleServicePost(t *testing.T) {
 	//iniciar
-	mocks := mocks.ListRoles
-	repo := repository.NewRolesRepository(mocks)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := NewRoleService(repo)
 
 	//modelo
@@ -52,32 +52,43 @@ func TestRoleServicePost(t *testing.T) {
 
 	//saida
 	saida := s.RoleServicePost(role)
-
 	// saida
-	assert.Equal(t, true, saida)
+	assert.Equal(t, nil, saida)
 }
 
 // busca por id
 func TestRoleServiceById(t *testing.T) {
 	//iniciando
-	mocks := mocks.ListRoles
-	repo := repository.NewRolesRepository(mocks)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := NewRoleService(repo)
 
-	// expectativa
-	esp := "ADM"
-	saida := s.RoleServiceById(1)
+	role := models.Roles{
+		Nivel: "Governador",
+		Regra: "ler",
+	}
 
+	s.RoleServicePost(role)
+
+	// expectativa
+	saida, _ := s.RoleServiceById(1)
 	//saido
-	assert.Equal(t, esp, saida.Nivel)
+	assert.Equal(t, role.Nivel, saida.Nivel)
 }
 
 // update
 func TestRoleServiceUpdate(t *testing.T) {
 	//iniciar
-	mocks := mocks.ListRoles
-	repo := repository.NewRolesRepository(mocks)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := NewRoleService(repo)
+
+	role1 := models.Roles{
+		Nivel: "Governador1",
+		Regra: "ler",
+	}
+
+	s.RoleServicePost(role1)
 
 	//modelo
 	role := models.Roles{
@@ -87,22 +98,27 @@ func TestRoleServiceUpdate(t *testing.T) {
 	}
 
 	//saida
-	saida := s.RoleServiceUpdate(1, role)
-
+	saida := s.RoleServiceUpdate(role1.ID, role)
 	// saida
-	assert.Equal(t, nil, saida)
+	assert.NoError(t, saida)
 }
 
 // delete
 func TestRoleServiceDelete(t *testing.T) {
 	// inicializando
-	mocks := mocks.ListRoles
-	repo := repository.NewRolesRepository(mocks)
+	db := utils.SetupDB(t)
+	repo := repository.NewRolesRepository(db)
 	s := NewRoleService(repo)
+
+	role1 := models.Roles{
+		Nivel: "Governador",
+		Regra: "ler",
+	}
+
+	s.RoleServicePost(role1)
 
 	//queries
 	saida := s.RoleServiceDelete(1)
-
 	//saida
-	assert.Equal(t, nil, saida)
+	assert.Equal(t, "regra não encontrada", saida.Error())
 }

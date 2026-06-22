@@ -22,7 +22,16 @@ func NewPostHandlers(s *services.PostService) *PostHandlers {
 
 // listagem de postagem
 func (p *PostHandlers) PostHandlersList(c *gin.Context) {
-	datas := p.Service.PostServiceList()
+	datas, _ := p.Service.PostServiceList()
+
+	if len(datas) == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"mensage": "Listar regras",
+			"dados":   "sem regras registradas",
+		})
+		return
+	}
+
 	data := dto.ToModelPostList(datas)
 	c.JSON(http.StatusOK, gin.H{
 		"mensagem": "listagem de postagem",
@@ -45,15 +54,16 @@ func (p *PostHandlers) PostHandlersPost(c *gin.Context) {
 
 	post := dto.ToModelPostCreate(input)
 
-	if ok := p.Service.PostServiceAdd(*post); ok {
-		c.JSON(http.StatusOK, gin.H{
-			"mensagem": "Inserir de postagem",
+	if ok := p.Service.PostServiceAdd(post); ok != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"mensagem": "Post nao inserido",
+			"erro":     ok.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusBadRequest, gin.H{
-		"mensagem": "Post nao inserido",
+	c.JSON(http.StatusOK, gin.H{
+		"mensagem": "Post inserido",
 	})
 }
 
@@ -93,13 +103,19 @@ func (p *PostHandlers) PostHandlersUpdate(c *gin.Context) {
 		return
 	}
 
+	post, _ := p.Service.PostRepositoryId(idCvt)
+
+	ui := int64(post.IDUser)
+	input.IDUser = &ui
+
 	update := dto.ToModelPostUpdade(input)
 
 	if saida := p.Service.PostServiceUpdate(idCvt, update); saida != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"mensagem": "update de post",
+			"mensagem": "update de post erro",
 			"erros":    saida.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -111,11 +127,13 @@ func (p *PostHandlers) PostHandlersUpdate(c *gin.Context) {
 func (p *PostHandlers) PostHandlersDelete(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	idCvt := int64(id)
-	if saida := p.Service.PostServiceDelete(idCvt); saida != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"mensagem": "delete de post com problemas",
-			"erro":     saida.Error(),
+
+	if err := p.Service.PostServiceDelete(idCvt); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"mensagem": "Postagem não encontrada",
+			"erro":     err.Error(),
 		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"mensagem": "delete de post com sucesso",

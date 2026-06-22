@@ -2,33 +2,35 @@ package start
 
 import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/handlers"
-	"github.com/BrunoPessoa097/api-go-simples/internal/mocks"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
+	"gorm.io/gorm"
 )
 
 // estrutura
 type Start struct {
+	db *gorm.DB
 }
 
 // construtor
-func NewStart() *Start {
-	return &Start{}
+func NewStart(db *gorm.DB) *Start {
+	return &Start{
+		db: db,
+	}
 }
 
 // inicializando o usuarios
-func (s *Start) UsuarioStart() *handlers.UsuarioHandle {
-	mock := mocks.UsuariosBD
-	repo := repository.NewUsuarioRepository(mock)
-	serv := services.NewUsuarioService(repo)
+func (s *Start) UsuarioStart() (*handlers.UsuarioHandle, *repository.RolesRepository) {
+	repo := repository.NewUsuarioRepository(s.db)
+	rr := repository.NewRolesRepository(s.db)
+	serv := services.NewUsuarioService(repo, rr)
 	hand := handlers.NewUsuarioHandle(serv)
-	return hand
+	return hand, rr
 }
 
 // iniciando regras
 func (s *Start) RoleStart() *handlers.RolesHandler {
-	mocks := mocks.ListRoles
-	rr := repository.NewRolesRepository(mocks)
+	rr := repository.NewRolesRepository(s.db)
 	rs := services.NewRoleService(rr)
 	rh := handlers.NewRolesHandler(rs)
 
@@ -37,9 +39,9 @@ func (s *Start) RoleStart() *handlers.RolesHandler {
 
 // iniciando postagem
 func (s *Start) PostStart() *handlers.PostHandlers {
-	mocks := mocks.ListPost
-	pr := repository.NewPostRepository(mocks)
-	ps := services.NewPostService(pr)
+	pr := repository.NewPostRepository(s.db)
+	ru := repository.NewUsuarioRepository(s.db)
+	ps := services.NewPostService(pr, ru)
 	ph := handlers.NewPostHandlers(ps)
 	return ph
 }
