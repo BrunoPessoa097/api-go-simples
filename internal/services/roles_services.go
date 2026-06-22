@@ -52,7 +52,7 @@ func (rs *RoleService) RoleServiceUpdate(id int64, role models.Roles) error {
 // // deletar
 func (rs *RoleService) RoleServiceDelete(id int64) error {
 	if err := rs.repo.RolesRepositoryDelete(id); err != nil {
-		return errors.New("regra não encontrada")
+		return nil
 	}
-	return nil
+	return errors.New("regra não encontrada")
 }
