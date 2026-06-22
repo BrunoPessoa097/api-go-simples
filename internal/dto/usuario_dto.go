@@ -10,6 +10,7 @@ import (
 type UsuarioCriateDTO struct {
 	Nome  string `json:"nome" binding:"required,min=3,max=20"`
 	Email string `json:"email" binding:"required,email"`
+	Role  int64  `json:"role" binding:"required"`
 	Senha string `json:"senha" binding:"required,min=8,max=15"`
 }
 
@@ -36,7 +37,7 @@ func ToModel(dto UsuarioCriateDTO) models.Usuario {
 		Nome:      dto.Nome,
 		Email:     dto.Email,
 		Senha:     dto.Senha,
-		Role:      1,
+		Role:      dto.Role,
 		Bloqueado: false,
 		DtCreate:  time.Now(),
 		DtUpdate:  time.Now(),
