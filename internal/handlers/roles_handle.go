@@ -29,6 +29,7 @@ func (r *RolesHandler) RolesHandlerList(c *gin.Context) {
 			"mensage": "Listar regras",
 			"dados":   "sem regras registradas",
 		})
+		return
 	}
 
 	datas := dto.ToResponseRolesList(data)
