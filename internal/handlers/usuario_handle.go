@@ -27,6 +27,14 @@ func (u *UsuarioHandle) UsuarioListHandle(c *gin.Context) {
 	// recebendo os valores via json
 	user, _ := u.services.UsuarioServiceList()
 
+	if len(user) == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "rota listar todos os usuario listar",
+			"dados":   "Sem usuários inseridos",
+		})
+		return
+	}
+
 	users := dto.ToResponseList(user)
 
 	// json
@@ -101,6 +109,7 @@ func (u *UsuarioHandle) UsuarioUpdateHandle(c *gin.Context) {
 
 	var user dto.UsuarioUpdateDTO
 	pkg := pkg.NewPkg()
+
 	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
 		erros := pkg.Validator(err)
 		c.JSON(http.StatusBadRequest, gin.H{
