@@ -7,6 +7,7 @@ import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/dto"
 	"github.com/BrunoPessoa097/api-go-simples/internal/pkg"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -60,6 +61,8 @@ func (u *UsuarioHandle) UsuarioPostHandle(c *gin.Context) {
 	}
 
 	user := dto.ToModel(input)
+
+	user.Senha = utils.Hash(user.Senha)
 
 	if err := u.services.UsuarioServiceAdd(user); err != nil {
 		// json
