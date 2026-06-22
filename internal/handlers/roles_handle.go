@@ -143,7 +143,7 @@ func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
 	idC := int64(id)
 
 	//buscando id
-	if _, erro := r.service.RoleServiceById(idC); erro == nil {
+	if _, erro := r.service.RoleServiceById(idC); erro != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Regras nao encontrado",
 		})
@@ -152,12 +152,12 @@ func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
 
 	//saida
 	if err := r.service.RoleServiceDelete(idC); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Regras não encontrado",
-		})
+		c.JSON(http.StatusNoContent, nil)
 		return
 	}
 
 	//saida sem sucesso
-	c.JSON(http.StatusNoContent, nil)
+	c.JSON(http.StatusBadRequest, gin.H{
+		"message": "Regras não encontrado",
+	})
 }
