@@ -8,6 +8,7 @@ import (
 
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/joho/godotenv"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -40,4 +41,15 @@ func SetupDB(t *testing.T) *gorm.DB {
 	}
 
 	return db
+}
+
+func Hash(senha string) string {
+	byte, _ := bcrypt.GenerateFromPassword([]byte(senha), 10)
+	return string(byte)
+}
+
+func Comparar(hash string, senha string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(senha))
+
+	return err == nil
 }
