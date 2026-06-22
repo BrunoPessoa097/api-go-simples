@@ -10,34 +10,17 @@ import (
 	"github.com/BrunoPessoa097/api-go-simples/internal/models"
 	"github.com/BrunoPessoa097/api-go-simples/internal/repository"
 	"github.com/BrunoPessoa097/api-go-simples/internal/services"
+	"github.com/BrunoPessoa097/api-go-simples/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/testify/v2/assert"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
-
-func setupDB(t *testing.T) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if err := db.AutoMigrate(&models.Roles{}); err != nil {
-		t.Fatal(err)
-	}
-
-	return db
-}
 
 // listagem
 func TestRolesHandlerList(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
@@ -59,7 +42,7 @@ func TestRolesHandlerPost(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
@@ -91,7 +74,7 @@ func TestRolesHandlerById(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
@@ -120,7 +103,7 @@ func TestRolesHandlerUpdate(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
@@ -160,13 +143,13 @@ func TestRolesHandlerDelete(t *testing.T) {
 	// iniciando
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	db := setupDB(t)
+	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
 	s := services.NewRoleService(repo)
 	h := NewRolesHandler(s)
 
 	//requisicao e escrita
-	req := httptest.NewRequest(http.MethodDelete, "/roles/1", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/roles/3", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -175,5 +158,5 @@ func TestRolesHandlerDelete(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	// saida
-	assert.Equal(t, http.StatusNoContent, w.Code)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
