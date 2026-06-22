@@ -62,7 +62,7 @@ func (p *PostHandlers) PostHandlersPost(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusBadRequest, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"mensagem": "Post inserido",
 	})
 }
