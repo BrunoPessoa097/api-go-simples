@@ -45,11 +45,13 @@ func (s *UsuarioService) UsuarioServiceById(id int32) (*models.Usuario, error) {
 // update
 func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.Usuario) error {
 	user.ID = int32(id)
-	_, err := s.roles.RolesRepositoryById(user.Role)
-	if err != nil {
-		return errors.New("role não encontrada")
+	if verifi := s.repo.UsuarioRepositorySearch(user.Nome, user.Email); verifi != true {
+		if _, err := s.roles.RolesRepositoryById(int64(user.ID)); err != nil {
+			return s.repo.UsuarioRepositoryUpdate(user)
+		}
+		return errors.New("usuario não encontrada")
 	}
-	return s.repo.UsuarioRepositoryUpdate(user)
+	return errors.New("não pode haver duplicados")
 }
 
 // delete
