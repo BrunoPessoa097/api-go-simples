@@ -49,5 +49,10 @@ func (rou *RotasDefault) InicialRota(r *gin.Engine) {
 		ps := st.PostStart()
 		pp := NewPostRoutas(ps)
 		pp.PostRotas(r)
+
+		//login
+		ls := st.LoginStart()
+		lr := NewLoginRoute(ls)
+		lr.Login(r)
 	}
 }
