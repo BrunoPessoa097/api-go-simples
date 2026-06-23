@@ -44,7 +44,7 @@ func SetupDB(t *testing.T) *gorm.DB {
 }
 
 func Hash(senha string) string {
-	byte, _ := bcrypt.GenerateFromPassword([]byte(senha), 10)
+	byte, _ := bcrypt.GenerateFromPassword([]byte(senha), bcrypt.DefaultCost)
 	return string(byte)
 }
 
