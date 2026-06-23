@@ -27,7 +27,7 @@ func (s *UsuarioService) UsuarioServiceList() ([]models.Usuario, error) {
 
 // adiciona
 func (s *UsuarioService) UsuarioServiceAdd(user models.Usuario) error {
-	if verifi := s.repo.UsuarioRepositorySearch(user.Nome, user.Email); verifi != true {
+	if _, verifi := s.repo.UsuarioRepositorySearch(user.Nome, user.Email); verifi != true {
 		if _, err := s.roles.RolesRepositoryById(user.Role); err == nil {
 			return s.repo.UsuarioRepositoryAdd(&user)
 		}
@@ -45,7 +45,7 @@ func (s *UsuarioService) UsuarioServiceById(id int32) (*models.Usuario, error) {
 // update
 func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.Usuario) error {
 	user.ID = int32(id)
-	if verifi := s.repo.UsuarioRepositorySearch(user.Nome, user.Email); verifi != true {
+	if _, verifi := s.repo.UsuarioRepositorySearch(user.Nome, user.Email); verifi != true {
 		if _, err := s.roles.RolesRepositoryById(int64(user.ID)); err != nil {
 			return s.repo.UsuarioRepositoryUpdate(user)
 		}
