@@ -45,3 +45,9 @@ func (s *Start) PostStart() *handlers.PostHandlers {
 	ph := handlers.NewPostHandlers(ps)
 	return ph
 }
+
+// inicio do login
+func (s *Start) LoginStart() *handlers.Importante {
+	ru := repository.NewUsuarioRepository(s.db)
+	return handlers.NewImporteHandle(ru)
+}
