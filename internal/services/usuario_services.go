@@ -54,7 +54,7 @@ func (s *UsuarioService) UsuarioServiceUpdate(id int32, user models.Usuario) err
 		}
 		return errors.New("usuario não encontrada")
 	}
-	return errors.New("não pode haver duplicados")
+	return errors.New("não pode haver dados duplicados")
 }
 
 // delete
