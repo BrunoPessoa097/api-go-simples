@@ -27,14 +27,17 @@ func (s *UsuarioService) UsuarioServiceList() ([]models.Usuario, error) {
 
 // adiciona
 func (s *UsuarioService) UsuarioServiceAdd(user models.Usuario) error {
-	if _, verifi := s.repo.UsuarioRepositorySearch(user.Nome, user.Email); verifi != true {
-		if _, err := s.roles.RolesRepositoryById(user.Role); err == nil {
-			return s.repo.UsuarioRepositoryAdd(&user)
-		}
+	if _, verifi := s.repo.UsuarioRepositorySearch(user.Nome, ""); verifi == true {
+		return errors.New("usuário já cadastrado")
+	}
+	if _, verifi := s.repo.UsuarioRepositorySearch("", user.Email); verifi == true {
+		return errors.New("e-mail já cadastrado")
+	}
+	if _, err := s.roles.RolesRepositoryById(user.Role); err != nil {
 		return errors.New("regra não encontrada")
 	}
-
-	return errors.New("usuário já cadastrado")
+	// return errors.New("regra não encontrada")
+	return s.repo.UsuarioRepositoryAdd(&user)
 }
 
 // buscar por id
