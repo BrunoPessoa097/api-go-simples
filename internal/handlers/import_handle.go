@@ -35,7 +35,7 @@ func (i *Importante) ImportanteLogin(c *gin.Context) {
 
 	loginDTO := dto.ToLogin(&login)
 
-	saida, err := i.repo.UsuarioRepositorySearch("", loginDTO.Email)
+	saida, err := i.repo.UsuarioRepositorySearch("", loginDTO.Email, 0)
 
 	if !err {
 		c.JSON(http.StatusOK, gin.H{
