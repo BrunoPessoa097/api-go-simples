@@ -20,6 +20,7 @@ type UpdatePostDTO struct {
 
 // responss
 type ResponsesPostDTO struct {
+	ID     int64  `json:"id"`
 	IDUser int64  `json:"idUser"`
 	Texto  string `json:"texto"`
 }
@@ -51,6 +52,7 @@ func ToModelPostUpdade(dto UpdatePostDTO) models.Post {
 
 func ToModelPostListOne(p models.Post) ResponsesPostDTO {
 	return ResponsesPostDTO{
+		ID:     p.ID,
 		IDUser: p.IDUser,
 		Texto:  p.Texto,
 	}
