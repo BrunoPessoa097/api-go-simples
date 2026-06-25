@@ -22,7 +22,8 @@ func TestRolesHandlerList(t *testing.T) {
 	r := gin.Default()
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := services.NewRoleService(repo)
+	repoUser := repository.NewUsuarioRepository(db)
+	s := services.NewRoleService(repo, repoUser)
 	h := NewRolesHandler(s)
 
 	// requisicao tipo json
@@ -44,12 +45,14 @@ func TestRolesHandlerPost(t *testing.T) {
 	r := gin.Default()
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := services.NewRoleService(repo)
+	repoUser := repository.NewUsuarioRepository(db)
+	s := services.NewRoleService(repo, repoUser)
 	h := NewRolesHandler(s)
 
 	// modelo de negocio
 	role := models.Roles{
 		Nivel: "venda",
+		Rotas: "usuario",
 		Regra: "get,post",
 	}
 
@@ -76,7 +79,8 @@ func TestRolesHandlerById(t *testing.T) {
 	r := gin.Default()
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := services.NewRoleService(repo)
+	repoUser := repository.NewUsuarioRepository(db)
+	s := services.NewRoleService(repo, repoUser)
 	h := NewRolesHandler(s)
 
 	role := models.Roles{
@@ -105,13 +109,15 @@ func TestRolesHandlerUpdate(t *testing.T) {
 	r := gin.Default()
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := services.NewRoleService(repo)
+	repoUser := repository.NewUsuarioRepository(db)
+	s := services.NewRoleService(repo, repoUser)
 	h := NewRolesHandler(s)
 
 	// modelo de negocio
 	role := models.Roles{
 		ID:    1,
 		Nivel: "vendedor",
+		Rotas: "usuario",
 		Regra: "get,post,delete,put",
 	}
 
@@ -133,7 +139,6 @@ func TestRolesHandlerUpdate(t *testing.T) {
 	// saida
 	r.PUT("/roles/:id", h.RolesHandlerUpdate)
 	r.ServeHTTP(w, req)
-
 	// comparar
 	assert.Equal(t, http.StatusOK, w.Code)
 }
@@ -145,7 +150,8 @@ func TestRolesHandlerDelete(t *testing.T) {
 	r := gin.Default()
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := services.NewRoleService(repo)
+	repoUser := repository.NewUsuarioRepository(db)
+	s := services.NewRoleService(repo, repoUser)
 	h := NewRolesHandler(s)
 
 	//requisicao e escrita

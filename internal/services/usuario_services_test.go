@@ -15,7 +15,8 @@ func TestUsuarioServiceList(t *testing.T) {
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
 	rr := repository.NewRolesRepository(db)
-	s := NewUsuarioService(repo, rr)
+	rp := repository.NewPostRepository(db)
+	s := NewUsuarioService(repo, rr, rp)
 
 	//saida e expectativa
 	saida, _ := s.UsuarioServiceList()
@@ -31,7 +32,8 @@ func TestUsuarioServiceAdd(t *testing.T) {
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
 	rr := repository.NewRolesRepository(db)
-	s := NewUsuarioService(repo, rr)
+	rp := repository.NewPostRepository(db)
+	s := NewUsuarioService(repo, rr, rp)
 
 	espec := models.Usuario{
 		Nome:      "Bruno Pess",
@@ -61,7 +63,8 @@ func TestUsuarioServiceById(t *testing.T) {
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
 	rr := repository.NewRolesRepository(db)
-	s := NewUsuarioService(repo, rr)
+	rp := repository.NewPostRepository(db)
+	s := NewUsuarioService(repo, rr, rp)
 
 	espec := models.Usuario{
 		Nome:      "Bruno Pess",
@@ -86,7 +89,8 @@ func TestUsuarioServiceUpdate(t *testing.T) {
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
 	rr := repository.NewRolesRepository(db)
-	s := NewUsuarioService(repo, rr)
+	rp := repository.NewPostRepository(db)
+	s := NewUsuarioService(repo, rr, rp)
 
 	espec := models.Usuario{
 		ID:        1,
@@ -125,7 +129,8 @@ func TestUsuarioServiceDelete(t *testing.T) {
 	db := utils.SetupDB(t)
 	repo := repository.NewUsuarioRepository(db)
 	rr := repository.NewRolesRepository(db)
-	s := NewUsuarioService(repo, rr)
+	rp := repository.NewPostRepository(db)
+	s := NewUsuarioService(repo, rr, rp)
 
 	espec := models.Usuario{
 		ID:        1,

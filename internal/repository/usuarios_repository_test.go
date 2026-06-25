@@ -142,6 +142,6 @@ func TestUsuarioRepositorySearch(t *testing.T) {
 	}
 
 	//saida
-	_, ok := repo.UsuarioRepositorySearch("Bruno Pessoa", "ps1@mail.com")
+	_, ok := repo.UsuarioRepositorySearch("Bruno Pessoa", "ps1@mail.com", 0)
 	assert.Equal(t, true, ok)
 }
