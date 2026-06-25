@@ -55,12 +55,13 @@ func (r *UsuarioRepository) UsuarioRepositoryDelete(id int32) error {
 }
 
 // buscando existencia
-func (r *UsuarioRepository) UsuarioRepositorySearch(nome, email string) (*models.Usuario, bool) {
+func (r *UsuarioRepository) UsuarioRepositorySearch(nome, email string, role int64) (*models.Usuario, bool) {
 	var user models.Usuario
 
 	err := r.Data.Where(&models.Usuario{
 		Nome:  nome,
 		Email: email,
+		Role:  role,
 	}).First(&user).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
