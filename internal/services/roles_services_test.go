@@ -14,7 +14,8 @@ func TestRoleServiceList(t *testing.T) {
 	//iniciando
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := NewRoleService(repo)
+	repoU := repository.NewUsuarioRepository(db)
+	s := NewRoleService(repo, repoU)
 
 	//listagem
 	saida := s.RoleServiceList()
@@ -29,7 +30,8 @@ func TestRoleServiceSearch(t *testing.T) {
 	//iniciando
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := NewRoleService(repo)
+	repoU := repository.NewUsuarioRepository(db)
+	s := NewRoleService(repo, repoU)
 
 	// buscando algo
 	saida := s.RoleServiceSearch("ADM")
@@ -42,7 +44,8 @@ func TestRoleServicePost(t *testing.T) {
 	//iniciar
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := NewRoleService(repo)
+	repoU := repository.NewUsuarioRepository(db)
+	s := NewRoleService(repo, repoU)
 
 	//modelo
 	role := models.Roles{
@@ -61,7 +64,8 @@ func TestRoleServiceById(t *testing.T) {
 	//iniciando
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := NewRoleService(repo)
+	repoU := repository.NewUsuarioRepository(db)
+	s := NewRoleService(repo, repoU)
 
 	role := models.Roles{
 		Nivel: "Governador",
@@ -81,7 +85,8 @@ func TestRoleServiceUpdate(t *testing.T) {
 	//iniciar
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := NewRoleService(repo)
+	repoU := repository.NewUsuarioRepository(db)
+	s := NewRoleService(repo, repoU)
 
 	role1 := models.Roles{
 		Nivel: "Governador1",
@@ -108,7 +113,8 @@ func TestRoleServiceDelete(t *testing.T) {
 	// inicializando
 	db := utils.SetupDB(t)
 	repo := repository.NewRolesRepository(db)
-	s := NewRoleService(repo)
+	repoU := repository.NewUsuarioRepository(db)
+	s := NewRoleService(repo, repoU)
 
 	role1 := models.Roles{
 		Nivel: "Governador",
@@ -120,5 +126,5 @@ func TestRoleServiceDelete(t *testing.T) {
 	//queries
 	saida := s.RoleServiceDelete(1)
 	//saida
-	assert.Equal(t, "regra não encontrada", saida.Error())
+	assert.Equal(t, nil, saida)
 }
