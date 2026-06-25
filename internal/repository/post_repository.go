@@ -47,3 +47,10 @@ func (p *PostRepository) PostRepositoryUpdate(update *models.Post) error {
 func (p *PostRepository) PostRepositoryDelete(id int64) error {
 	return p.Data.Delete(&models.Post{}, id).Error
 }
+
+// pesquisar por post/user
+func (p *PostRepository) PostRepositorySearch(IDUser int64) error {
+	var post models.Post
+
+	return p.Data.Where(&models.Post{IDUser: IDUser}).First(&post).Error
+}
