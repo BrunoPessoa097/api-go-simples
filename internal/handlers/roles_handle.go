@@ -161,12 +161,15 @@ func (r *RolesHandler) RolesHandlerDelete(c *gin.Context) {
 
 	//saida
 	if err := r.service.RoleServiceDelete(idC); err != nil {
-		c.JSON(http.StatusNoContent, nil)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Problemas ao excluir regras",
+			"erro":    err.Error(),
+		})
 		return
 	}
 
 	//saida sem sucesso
-	c.JSON(http.StatusBadRequest, gin.H{
-		"message": "Regras não encontrado",
+	c.JSON(http.StatusNoContent, gin.H{
+		"message": "Regras excluído",
 	})
 }
