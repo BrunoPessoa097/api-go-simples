@@ -96,3 +96,20 @@ func TestDeletePost(t *testing.T) {
 
 	assert.Equal(t, nil, saida)
 }
+func TestSearchPost(t *testing.T) {
+	db := utils.SetupDB(t)
+	post := NewPostRepository(db)
+
+	postagem := models.Post{
+		IDUser: 1,
+		Texto:  "Vamos nessa Brasil",
+	}
+
+	err := db.Create(&postagem).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	saida := post.PostRepositorySearch(1)
+	assert.Equal(t, nil, saida)
+}
