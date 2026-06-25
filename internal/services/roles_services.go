@@ -9,12 +9,13 @@ import (
 
 // estrutura
 type RoleService struct {
-	repo *repository.RolesRepository
+	repo     *repository.RolesRepository
+	repoUser *repository.UsuarioRepository
 }
 
 // construtor
-func NewRoleService(r *repository.RolesRepository) *RoleService {
-	return &RoleService{repo: r}
+func NewRoleService(r *repository.RolesRepository, u *repository.UsuarioRepository) *RoleService {
+	return &RoleService{repo: r, repoUser: u}
 }
 
 // listar regras
@@ -51,8 +52,9 @@ func (rs *RoleService) RoleServiceUpdate(id int64, role models.Roles) error {
 
 // // deletar
 func (rs *RoleService) RoleServiceDelete(id int64) error {
-	if err := rs.repo.RolesRepositoryDelete(id); err != nil {
-		return nil
+	if user, _ := rs.repoUser.UsuarioRepositorySearch("", "", id); user != nil {
+		return errors.New("Não pode excluir regras que tem depedencias")
 	}
-	return errors.New("regra não encontrada")
+
+	return rs.repo.RolesRepositoryDelete(id)
 }
