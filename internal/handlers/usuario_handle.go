@@ -148,8 +148,13 @@ func (u *UsuarioHandle) UsuarioDeleteHandle(c *gin.Context) {
 		return
 	}
 
-	if saida := u.services.UsuarioServiceDelete(int32(id)); saida == nil {
-		c.JSON(http.StatusNoContent, nil)
+	if saida := u.services.UsuarioServiceDelete(int32(id)); saida != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"mensagem": "erro ao excluir usuario",
+			"erro":     saida.Error(),
+		})
 		return
 	}
+
+	c.JSON(http.StatusNoContent, nil)
 }
