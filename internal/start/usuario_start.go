@@ -23,7 +23,8 @@ func NewStart(db *gorm.DB) *Start {
 func (s *Start) UsuarioStart() (*handlers.UsuarioHandle, *repository.RolesRepository) {
 	repo := repository.NewUsuarioRepository(s.db)
 	rr := repository.NewRolesRepository(s.db)
-	serv := services.NewUsuarioService(repo, rr)
+	rp := repository.NewPostRepository(s.db)
+	serv := services.NewUsuarioService(repo, rr, rp)
 	hand := handlers.NewUsuarioHandle(serv)
 	return hand, rr
 }
@@ -31,7 +32,8 @@ func (s *Start) UsuarioStart() (*handlers.UsuarioHandle, *repository.RolesReposi
 // iniciando regras
 func (s *Start) RoleStart() *handlers.RolesHandler {
 	rr := repository.NewRolesRepository(s.db)
-	rs := services.NewRoleService(rr)
+	ru := repository.NewUsuarioRepository(s.db)
+	rs := services.NewRoleService(rr, ru)
 	rh := handlers.NewRolesHandler(rs)
 
 	return rh
